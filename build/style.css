@@ -1,0 +1,75 @@
+body {
+  margin: 0;
+  background: #101010;
+}
+
+body * {
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#searchbarcontainer {
+  vertical-align: middle;
+}
+
+#navigationbar {
+  padding: 5px;
+  background: #212121;
+}
+
+#navigationbar * {
+  text-decoration: none;
+  display: inline;
+}
+
+a[href] {
+  text-decoration: none;
+  font-weight: bold;
+  color: #c5c5c5;
+}
+
+.theme1 {
+  background: #212121;
+}
+
+.theme2 {
+  background: #151515;
+}
+
+table {
+  padding: 4px;
+}
+
+table thead {
+  display: table-header-group;
+  text-align: left;
+  margin: 4px;
+}
+
+table thead th {
+  padding-left: 14px;
+}
+
+table tbody td {
+  padding: 14px;
+  text-align: left;
+}
+
+table tbody tr {
+  margin: 2px;
+  vertical-align: top;
+}
+
+footer {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  text-align: center;
+}
+
+footer ul.footerlinks {
+  display: inline;
+}
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    background: #101010;
+    * {
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+}
+
+#searchbarcontainer {
+    vertical-align: middle;
+}
+
+#navigationbar {
+    padding: 5px;
+    background:#212121;
+
+    * {
+        text-decoration: none;
+        display: inline;
+    }
+}
+
+a[href] {
+    text-decoration: none;
+    font-weight: bold;
+    color: rgb(197, 197, 197);
+}
+
+.theme1 {
+    background: #212121;
+}
+
+.theme2 {
+    background: #151515;
+}
+
+table {
+    padding: 4px;
+
+    thead {
+        display: table-header-group;
+        text-align: left;
+        margin: 4px;
+        th {
+            padding-left: 14px;
+        }
+    }
+
+    tbody {
+        td {
+            padding: 14px;
+            text-align: left;
+        }
+
+        tr {
+            margin: 2px;
+            vertical-align: top;
+        }
+    }
+}
+
+footer {
+    align-items: center;
+    align-content: center;
+    text-align: center;
+
+    ul.footerlinks {
+        display:inline;
+    }
+}
