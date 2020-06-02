@@ -1,4 +1,4 @@
 import { ThreadData, LinkType, ThreadQuery } from './data-types'
-import SearchThreadAsync from './thread-searcher'
+import { SearchThreadAsync, SearchThreadSync } from './thread-searcher'
 
-export { SearchThreadAsync, ThreadQuery, ThreadData, LinkType }
+export { SearchThreadAsync, SearchThreadSync, ThreadQuery, ThreadData, LinkType }

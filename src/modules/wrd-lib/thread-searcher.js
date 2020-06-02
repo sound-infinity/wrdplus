@@ -1,4 +1,4 @@
-import { ThreadData, ThreadQuery, User, SearchResults } from "./data-types"
+import { ThreadData, ThreadQuery, User, SearchResults, LinkType } from "./data-types"
 
 // https://wearedevs.net/forum/all?order=latestthread&search=
 const QueryEndpoint = `http://localhost:8080/build/test.html`
@@ -12,26 +12,46 @@ const Regexes = {
     TableRow: /<tr>(.*?)<\/tr>/g
 }
 
+/**
+ * 
+ * @param {Element} anchorTag
+ * @returns {User} 
+ */
+function MakeUserFromAnchorTag(anchorTag) {
+    if (anchorTag.href) {
+        return new User(anchorTag.textContent.trim(), anchorTag.href.match(/\?uid=([0-9]+)/)[1])
+    }
+}
+
+/**
+ * 
+ * @param {Element} anchorTag
+ * @returns {Object} 
+ */
+function GetThreadInfoFromAnchorTag(anchorTag) {
+    if (anchorTag.href) {
+        return {
+            Name: anchorTag.textContent.trim(),
+            Id: anchorTag.href.match(/\/([0-9]+)/)[1]
+        }
+    }
+}
+
 function GetThreadsFromBodyHTML(html) {
     const [, contents] = html.replace(Regexes.RemoveTags, "").match(Regexes.TableContents)
     const [, thead, tbody] = contents.replace(Regexes.RemoveNewLines, '').match(Regexes.ExtractTableHeadAndBody)
-    const rows = tbody.matchAll(Regexes.TableRow)
-    const table = { thead: thead, tbody: tbody, rows: [] }
-
-    for (let [row] of rows) {
+    const searchResults = new SearchResults()
+    for (let [row] of tbody.matchAll(Regexes.TableRow)) {
         try {
             const [, threadSection, threadId, threadName, threadAuthorId, threadAuthorName, threadReplies, threadViews] = row.match(/.*?<a.*?href=.\/forum\/([A-z]+).*?<a.*?href=.\/forum\/t\/([0-9]+).*?>([\s\S]+?)<\/a>.*?href=.\/profile\?uid=([0-9]+).*?>(.*?)<\/a>.*?<td.*?>[\s]?([0-9]+).*?>[\s]?([0-9]+).*?<?/) // .*?href=.\/profile\?uid=([0-9]+).*?>([A-z]+)<\/a>
             let LastReplierMatch = row.replace(/<a.*?href=.\/profile\?uid=([0-9]+).*?>(.*?)<\/a>?.*?/, '').match(/.*?<\/td>.*?href=.\/profile\?uid=([0-9]+).*?>(.*?)<\/a>?.*?/)
-
             if (LastReplierMatch) {
                 LastReplierMatch = new User(LastReplierMatch[2], LastReplierMatch[1])
             }
-
-            table.rows.push(new ThreadData(threadName, threadId, threadReplies, threadViews, new User(threadAuthorName, threadAuthorId), threadSection, LastReplierMatch))
+            searchResults.Add(new ThreadData(threadName, threadId, threadReplies, threadViews, new User(threadAuthorName, threadAuthorId), LastReplierMatch, threadSection))
         } catch (x) { }
     }
-
-    return table.rows
+    return searchResults
 }
 
 /**
@@ -39,7 +59,7 @@ function GetThreadsFromBodyHTML(html) {
  * @param {string} threadName 
  * @returns {Promise<SearchResults>}
  */
-export default function SearchThreadAsync(threadName) {
+export function SearchThreadAsync(threadName) {
     const QueryRequest = QueryEndpoint.replace("$name", threadName)
 
     return new Promise(resolve => {
@@ -50,3 +70,37 @@ export default function SearchThreadAsync(threadName) {
             })
     })
 };
+
+/**
+ * 
+ * @param {string} threadName 
+ * @returns {SearchResults}
+ */
+export function SearchThreadSync(threadName) {
+    const currentLinkType = LinkType.getLinkType("http://localhost:8080/forum/all")
+    if (currentLinkType == LinkType.SECTION) {
+        const ThreadList = new SearchResults()
+        const ForumContainer = document.querySelector("div.forumcontainer > table")
+        if (ForumContainer) {
+            const IndexSkip = ForumContainer.querySelector("thead>tr").children.length - 5
+            ForumContainer.querySelectorAll("tbody>tr").forEach(row => {
+                const RowChildren = row.children
+                const ThreadMeta = RowChildren[IndexSkip + 1]
+                const ThreadLink = ThreadMeta.children[0]
+                const ThreadAuthorMeta = ThreadMeta.children[1]
+                const ThreadAuthorLink = ThreadAuthorMeta.children[0]
+                const ThreadViews = RowChildren[IndexSkip + 2]
+                const ThreadReplies = RowChildren[IndexSkip + 3]
+                const ThreadLastReplierMeta = RowChildren[IndexSkip + 4]
+                const ThreadLastReplierLink = ThreadLastReplierMeta.children[0]
+                const BasicThreadData = GetThreadInfoFromAnchorTag(ThreadLink)
+                const BasicAuthorData = MakeUserFromAnchorTag(ThreadAuthorLink)
+                const BasicReplierData = ThreadLastReplierLink ? MakeUserFromAnchorTag(ThreadLastReplierLink) : {}
+                ThreadList.Add(new ThreadData(BasicThreadData.Name, BasicThreadData.Id,
+                    ThreadReplies.textContent, ThreadViews.textContent,
+                    BasicAuthorData, BasicReplierData))
+            })
+        }
+        return ThreadList
+    }
+}

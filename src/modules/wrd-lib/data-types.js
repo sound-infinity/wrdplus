@@ -12,8 +12,8 @@ export class SearchResults {
      * 
      * @param {ThreadData[]} threadDataCollection 
      */
-    constructor(threadDataCollection) {
-        this.collection = Object.values(threadDataCollection)
+    constructor(threadDataCollection = []) {
+        this.collection = []
     }
 
     /**
@@ -43,6 +43,14 @@ export class SearchResults {
         })
         return results
     }
+
+    /**
+     * 
+     * @param {ThreadData} Item 
+     */
+    Add(Item) {
+        this.collection.push(Item)
+    }
 }
 
 export class User {
@@ -64,11 +72,11 @@ export class ThreadData {
      * @param {User} threadLastReplier
      * @param {string} threadUrl 
      */
-    constructor(threadName, threadId, threadReplies, threadViews, threadAuthor, threadSection, threadLastReplier, threadUrl) {
+    constructor(threadName, threadId, threadReplies, threadViews, threadAuthor, threadLastReplier, threadSection, threadUrl) {
         this.Name = threadName
         this.Section = threadSection
         this.Author = threadAuthor
-        this.Replier = threadLastReplier
+        this.LastReplier = threadLastReplier
 
         if (threadUrl) {
             this.Url = threadUrl
