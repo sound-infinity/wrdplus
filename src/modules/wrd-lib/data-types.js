@@ -94,20 +94,7 @@ export class ThreadData {
     }
 }
 
-export class ThreadQuery {
-    /**
-     * 
-     * @param {string} threadName 
-     * @param {number} threadId 
-     * @param {string} threadSection
-     */
-    constructor(threadName, threadId) {
-        this.Name = threadName
-        this.Id = threadId
-    }
-}
-
-// SECTION Prototypes
+// Prototypes
 LinkType.__proto__.getLinkType = function (url) {
     if (typeof url === "string" && this) {
 

@@ -1,5 +1,5 @@
 import { ThreadData, ThreadQuery, User, SearchResults, LinkType } from "./data-types"
-
+const cached = {}
 // https://wearedevs.net/forum/all?order=latestthread&search=
 const QueryEndpoint = `http://localhost:8080/build/test.html`
 //const QueryEndpoint = 'https://wearedevs.net/forum/all?order=latestthread&search=$name'
@@ -66,7 +66,7 @@ export function SearchThreadAsync(threadName) {
         fetch(QueryRequest)
             .then(res => res.text())
             .then(body => {
-                resolve(new SearchResults(GetThreadsFromBodyHTML(body)))
+                resolve(GetThreadsFromBodyHTML(body))
             })
     })
 };
@@ -79,28 +79,80 @@ export function SearchThreadAsync(threadName) {
 export function SearchThreadSync(threadName) {
     const currentLinkType = LinkType.getLinkType("http://localhost:8080/forum/all")
     if (currentLinkType == LinkType.SECTION) {
-        const ThreadList = new SearchResults()
-        const ForumContainer = document.querySelector("div.forumcontainer > table")
-        if (ForumContainer) {
-            const IndexSkip = ForumContainer.querySelector("thead>tr").children.length - 5
-            ForumContainer.querySelectorAll("tbody>tr").forEach(row => {
-                const RowChildren = row.children
-                const ThreadMeta = RowChildren[IndexSkip + 1]
-                const ThreadLink = ThreadMeta.children[0]
-                const ThreadAuthorMeta = ThreadMeta.children[1]
-                const ThreadAuthorLink = ThreadAuthorMeta.children[0]
-                const ThreadViews = RowChildren[IndexSkip + 2]
-                const ThreadReplies = RowChildren[IndexSkip + 3]
-                const ThreadLastReplierMeta = RowChildren[IndexSkip + 4]
-                const ThreadLastReplierLink = ThreadLastReplierMeta.children[0]
-                const BasicThreadData = GetThreadInfoFromAnchorTag(ThreadLink)
-                const BasicAuthorData = MakeUserFromAnchorTag(ThreadAuthorLink)
-                const BasicReplierData = ThreadLastReplierLink ? MakeUserFromAnchorTag(ThreadLastReplierLink) : {}
-                ThreadList.Add(new ThreadData(BasicThreadData.Name, BasicThreadData.Id,
-                    ThreadReplies.textContent, ThreadViews.textContent,
-                    BasicAuthorData, BasicReplierData))
-            })
+        if (cached.searchResults) {
+            return cached.searchResults
+        } else {
+            const ForumContainer = document.querySelector("div.forumcontainer > table")
+            const ThreadList = new SearchResults()
+            if (ForumContainer) {
+                const IndexSkip = ForumContainer.querySelector("thead>tr").children.length - 5
+                ForumContainer.querySelectorAll("tbody>tr").forEach(row => {
+                    const RowChildren = row.children
+                    const ThreadMeta = RowChildren[IndexSkip + 1]
+                    const ThreadLink = ThreadMeta.children[0]
+                    const ThreadAuthorMeta = ThreadMeta.children[1]
+                    const ThreadAuthorLink = ThreadAuthorMeta.children[0]
+                    const ThreadViews = RowChildren[IndexSkip + 2]
+                    const ThreadReplies = RowChildren[IndexSkip + 3]
+                    const ThreadLastReplierMeta = RowChildren[IndexSkip + 4]
+                    const ThreadLastReplierLink = ThreadLastReplierMeta.children[0]
+                    const BasicThreadData = GetThreadInfoFromAnchorTag(ThreadLink)
+                    const BasicAuthorData = MakeUserFromAnchorTag(ThreadAuthorLink)
+                    const BasicReplierData = ThreadLastReplierLink ? MakeUserFromAnchorTag(ThreadLastReplierLink) : {}
+                    ThreadList.Add(new ThreadData(BasicThreadData.Name, BasicThreadData.Id,
+                        ThreadReplies.textContent, ThreadViews.textContent,
+                        BasicAuthorData, BasicReplierData))
+                })
+            }
+            cached.searchResults = ThreadList
+            return ThreadList
         }
-        return ThreadList
     }
+}
+
+/**
+ * 
+ * @param {string[]} threadNames
+ * @returns {Promise<SearchResults>}
+ */
+export function SearchThreadsAsync(threadNames = []) {
+    const searchResults = new SearchResults()
+    const threadsFound = {}
+    let currentIndex = -1
+    let previousResults
+
+    return new Promise(resolve => {
+        function Next() {
+            currentIndex++;
+            const threadName = threadNames[currentIndex]
+
+            function LookIn(threads) {
+                threads.collection.forEach(threadData => {
+                    threadNames.forEach(threadName2 => {
+                        if (threadData.Name === threadName2 && !(threadName2 in threadsFound)) {
+                            threadsFound[threadName2] = true
+                            searchResults.Add(threadData)
+                        }
+                    })
+                })
+
+                previousResults = threads
+                if (currentIndex < threadNames.length - 1) {
+                    Next()
+                } else {
+                    resolve(searchResults)
+                }
+            }
+
+            if (threadsFound[threadName]) {
+                LookIn(previousResults)
+            } else {
+                SearchThreadAsync(threadName).then(res => {
+                    LookIn(res)
+                })
+            }
+        }
+
+        Next()
+    })
 }
