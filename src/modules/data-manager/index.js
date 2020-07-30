@@ -5,8 +5,16 @@ export default class DataManager {
         this.doAutoParsing = doAutoParsing
     }
 
-    getData() {
-        const itemVal = localStorage.getItem(this.containerName)
+    get Name() {
+        return this.containerName
+    }
+
+    get raw() {
+        return localStorage.getItem(this.containerName)
+    }
+
+    get data() {
+        const itemVal = this.raw
 
         if (this.doAutoParsing) {
             return JSON.parse(itemVal || '{}') || {}
@@ -15,7 +23,7 @@ export default class DataManager {
         }
     }
 
-    setData(newData) {
+    set data(newData) {
         if (this.doAutoParsing) {
             localStorage.setItem(this.containerName, JSON.stringify(newData || {}))
         } else {
@@ -23,14 +31,18 @@ export default class DataManager {
         }
     }
 
+    get Size() {
+        return new Blob([this.raw]).size / 1000 + 'kb'
+    }
+
     getKey(name) {
-        return this.getData()[name]
+        return this.data[name]
     }
 
     setKey(name, value) {
-        this.setData(this.getData())
-        const temp_data = this.getData()
+        this.data = this.data
+        const temp_data = this.data
         temp_data[name] = value
-        this.setData(temp_data)
+        this.data = temp_data
     }
 }

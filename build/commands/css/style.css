@@ -1,0 +1,64 @@
+.commands-window {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.commands-window .box {
+  position: relative;
+  border: 1px solid darkgrey;
+  padding: 2px;
+  margin: 2px;
+}
+
+.commands-window .commands {
+  padding: 4px;
+  position: relative;
+  display: block;
+}
+
+.commands-window .commands.body {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+}
+
+.commands-window .commands.body .output {
+  overflow: auto;
+}
+
+.commands-window .commands.body .output div {
+  display: block;
+}
+
+.commands-window .commands.body .output div .type {
+  text-transform: uppercase;
+  color: #7e7e7e;
+}
+
+.commands-window .commands.body .output div .type::after {
+  padding: 2px;
+  margin: 5px;
+  content: "";
+  border-right: 1px solid #c7c7c7;
+}
+
+.commands-window .commands.body .output .input .type {
+  color: #498b65;
+}
+
+.commands-window .commands.body .input input {
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  overflow: hidden;
+  resize: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  width: 80%;
+}
+/*# sourceMappingURL=style.css.map */

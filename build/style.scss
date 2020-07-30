@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background: #101010;
+    background: #202020;
     * {
         color: white;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,9 +11,13 @@ body {
     vertical-align: middle;
 }
 
+.round {
+    border-radius: 7px;
+}
+
 #navigationbar {
     padding: 5px;
-    background:#212121;
+    background: #212121;
 
     * {
         text-decoration: none;
@@ -28,7 +32,8 @@ a[href] {
 }
 
 .theme1 {
-    background: #212121;
+    box-shadow: 2px 2px 5px #10101021;
+    background: #252525;
 }
 
 .theme2 {
@@ -56,6 +61,17 @@ table {
         tr {
             margin: 2px;
             vertical-align: top;
+            td:nth-child(1) a {
+                display: inline-block;
+                padding: 4px;
+                border-radius: 10px;
+                background-color: #181818;
+                width: 100%;
+            }
+
+            td {
+                padding: 18px;
+            }
         }
     }
 }
@@ -66,6 +82,26 @@ footer {
     text-align: center;
 
     ul.footerlinks {
-        display:inline;
+        display: inline;
     }
+}
+
+a[href][read]::before {
+    content: 'UNDEFINED';
+    margin: 4px;
+    padding: 2px 4px;
+    font-size: 10px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #288228;
+    border-radius: 10px;
+}
+
+a[href][read=true]::before {
+    content: 'R';
+}
+
+a[href][read=false]::before {
+    content: 'U';
+    background-color: rgb(168, 36, 36);
 }

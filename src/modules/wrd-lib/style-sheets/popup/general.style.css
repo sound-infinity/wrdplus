@@ -1,0 +1,55 @@
+.modal-popup {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    z-index: 2;
+}
+.modal-popup .modal-contents {
+    margin: auto;
+    display: block;
+    top: 50vh;
+    transform: translate(0, -50%);
+    left: 0;
+    padding: 10px;
+    width: 40vw;
+    position: relative;
+    border-radius: 15px;
+}
+.modal-popup .modal-contents h1 {
+    font-size: 24px;
+    margin: 0 0 14px;
+}
+.modal-popup .modal-contents .modal-close-btn {
+    position: absolute;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    cursor: pointer;
+    font-size: 28px;
+    right: 0;
+    top: 0;
+    margin: auto;
+    height: 16px;
+    width: 16px;
+}
+.modal-popup .modal-body span {
+    display: block;
+}
+.modal-popup .btn {
+    cursor: pointer;
+    color: #e8e8e8;
+    font-weight: 700;
+    padding: 5px;
+    background: #151719;
+    min-width: 80px;
+    margin-top: 4px;
+    margin-right: 4px;
+    border: 0;
+}
+.modal-popup img {
+    width: 100%;
+}
