@@ -1,28 +1,20 @@
 //TODO: Rewrite
-import { SearchThreadAsync } from './search-thread-async'
+import { searchThreadAsync } from './search-thread-async'
 import { SearchResults } from '../classes'
-/**
- * 
- * @param {string[]} threadNames
- * @returns {Promise<SearchResults>}
- */
-export function SearchThreadsAsync(threadNames = []) {
+
+export function searchThreadsAsync(threadNames: string[]): Promise<SearchResults> {
     const searchResults = new SearchResults()
-    const threadsFound = {}//Keeps track of found threads
+    const threadsFound: any = {} //Keeps track of found threads
     let currentIndex = -1
-    let previousResults
+    let previousResults: SearchResults
     //Looks for threads that may be within the same page
     //to save the amount of queries sent.
     return new Promise(resolve => {
         //Iterates thru the queries requested, using paramater threadNames[]
-        function Next() {
+        function Next(): void {
             currentIndex++;
-            const threadName = threadNames[currentIndex]
-            /**
-             * 
-             * @param {SearchResults} threads 
-             */
-            function LookIn(threads) {
+            const threadName: string = threadNames[currentIndex]
+            function LookIn(threads: SearchResults): void {
                 threads.collection.forEach(threadData => {
                     threadNames.forEach(threadName2 => {
                         //Checks if thread has been found and that it wont be duplicated
@@ -44,7 +36,7 @@ export function SearchThreadsAsync(threadNames = []) {
                 LookIn(previousResults)
             } else {
                 //Else send new query
-                SearchThreadAsync(threadName).then(res => {
+                searchThreadAsync(threadName).then(res => {
                     LookIn(res)
                 })
             }

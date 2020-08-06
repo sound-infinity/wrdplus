@@ -1,5 +1,6 @@
 //Styles
 import SettingsThemes from './settings'
+import ThreadMarks from './thread-marks'
 import PopupThemes from './popup'
 import TagThemes from './tags'
 //Other
@@ -7,7 +8,6 @@ import Category from './category.class'
 import booleans from '../website-booleans'
 
 const StyleSheets = {} // Category[]
-
 
 export const DefaultCategories = {
     General: CreateCategory('general'),
@@ -43,7 +43,8 @@ export function defaultConfig() {
     AutoAdd(TagThemes)
     AutoAdd(PopupThemes)
     AutoAdd(SettingsThemes)
-
+    AutoAdd(ThreadMarks)
+    
     DefaultCategories.General.enable()
 
     let update = () => {

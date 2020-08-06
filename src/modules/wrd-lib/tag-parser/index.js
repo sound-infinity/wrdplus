@@ -1,6 +1,8 @@
+import { getLinkType, insertExternalScript } from '../utils'
 import { LinkType } from '../enums'
 import { CheckReplyList } from './utils'
 
+//insertExternalScript('https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js')
 
 function callback(mutationList) {
     for (const mutation of mutationList) {
@@ -11,9 +13,8 @@ function callback(mutationList) {
 }
 
 export default function CheckPage() {
-    if (LinkType.getLinkType(location.href) === LinkType.PROFILE) {
+    if (getLinkType() === LinkType.PROFILE) {
         CheckReplyList(document.querySelectorAll(".activitycard > div"));
-
         try {
             const Container = document.querySelector("#activityfeed > .activitycards");
             const Observer = new MutationObserver(callback);
@@ -24,3 +25,4 @@ export default function CheckPage() {
         CheckReplyList(document.querySelectorAll(".thread_replycontent"));
     }
 }
+

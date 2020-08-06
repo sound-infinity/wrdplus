@@ -7,7 +7,7 @@
     height: 100%;
     background: rgba(0, 0, 0, .5);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    z-index: 2;
+    z-index: 99999;
 }
 .modal-popup .modal-contents {
     margin: auto;
@@ -52,4 +52,8 @@
 }
 .modal-popup img {
     width: 100%;
+}
+.modal-popup .modal-contents a[href] {
+    color: lightblue;
+    font-weight: bolder;
 }

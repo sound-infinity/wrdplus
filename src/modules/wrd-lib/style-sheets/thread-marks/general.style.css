@@ -1,0 +1,32 @@
+a[href][read = false]{
+    font-weight: 700;
+}
+
+a[href][read]::before {
+    font-weight: initial;
+    content: "";
+    margin: 4px;
+    padding: 2px 4px;
+    font-size: 10px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #288228;
+    border-radius: 10px;
+    display: inline-block;
+}
+a[href][read = true]::before {
+    content: "R";
+}
+a[href][read = false]::before {
+    content: "U";
+    background-color: #a82424;
+}
+a[href][read = waiting]::before {
+    content: "W";
+    background-color: orange;
+}
+
+.wrd-title-tag {
+    color: orange;
+    font-weight: inherit;
+}

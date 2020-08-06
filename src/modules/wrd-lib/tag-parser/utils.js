@@ -1,6 +1,6 @@
 import { TagHandlers } from './settings/'
 import CheckReply from './check-reply'
-import TagData from './tag-data.class'
+import { TagData, LineData } from './classes/'
 
 /**
  * Gets child nodes that are text types.
@@ -15,13 +15,12 @@ export function GetTextOnly(element) {
 
 /**
  * 
- * @param {HTMLCollection} Elements 
- * @param {HTMLElement[]} Elements 
+ * @param {HTMLElement[]} Elements
  */
 export function GetLineList(Elements) {
     const Lines = []
     for (const element of Elements) {
-        Lines.push([GetTextOnly(element), element])
+        Lines.push(new LineData(element, GetTextOnly(element)))
     }
     return Lines
 }

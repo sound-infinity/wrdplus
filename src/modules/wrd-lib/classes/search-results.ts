@@ -1,20 +1,16 @@
 import { ThreadData } from '../classes';
 
 export default class SearchResults {
-    public collection: ThreadData[] = []
     constructor(){}
-    /**
-     * 
-     * @param {threadId 
-     */
-    GetThreadById(threadId: number){
+    public collection: ThreadData[] = []
+    getThreadById(threadId: number): ThreadData {
         for (const threadData of this.collection) {
             if (threadData.Id === threadId) {
                 return threadData
             }
         }
     }
-    GetThreadByName(threadName: string): ThreadData[] {
+    getThreadByName(threadName: string): ThreadData[] {
         const results: ThreadData[] = []
         this.collection.forEach(threadData => {
             if (threadData.Name === threadName) {
@@ -25,5 +21,11 @@ export default class SearchResults {
     }
     Add(Item: ThreadData) {
         this.collection.push(Item)
+    }
+
+    Migrate(other: SearchResults){
+        if (other != null){
+            this.collection = other.collection
+        }
     }
 }

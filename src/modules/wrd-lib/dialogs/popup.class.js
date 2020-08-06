@@ -2,11 +2,11 @@ let open_dialog = null
 export default class Popup {
     /**
      * 
-     * @param {string|string[]|string[boolean]} _description Text to be shown in the description section. If an array is provided, the last value can be a boolean to specify if a html should be used.
-     * @param {string} _title 
-     * @param {function} _onclose 
+     * @param {string|string[]} description 
+     * @param {string} title 
+     * @param {Function|void} onclose
      */
-    constructor(_description = "Hello World!", _title = "WRD+", _onclose) {
+    constructor(description = "Hello World!", title = "WRD+", onclose) {
         const elements = {
             close_button: document.createElement("div"),
             description: document.createElement("p"),
@@ -34,7 +34,7 @@ export default class Popup {
         elements.close_button.innerText = '+'
 
         //Events - functions
-        this.onclose = _onclose
+        this.onclose = onclose
         this.onclick = (function (e) {
             this.close(e)
         }).bind(this)
@@ -53,8 +53,8 @@ export default class Popup {
         this.elements = elements
 
         //set props
-        this.title = _title
-        this.description = _description
+        this.title = title
+        this.description = description
 
     }
 
@@ -63,7 +63,9 @@ export default class Popup {
     get description() {
         return this.elements.description.textContent
     }
-
+    /**
+     * @param {string|string[]} text
+     */
     set description(text = '') {
         switch (typeof text) {
             case 'string':
@@ -99,7 +101,7 @@ export default class Popup {
         return this.global_buttons
     }
     /**
-     * @param {({"Label": (this: Popup, e: MouseEvent)})} _buttons
+     * @xparam {({"Label": (this: Popup, e: MouseEvent)})} _buttons
      */
     set buttons(_buttons = {}) {
         for (const button in this.buttons)
@@ -131,7 +133,7 @@ export default class Popup {
         if (!document.head.querySelector('style#wrd-plus-popup')) {
             const style = document.createElement('style')
             style.id = 'wrd-plus-popup'
-            style.innerHTML = `.modal-popup{display:block;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;z-index:2}.modal-popup .modal-contents{margin:auto;display:block;top:50vh;transform:translate(0,-50%);left:0;padding:10px;width:40vw;position:relative;border-radius:15px}.modal-popup .modal-contents h1{font-size:24px;margin:0 0 14px}.modal-popup .modal-contents .modal-close-btn{position:absolute;-webkit-transform:rotate(45deg);transform:rotate(45deg);cursor:pointer;font-size:28px;right:0;top:0;margin:auto;height:16px;width:16px}.modal-popup .modal-body span{display:block}.modal-popup .btn{cursor:pointer;color:#e8e8e8;font-weight:700;padding:5px;background:#151719;min-width:80px;margin-top:4px;margin-right:4px;border:0}.modal-popup img{width:100%}`
+            //style.innerHTML = `.modal-popup{display:block;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;z-index:2}.modal-popup .modal-contents{margin:auto;display:block;top:50vh;transform:translate(0,-50%);left:0;padding:10px;width:40vw;position:relative;border-radius:15px}.modal-popup .modal-contents h1{font-size:24px;margin:0 0 14px}.modal-popup .modal-contents .modal-close-btn{position:absolute;-webkit-transform:rotate(45deg);transform:rotate(45deg);cursor:pointer;font-size:28px;right:0;top:0;margin:auto;height:16px;width:16px}.modal-popup .modal-body span{display:block}.modal-popup .btn{cursor:pointer;color:#e8e8e8;font-weight:700;padding:5px;background:#151719;min-width:80px;margin-top:4px;margin-right:4px;border:0}.modal-popup img{width:100%}`
             document.head.appendChild(style)
         }
     }
@@ -156,17 +158,22 @@ export default class Popup {
      * @param {boolean} reset Determines if reset should be called, by default it's disabled.
      */
     show(reset = false) {
-        if (reset)
-            this.reset()
-        if (document.body.querySelector('.modal-popup')) {
-            if (open_dialog && open_dialog !== this) {
-                open_dialog.onclose = () =>
-                    this.show()
-            }
+        if (reset) this.reset()
+        if(document.readyState !== 'complete'){
+            setTimeout((() => {
+                this.show(reset)
+            }).bind(this), 1000)
         } else {
-            open_dialog = this
-            this.refresh()
-            document.body.appendChild(this.elements.container)
+            if (document.body.querySelector('.modal-popup')) {
+                if (open_dialog && open_dialog !== this) {
+                    open_dialog.onclose = () =>
+                        this.show()
+                }
+            } else {
+                open_dialog = this
+                this.refresh()
+                document.body.appendChild(this.elements.container)
+            }    
         }
     }
 }   

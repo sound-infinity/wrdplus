@@ -81,3 +81,7 @@ code > div.head > h1 {
     font-weight: 300;
     font-family: var(--font-var);
 }
+/*MARKDOWN*/
+markdown > span {
+    display: block;
+}

@@ -1,6 +1,5 @@
 import { ThreadData, User, SearchResults } from '../classes'
 
-export const cached = {}
 export const QueryEndpoint = 'https://wearedevs.net/forum/all?order=latestthread&search=$name'
 
 export const Regexes = {
@@ -11,40 +10,21 @@ export const Regexes = {
     TableRow: /<tr>(.*?)<\/tr>/g
 }
 
-/**
- * 
- * @param {Element} anchorTag
- * @returns {User} 
- */
-export function MakeUserFromAnchorTag(anchorTag) {
+export function MakeUserFromAnchorTag(anchorTag: HTMLAnchorElement): User {
     if (anchorTag && anchorTag.href) {
         return new User(anchorTag.textContent.trim(), anchorTag.href.match(/\?uid=([0-9]+)/)[1])
     }
 }
 
-/**
- * 
- * @param {Element} anchorTag
- * @returns {Object} 
- */
-export function GetThreadInfoFromAnchorTag(anchorTag) {
+export function GetThreadInfoFromAnchorTag(anchorTag: HTMLAnchorElement): ThreadData {
     if (anchorTag && anchorTag.href) {
-        return {
-            Name: anchorTag.textContent.trim(),
-            Id: anchorTag.href.match(/\/([0-9]+)/)[1]
-        }
+        return new ThreadData(anchorTag.textContent.trim(), anchorTag.href.match(/\/([0-9]+)/)[1])
     }
 }
 
-/**
-* 
-* @param {string} html
-* @returns {SearchResults} 
-*/
-export function GetThreadsFromBodyHTML(html) {
-    const t0 = performance.now()
+export function GetThreadsFromBodyHTML(html: string): SearchResults {
     const [, contents] = html.replace(Regexes.RemoveTags, "").match(Regexes.TableContents)
-    const [, , tbody] = contents.replace(Regexes.RemoveNewLines, '').match(Regexes.ExtractTableHeadAndBody)
+    const [, , tbody]: any = contents.replace(Regexes.RemoveNewLines, '').match(Regexes.ExtractTableHeadAndBody)
     const searchResults = new SearchResults()
     const rows = tbody.replace(/[\n]/g, '').matchAll(Regexes.TableRow)
 

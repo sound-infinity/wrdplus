@@ -1,13 +1,13 @@
-import { cached, GetThreadInfoFromAnchorTag, MakeUserFromAnchorTag } from './utils'
-import { SearchResults, ThreadData } from '../classes'
+import { GetThreadInfoFromAnchorTag, MakeUserFromAnchorTag } from './utils'
+import { getLinkType } from '../utils'
+import { SearchResults, ThreadData, User } from '../classes'
 import { LinkType } from '../enums'
-/**
- * 
- * @param {string} threadName 
- * @returns {SearchResults}
- */
-export function SearchThreadSync(threadName) {
-    const currentLinkType = LinkType.getLinkType(location.href)
+
+const cached: any = {}
+
+//TODO: Rename function
+export function searchThreadSync(): SearchResults {
+    const currentLinkType = getLinkType(location.href)
     if (currentLinkType === LinkType.SECTION) {
         if (cached.searchResults) {
             return cached.searchResults
@@ -19,20 +19,21 @@ export function SearchThreadSync(threadName) {
                 ForumContainer.querySelectorAll("tbody>tr").forEach(row => {
                     const RowChildren = row.children
                     const ThreadMeta = RowChildren[IndexSkip + 1]
-                    const ThreadLink = ThreadMeta.children[0]
+                    const ThreadLink = ThreadMeta.children[0] as HTMLAnchorElement
                     const ThreadAuthorMeta = ThreadMeta.children[1]
-                    const ThreadAuthorLink = ThreadAuthorMeta.children[0]
+                    const ThreadAuthorLink = ThreadAuthorMeta.children[0] as HTMLAnchorElement
                     const ThreadReplies = RowChildren[IndexSkip + 2]
                     const ThreadViews = RowChildren[IndexSkip + 3]
                     const ThreadLastReplierMeta = RowChildren[IndexSkip + 4]
-                    const ThreadLastReplierLink = ThreadLastReplierMeta.children[0]
+                    const ThreadLastReplierLink = ThreadLastReplierMeta.children[0] as HTMLAnchorElement
+
                     const BasicThreadData = GetThreadInfoFromAnchorTag(ThreadLink)
                     const BasicAuthorData = MakeUserFromAnchorTag(ThreadAuthorLink)
-                    const BasicReplierData = ThreadLastReplierLink ? MakeUserFromAnchorTag(ThreadLastReplierLink) : {}
-                    let threadSection
+                    const BasicReplierData = ThreadLastReplierLink ? MakeUserFromAnchorTag(ThreadLastReplierLink) : new User('undefined')
+                    let threadSection: string | string[] | HTMLAnchorElement
 
                     if (location.href.match(/[\/]all/)) {
-                        threadSection = RowChildren[0].children[0]
+                        threadSection = RowChildren[0].children[0] as HTMLAnchorElement
                         if (threadSection) {
                             threadSection = threadSection.href.split("/").reverse()[0]
                         } else {
@@ -46,7 +47,7 @@ export function SearchThreadSync(threadName) {
 
                     ThreadList.Add(new ThreadData(BasicThreadData.Name, BasicThreadData.Id,
                         ThreadReplies.textContent, ThreadViews.textContent,
-                        BasicAuthorData, BasicReplierData, threadSection))
+                        BasicAuthorData, BasicReplierData, threadSection as string))
                 })
             }
             cached.searchResults = ThreadList

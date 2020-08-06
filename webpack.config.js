@@ -12,28 +12,21 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+              test: [/.js$/, /.ts$/, /\.tsx?$/],
+              loader: 'babel-loader',
+            },
         {
-            test: /\.css$/i,
-            use: 'css-loader',
-        },
-        {
-            test: [/\.js$/, /\.tsx?$/],
-            exclude: [
-                node_modules
-            ],
-            loader: "babel-loader",
+            test: /\.css$/,
+            use: 'css-loader'
         }]
     },
-
+    resolve: {
+        extensions: ['.css', '.tsx', '.ts', '.js'],
+    }
 }
 /*
-{
-                test: [/\.js$/, /\.tsx?$/],
-                use: 'ts-loader',
-                exclude: [
-                    node_modules
-                ]
-            }
+
      resolve: {
         extensions: ['.css', '.tsx', '.ts', '.js'],
     }
@@ -46,4 +39,9 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
     },
-};*/
+};            {
+              test: /\.js$/,
+              use: ["source-map-loader"],
+              enforce: "pre"
+            },
+*/

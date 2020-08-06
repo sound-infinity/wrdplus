@@ -2,7 +2,7 @@ import { GetNotificationsContainer, NotiCount } from './utils'
 import timestamp from './timestamp'
 
 export default class Notification {
-    constructor(options = { text: '', link: '', thumbnail: '/favicon.ico' }) {
+    constructor(link, label = 'WRD+ Notification', thumbnail = '/favicon.ico') {
         this.elements = {}
         this.elements.container = document.createElement("div")
         this.elements.subContainer = document.createElement("div")
@@ -20,10 +20,10 @@ export default class Notification {
 
         this.elements.container.className = "notification"
 
-        this.description = options.text
-        if (options.link)
-            this.link = options.link
-        this.thumbnail = options.thumbnail
+        this.description = label
+        if (link)
+            this.link = link
+        this.thumbnail = thumbnail
 
         this.elements.exit.innerText = "x"
         this.elements.time.innerText = timestamp.beautify(new Date())

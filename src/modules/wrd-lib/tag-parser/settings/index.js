@@ -1,6 +1,6 @@
 export const AllowedTags = {
     "CODE": true,
-    "SPOILER": true,
+    "SPOILER": true
 }
 
 export const NoOverlap = {
