@@ -8,7 +8,7 @@
     "start": "webpack-dev-server",
     "tampermonkey": "webpack -w"
   },
-  "author": "infinity-script <39848886+infinity-Script@users.noreply.github.com>",
+  "author": "infinity-script",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.10.5",

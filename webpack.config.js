@@ -25,23 +25,3 @@ module.exports = {
         extensions: ['.css', '.tsx', '.ts', '.js'],
     }
 }
-/*
-
-     resolve: {
-        extensions: ['.css', '.tsx', '.ts', '.js'],
-    }
-
- */
-/*
-module.exports = {
-    ,
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
-    },
-};            {
-              test: /\.js$/,
-              use: ["source-map-loader"],
-              enforce: "pre"
-            },
-*/
