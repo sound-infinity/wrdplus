@@ -14,7 +14,7 @@
 
 ## Post tags
 * Tag format:
-```asciidoc
+```diff
 [tagName]
 Contents
 [/tagName]
