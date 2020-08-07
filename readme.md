@@ -1,6 +1,6 @@
 # wrdplus
 * This script is made with the purpose of improving the experience on the [WRD's](wearedevs.net) website, overall, the forums.
-* More info: [wiki](/wiki)
+* More info: [wiki](wiki)
 ## Current features - some not listed
 * Custom CSS loader
 * Custom background image
