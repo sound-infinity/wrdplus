@@ -14,7 +14,7 @@
 
 ## Post tags
 * Tag format:
-```asciidoc
+```
 [tagName]
 Contents
 [/tagName]
