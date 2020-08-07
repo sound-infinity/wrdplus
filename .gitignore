@@ -3,5 +3,6 @@
 !/master/**
 !/src/
 !/src/**
+!/images/
 node_modules
 !readme.md
