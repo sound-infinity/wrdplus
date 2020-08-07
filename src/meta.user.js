@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name WRD+
 // @author SoundInfinity
-//! CHANGE @updateURL gitRAaw
-//! CHANGE @downloadURL gitRAaw
+// @version 1.0.0
+// @updateURL https://github.com/infinity-Script/wrdplus/raw/master/master/wrdplus.user.js
+// @downloadURL https://github.com/infinity-Script/wrdplus/raw/master/master/wrdplus.user.js
 // ==/UserScript==
