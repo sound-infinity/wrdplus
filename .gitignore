@@ -1,4 +1,6 @@
 **
 !/master/
 !/master/**
+!/src/
+!/src/**
 node_modules
