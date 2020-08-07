@@ -1,0 +1,43 @@
+div#settings {
+  background-color: #101010;
+}
+
+div#settings .listbox {
+  border: 1px solid #212121;
+}
+
+div#settings .listbox option:focus {
+  background-color: lightblue;
+}
+
+div#settings .flat,
+div#settings input[type=submit] {
+  background-color: #01579B;
+  color: #f5f5f5;
+}
+
+div#settings .flat:hover,
+div#settings input[type=submit]:hover {
+  color: #00579b;
+  background-color: #f3f3f3;
+}
+
+div#settings .flat:active,
+div#settings input[type=submit]:active {
+  background-color: #00579b;
+  color: #0070c5;
+}
+
+div#settings div.center {
+  border: 1px solid #212121;
+}
+
+div#settings .header {
+  border-bottom: 1px solid #252525;
+}
+
+div#settings h1,
+div#settings span {
+  color: white;
+}
+/*# sourceMappingURL=dark.theme.css.map */

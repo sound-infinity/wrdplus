@@ -1,0 +1,135 @@
+span.wrd-plus-logo {
+    display: inline-block;
+    font: inherit;
+}
+
+span.wrd-plus-logo::before {
+    content: "WRD";
+}
+
+span.wrd-plus-logo::after {
+    content: "+";
+    color: Gold;
+}
+
+div#settings {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99998;
+}
+
+div#settings .heading {
+    margin-top: 5px;
+
+    font-weight: bold;
+    font-size: 28px;
+}
+
+div#settings .listbox {
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+    display: block;
+}
+
+div#settings .listbox option {
+    display: block;
+    cursor: pointer;
+}
+
+div#settings .flat,
+div#settings input[type=submit] {
+    outline: none;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 4px 15px;
+    font-weight: bolder;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+div#settings .flat:hover,
+div#settings input[type=submit]:hover {
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+div#settings .flat:active,
+div#settings input[type=submit]:active {
+    -webkit-transition: all 0.1s;
+    transition: all 0.1s;
+}
+
+div#settings div.center {
+    border-radius: 15px;
+    background-color: none;
+    left: 10%;
+    bottom: 10%;
+    margin: auto;
+    padding: 15px;
+    width: 80%;
+    height: 80%;
+}
+
+div#settings div.center h1,
+div#settings div.center h2,
+div#settings div.center h3,
+div#settings div.center h4,
+div#settings div.center input,
+div#settings div.center a,
+div#settings div.center span {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 5px;
+}
+
+div#settings div.center .header {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+div#settings div.center .header .middle {
+    vertical-align: middle;
+}
+
+div#settings div.center .header .right {
+    float: right;
+}
+
+div#settings div.center .header .close-btn {
+    height: 3vh;
+    width: 3vh;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background-color: #a50000;
+    color: transparent;
+    text-align: center;
+    font-size: 2vh;
+    font-family: Helvetica, Arial, sans-serif;
+    cursor: pointer;
+    -webkit-transition: color 0.5s;
+    transition: color 0.5s;
+}
+
+div#settings div.center .header .close-btn:hover {
+    color: red;
+}
+
+div#settings div.center span {
+    margin-left: 2px;
+}
+
+div#settings div.center input[type=checkbox],
+div#settings div.center input[type=submit] {
+    cursor: pointer;
+}
+
+div#settings div.center input[type=checkbox] {
+    padding: 2px;
+}
+/*# sourceMappingURL=style.css.map */
