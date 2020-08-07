@@ -4,5 +4,6 @@
 !/src/
 !/src/**
 !/images/
+!/images/**
 node_modules
 !readme.md
