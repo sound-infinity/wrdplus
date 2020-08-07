@@ -1,3 +1,4 @@
 /build/**
+/master
 !/build/bundle.js
 node_modules
