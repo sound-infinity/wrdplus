@@ -110,7 +110,10 @@ export default class SettingsSection {
     addSaveButton(dataManager: DataManager, showPopup: boolean = true): HTMLInputElement {
         return this.addSubmitButton('Save', (e)=>{
             dataManager.setKey(e.name.replace(/\s/g, ''), e.getValues())
-            if (showPopup) (new Popup(`Saved "${ e.name }".`, 'Data Manager')).show()
+            if (showPopup){
+                (new Popup(`Saved "${ e.name }".`, 'Data Manager')).show()
+                location.reload()
+            }
         })
     }
     

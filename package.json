@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server",
-    "tampermonkey": "webpack -w"
+    "local-test": "webpack-dev-server",
+    "tm-test": "webpack -w --mode development",
+    "build": "webpack --mode production"
   },
   "author": "infinity-script",
   "license": "ISC",

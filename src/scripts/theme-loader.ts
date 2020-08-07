@@ -25,7 +25,7 @@ if (isThemeUrlValid(themeUrl)) {
     .then(src => {
       const style = document.createElement('style')
       style.innerHTML = src
-      let append = function() {
+      const append = function() {
         if (document.readyState === 'complete') {
             document.head.appendChild(style)
         }
@@ -38,4 +38,19 @@ if (isThemeUrlValid(themeUrl)) {
         '',
         `<a href='${themeUrl}' class='round theme2 btn'>Theme Link<a>`], 
         'Theme Settings')).show())
+}
+const bgUrl = ThemeSettings.getTextboxValue('backgroundUrl')
+const appBgFix = ThemeSettings.getCheckboxValue('applyFixBg')
+
+if(bgUrl) {
+    const exe = function () {
+        document.body.style.backgroundImage = `url(${ bgUrl })`
+        if (appBgFix) {
+            document.body.style.backgroundRepeat = 'round'
+            document.body.style.backgroundSize = 'contain'
+        }
+    }
+
+    exe();
+    document.addEventListener('readystatechange', exe)
 }

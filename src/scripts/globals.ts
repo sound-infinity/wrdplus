@@ -12,5 +12,3 @@ export function isFirstRun(): boolean {
 }
 
 DataStorage.setKey('startups', (DataStorage.getKey('startups') ? DataStorage.getKey('startups') : -1) + 1)
-
-console.log(isFirstRun(), DataStorage.getKey('startups'))
