@@ -1,4 +1,9 @@
-/build/**
-/master
-!/build/bundle.js
+**
+!/master/
+!/master/**
+!/src/
+!/src/**
+!/images/
+!/images/**
 node_modules
+!readme.md
