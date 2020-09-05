@@ -4,16 +4,16 @@ import { CheckReplyList } from './utils'
 
 //insertExternalScript('https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js')
 
-function callback(mutationList) {
+function callback(mutationList: MutationRecord[]) {
     for (const mutation of mutationList) {
-        if (mutation.type == "childList") {
+        if (mutation.type === "childList") {
             CheckReplyList(document.querySelectorAll(".activitycard > div")) // mutation.addedNodes);
         }
     }
 }
 
 export default function CheckPage() {
-    if (getLinkType() === LinkType.PROFILE) {
+    if (getLinkType() === LinkType.Profile) {
         CheckReplyList(document.querySelectorAll(".activitycard > div"));
         try {
             const Container = document.querySelector("#activityfeed > .activitycards");

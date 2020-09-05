@@ -1,6 +1,6 @@
 import { LineType } from '../enums'
 import { GetLineList } from './utils'
-import { TagData, TagList} from './classes/'
+import { TagData, TagList, Content, LineData } from './classes'
 import { NoOverlap, Regexes } from './settings'
 
 /**
@@ -9,14 +9,14 @@ import { NoOverlap, Regexes } from './settings'
 */
 
 
-export default function TagScanner(Container) {
-    const Elements = Container.children
+export default function TagScanner(Container: Element) {
+    const Elements: HTMLCollection = Container.children
 
     const Tags = new TagList()
 
-    const Lines = GetLineList(Elements);
+    const Lines: LineData[] = GetLineList(Elements)
 
-    function GetLineType(LineText) {
+    function GetLineType(LineText: string) {
         if (LineText.match(Regexes.OpeningTag)) {
             return LineType.OPENING;
         } else if (LineText.match(Regexes.ClosingTag)) {
@@ -24,14 +24,14 @@ export default function TagScanner(Container) {
         }
     }
 
-    function OpenTag(index) {
+    function OpenTag(index: number) {
         const Line = Lines[index]
         const Tag = new TagData(Line.Value, Tags.getAParent())
         Tag.Elements.Opening = Line.Target
         Tags.add(Tag)
     }
     
-    function CloseTag(index) {
+    function CloseTag(index: number) {
         const Line = Lines[index];
 
         for (let Tag of Tags.collection) {
@@ -43,7 +43,7 @@ export default function TagScanner(Container) {
         }
     }
 
-    function AddContent(index) {
+    function AddContent(index: number) {
         const Line = Lines[index]
         let OpenTag
         for (const Tag of Tags.collection) {
@@ -51,23 +51,24 @@ export default function TagScanner(Container) {
                 OpenTag = Tag
             }
         }
-        OpenTag.Contents.push([Line.Value, Line.Target])
+        OpenTag.Contents.push(new Content(Line.Value, Line.Target))
     }
 
-    for (let index in Lines) {
-        const Line = Lines[index];
+    for (let i=0;i<Lines.length;++i) {
+        const Line = Lines[i]
         if (GetLineType(Line.Value) === LineType.OPENING) {
             const Parent = Tags.getAParent();
             if (Parent && Parent.Name in NoOverlap) {
-                AddContent(index);
+                AddContent(i)
             } else {
-                OpenTag(index);
+                OpenTag(i)
             }
         } else if (GetLineType(Line.Value) === LineType.CLOSING) {
-            CloseTag(index);
+            CloseTag(i)
         } else if (Tags.isAnyTagOpen()) {
-            AddContent(index);
+            AddContent(i)
         }
     }
+
     return Tags.collection
 }

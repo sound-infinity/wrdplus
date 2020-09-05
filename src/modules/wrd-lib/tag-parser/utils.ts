@@ -1,25 +1,21 @@
-import { TagHandlers } from './settings/'
+import { TagHandlers } from './settings'
 import CheckReply from './check-reply'
-import { TagData, LineData } from './classes/'
+import { TagData, LineData } from './classes'
 
 /**
  * Gets child nodes that are text types.
  * @param {Element} element
  * @returns List of text nodes. 
  */
-export function GetTextOnly(element) {
-    return [].reduce.call(element.childNodes, function (child0, child1) {
+export function GetTextOnly(element: Element) {
+    return [].reduce.call(element.childNodes, function (child0: any, child1: any) {
         return child0 + (child1.nodeType === 3 ? child1.textContent : '')
     }, '')
 }
 
-/**
- * 
- * @param {HTMLElement[]} Elements
- */
-export function GetLineList(Elements) {
-    const Lines = []
-    for (const element of Elements) {
+export function GetLineList(Elements: HTMLCollection) {
+    const Lines: LineData[] = []
+    for (const element of Elements as unknown as HTMLElement[]) {
         Lines.push(new LineData(element, GetTextOnly(element)))
     }
     return Lines
@@ -31,7 +27,7 @@ export function GetLineList(Elements) {
  * @param {HTMLDivElement} Container 
  * @param {TagData} Tag 
  */
-export function OnWrap(Container, Tag) {
+export function OnWrap(Container: HTMLDivElement, Tag: TagData) {
     if (Tag.Name in TagHandlers) {
         try {
             TagHandlers[Tag.Name].call(Container, Container);
@@ -45,13 +41,12 @@ export function OnWrap(Container, Tag) {
  * Goes through a list of replies.
  * @param {array} replies 
  */
-export function CheckReplyList(replies) {
-    for (const Reply of replies) {
-        if (Reply.tagName && Reply.tagName === "DIV") {
-            //this=checkReply
-            CheckReply(Reply, OnWrap);
+export function CheckReplyList(replies: NodeListOf<HTMLDivElement>) {
+    replies.forEach(reply => {
+        if (reply.tagName && reply.tagName === 'DIV') {
+            CheckReply(reply, OnWrap)
         }
-    }
+    })
 }
 
 export default { GetTextOnly, OnWrap, CheckReplyList }

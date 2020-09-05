@@ -1,5 +1,6 @@
-import DataManager from '../../modules/data-manager'
-import { Settings } from '../../modules/wrd-lib'
+import DataManager, { DataManagers } from '../../modules/data-manager'
+import { Settings, Popup, Notification } from '../../modules/wrd-lib'
+import { ButtonData } from '../../modules/wrd-lib/dialogs';
 
 const SettingsData = new DataManager('wrdplus-settings')
 const SettingsPanel = new Settings.Form();
@@ -15,6 +16,38 @@ ThemeSettings.setValues(SettingsData.getKey('ThemeSettings') || {})
 // Other Settings
 export const OtherSettings = SettingsPanel.addSection('Other Settings')
 OtherSettings.addCheckbox('devmode', 'Developer Mode')
+
+OtherSettings.addButton('List Storage(s)', () => {
+    const Listing = new Popup()
+    for(let DM of DataManagers) {
+        Listing.addLabel(`${DM.Name} = ${DM.Size}kb`)
+        Listing.addButton('Clear', () => {
+            const response = new Popup()
+            response.title = 'DataManager'
+            response.description = [`Are you sure you want to delete <strong>${DM.Name}</strong> and all its contents?`]
+            Listing.close()
+            response.buttons = {
+                Yes: new ButtonData((e: MouseEvent) => {
+                    DM.delete()
+                    location.reload()
+                }),
+                No: new ButtonData(function() {
+                    this.close()
+                })
+            }
+            response.onclose = () => {
+                response.onclose = null
+                Listing.show()
+                response.remove()
+            }
+            response.show()
+        })
+        Listing.addLineBreak()
+    }
+    //Listing.description = Sizes.concat('\n')
+    Listing.show()
+})
+OtherSettings.addLineBreak()
 OtherSettings.addSaveButton(SettingsData)
 OtherSettings.setValues(SettingsData.getKey('OtherSettings') || {})
 

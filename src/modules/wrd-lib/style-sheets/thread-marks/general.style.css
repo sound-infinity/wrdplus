@@ -1,29 +1,38 @@
-a[href][read = false]{
+a[href][state = waiting]::before {
+    content: "W";
+    background-color: orange;
+}
+
+a[href*='forum/t/']:not([state='Read']){
     font-weight: 700;
 }
 
-a[href][read]::before {
+a[href][state]::before {
     font-weight: initial;
     content: "";
     margin: 4px;
-    padding: 2px 4px;
+    padding: 4px 4px;
     font-size: 10px;
     text-align: center;
     vertical-align: middle;
-    background-color: #288228;
+    background-color: white;
     border-radius: 10px;
+    width: 10px;
+    height: 10px;
     display: inline-block;
 }
-a[href][read = true]::before {
+
+a[href][state = Read]::before {
     content: "R";
+    background-color: #28822896;
 }
-a[href][read = false]::before {
+a[href][state = Unread]::before, a[href][state = Unregistered]::before {
     content: "U";
-    background-color: #a82424;
+    background-color: #a8242499;
 }
-a[href][read = waiting]::before {
-    content: "W";
-    background-color: orange;
+a[href][state = Unknown]::before {
+    content: "?";
+    background-color: #a8242499;
 }
 
 .wrd-title-tag {

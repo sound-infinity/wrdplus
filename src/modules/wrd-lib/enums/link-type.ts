@@ -1,8 +1,8 @@
 export enum LinkType {
-    NEWREPLY = 'NEWREPLY', 
-    PROFILE = 'PROFILE', 
-    SECTION = 'SECTION', 
-    THREAD = 'THREAD', 
-    INDEX = 'INDEX'
+    NewReply = 'NewReply', 
+    Profile = 'Profile', 
+    Section = 'Section', 
+    Thread = 'Thread', 
+    Index = 'Index'
 }
 

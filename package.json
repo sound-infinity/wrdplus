@@ -7,7 +7,7 @@
     "local-test": "webpack-dev-server",
     "tm-test": "webpack -w --mode development",
     "build": "webpack --mode production",
-    "release": "webpack --output-path master --output-filename wrdplus.user.js --mode production"
+    "release": "webpack --output-path release --output-filename wrdplus.user.js --mode production"
   },
   "author": "infinity-script",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "babel-loader": "^8.1.0",
     "babel-polyfill": "^6.26.0",
     "css-loader": "^3.6.0",
+    "html-loader": "^1.2.1",
     "source-map-loader": "^1.0.1",
     "ts-loader": "^8.0.1",
     "typescript": "^3.9.7",

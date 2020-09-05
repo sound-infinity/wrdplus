@@ -15,7 +15,7 @@ export default class SettingsSection {
         this.name = heading
         settingsForm.addHeading(heading)
         this.form.onsubmit = (e) => e.preventDefault();
-        (settingsForm.elements as any).center.appendChild(this.form)
+        settingsForm.elements.center.appendChild(this.form)
     }
 
     isNameValid(name: string): boolean {
@@ -93,6 +93,19 @@ export default class SettingsSection {
         }
     }
     
+    addButton(text: string = 'Button', clickHandler?: (this: SettingsSection, e: SettingsSection) => void): HTMLButtonElement {
+        const Button: HTMLButtonElement = document.createElement('button')
+        Button.textContent = text
+        Button.classList.add('flat')
+        this.form.appendChild(Button)
+
+        if (typeof clickHandler === 'function')
+            Button.addEventListener('click', clickHandler.bind(this, this))
+
+        return Button
+
+    }
+
     addSubmitButton(text: string = 'Submit', clickHandler?: (this: SettingsSection, e: SettingsSection)=>void): HTMLInputElement {
         const submitBtn = document.createElement('input')
 
@@ -106,6 +119,7 @@ export default class SettingsSection {
 
         return submitBtn
     }
+
 
     addSaveButton(dataManager: DataManager, showPopup: boolean = true): HTMLInputElement {
         return this.addSubmitButton('Save', (e)=>{

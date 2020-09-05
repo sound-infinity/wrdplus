@@ -1,6 +1,6 @@
-import { getLinkType, LinkType, User, ThreadData, searchThreadAsync, getThreadIdFromUrl } from '../modules/wrd-lib'
+import { getLinkType, LinkType, User, ThreadData, searchThreadAsync, getThreadIdFromUrl, ButtonData } from '../modules/wrd-lib'
 import { LastestThreads as LT, DataStorage as DS, Info } from './globals'
-import { UpdateThreads, getThreadStateById } from './link-handler/thread-marker'
+import { UpdateThreads, getThreadStateById } from './link-handler/thread-markings'
 
 function makeAnchorForUser(user: User) {
     return `<a href="${user.profileUrl}">${user.toString()}</a>`
@@ -17,9 +17,9 @@ function showThreadData(threadData: ThreadData) {
         '<hr/>',
     ]
     Info.buttons = {
-        Visit: () => {
+        Visit: new ButtonData(() => {
             location.href = threadData.Url
-        }
+        })
     }
     Info.show()
 }
@@ -27,7 +27,7 @@ function showThreadData(threadData: ThreadData) {
 addEventListener('click', (e: any)  => {
     if (e.target) {
         if (e.target.tagName === 'A' && LT != null) {
-            if (getLinkType(e.target.href) === LinkType.THREAD) {
+            if (getLinkType(e.target.href) === LinkType.Thread) {
                 const threadData = LT.getThreadById(parseInt(e.target.href.match(/t\/([0-9]+)/)[1]))
                 Info.title = 'Thread Data'
                 if (threadData) {
@@ -40,7 +40,7 @@ addEventListener('click', (e: any)  => {
                     Info.reset()
                     Info.description = "Thread data not found within database."
                     Info.buttons = {
-                        'Search Async': function () {
+                        'Search Async': new ButtonData(function () {
                             Info.description = 'fetching...'
                             Info.buttons = {}
                             searchThreadAsync(e.target.innerText).then(results => {
@@ -51,13 +51,13 @@ addEventListener('click', (e: any)  => {
                                     setTimeout(showThreadData.bind(undefined, results.getThreadById(getThreadIdFromUrl(e.target.href))), 1000)
                                 }
                             })
-                        },
-                        Visit: function () {
+                        }),
+                        Visit: new ButtonData(function () {
                             e.target.click()
-                        },
-                        Close: function () {
+                        }),
+                        Close: new ButtonData(function () {
                             this.close()
-                        },
+                        }),
                     }
                     Info.show()
                     e.preventDefault()

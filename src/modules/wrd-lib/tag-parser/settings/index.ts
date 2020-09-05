@@ -11,7 +11,7 @@ export const RawTags = {
     "SPOILER": true
 }
 
-export const TagHandlers = {
+export const TagHandlers: {[handlerName: string]: Function} = {
     "CODE": function () {
         // const SourceContainer = document.createElement("div");
         const TitleContainer = document.createElement("div");
@@ -36,8 +36,8 @@ export const TagHandlers = {
             Selectable.appendChild(SpanElements[i]);
         }
     },
-    "SPOILER": function (container) {
-        container.addEventListener('click', function (e) {
+    "SPOILER": function (container: HTMLElement) {
+        container.addEventListener('click', function (e: MouseEvent) {
             if (e.target === container)
                 this.setAttribute('open', (this.getAttribute('open') !== 'true').toString())
         })

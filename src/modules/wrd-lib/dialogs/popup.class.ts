@@ -1,12 +1,33 @@
-let open_dialog = null
-export default class Popup {
-    /**
-     * 
-     * @param {string|string[]} description 
-     * @param {string} title 
-     * @param {Function|void} onclose
-     */
-    constructor(description = "Hello World!", title = "WRD+", onclose) {
+import popup from "../style-sheets/popup"
+
+let open_dialog: Popup = null
+
+export class ButtonData {
+    handler: Function
+    element: HTMLButtonElement
+    label: string
+
+    constructor(handler: Function, label?: string, element?: HTMLButtonElement) {
+        this.handler = handler
+        this.element = element
+        this.label = label
+    }
+
+    remove() {
+        this.handler = null
+        this.element.remove()
+        this.label = null
+    }
+}
+
+export class Popup {
+    global_buttons: {} = {}
+    added_elements: HTMLElement[] = []
+    elements: {[element_name:string]: HTMLElement} = {}
+    onclose: (this: any, e: Event) => void
+    onclick: (this: any, e: MouseEvent) => void
+
+    constructor(description: string|string[] = "", title:string = "WRD+", showOnDone: boolean = true, onclose?: (this: any, e:Event) => void) {
         const elements = {
             close_button: document.createElement("div"),
             description: document.createElement("p"),
@@ -35,7 +56,7 @@ export default class Popup {
 
         //Events - functions
         this.onclose = onclose
-        this.onclick = (function (e) {
+        this.onclick = (function (e: MouseEvent) {
             this.close(e)
         }).bind(this)
 
@@ -49,13 +70,15 @@ export default class Popup {
 
         //Other
         this.global_buttons = {}
-        this.addedElements = []
+        this.added_elements = []
         this.elements = elements
 
         //set props
         this.title = title
         this.description = description
 
+        //show
+        if (showOnDone) this.show()
     }
 
     //*Properties
@@ -63,10 +86,9 @@ export default class Popup {
     get description() {
         return this.elements.description.textContent
     }
-    /**
-     * @param {string|string[]} text
-     */
-    set description(text = '') {
+    
+    set description(text: string|string[]) {
+        this.elements.description.innerHTML = ''
         switch (typeof text) {
             case 'string':
                 this.elements.description.textContent = text
@@ -92,18 +114,16 @@ export default class Popup {
         return this.elements.heading.textContent
     }
 
-    set title(text = '') {
+    set title(text: string) {
         this.elements.heading.textContent = text
     }
 
     //Buttons
-    get buttons() {
+    get buttons(): {[label: string]: ButtonData} {
         return this.global_buttons
     }
-    /**
-     * @xparam {({"Label": (this: Popup, e: MouseEvent)})} _buttons
-     */
-    set buttons(_buttons = {}) {
+
+    set buttons(_buttons: {[label: string]: ButtonData}) {
         for (const button in this.buttons)
             this.buttons[button].remove()
         for (const buttonLabel in _buttons) {
@@ -112,7 +132,7 @@ export default class Popup {
                 this.buttons[buttonLabel].remove()
                 delete this.buttons[buttonLabel]
             }
-            const buttonHandler = _buttons[buttonLabel]
+            const buttonHandler = _buttons[buttonLabel].handler
             const buttonElement = document.createElement('button')
             //If the button contains a click handler, assign it.
             if (typeof buttonHandler === 'function') {
@@ -122,9 +142,17 @@ export default class Popup {
             buttonElement.textContent = buttonLabel
             buttonElement.className = 'btn theme2 round'
             this.elements.body.appendChild(buttonElement)
-            this.addedElements.push(buttonElement)
-            this.buttons[buttonLabel] = buttonElement
+            this.added_elements.push(buttonElement)
+            this.buttons[buttonLabel] = new ButtonData(buttonHandler, buttonLabel, buttonElement)
         }
+    }
+    /**
+     * Sets html instead of plain text
+     * Removes current description
+     */
+    setHtml(html='') {
+        this.description = ''
+        this.elements.description.innerHTML = html 
     }
     /**
      * Checks on the stylesheet for the popup. If not found, it's added.
@@ -138,20 +166,62 @@ export default class Popup {
         }
     }
     /**
+     * Controls
+     */
+    addLabel(text: string): HTMLSpanElement {
+        const label = document.createElement('span')
+        label.textContent =  text
+
+        this.elements.body.appendChild(label)
+        this.added_elements.push(label)
+
+        return label
+    }
+
+    addLineBreak(): this {
+        const br = document.createElement('br')
+        this.elements.body.appendChild(br)
+        this.added_elements.push(br)
+        return this
+    }
+
+    addButton(text: string, onclick?: (this: Popup, e: MouseEvent) => void): HTMLButtonElement {
+        const btn = document.createElement('button')
+        btn.textContent = text
+        btn.className = 'btn theme2 round'
+        btn.onclick = onclick.bind(popup)
+
+        this.elements.body.appendChild(btn)
+        this.added_elements.push(btn)
+
+        return btn
+    }
+    /**
      * Removes all added elements.
      */
     reset() {
-        for (const element of this.addedElements) {
+        for (const element of this.added_elements) {
             element.remove()
         }
     }
     /**
      * Removes popup from the document.
      */
-    close() {
-        this.elements.container.remove()
+
+    fireOnClose() {
         if (typeof this.onclose === 'function')
-            this.onclose.call(this, ...arguments)
+            this.onclose.call(this, ...(arguments as unknown as any[]))
+    }
+
+    close() {
+        this.fireOnClose()
+        if (this.elements.container)
+            document.head.appendChild(this.elements.container)
+    }
+
+    remove() {
+        this.elements.container.remove()
+        this.fireOnClose()
     }
     /**
      * Shows up popup in the document. 
@@ -176,4 +246,4 @@ export default class Popup {
             }    
         }
     }
-}   
+}

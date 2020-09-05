@@ -1,8 +1,8 @@
 import SettingsSection from './settings-section'
 
 export default class SettingsForm {
+    public elements: {[element: string]: HTMLElement} = {}
     constructor() {
-        this.elements = {}
         this.elements.main = document.createElement("div")
         this.elements.center = document.createElement("div")
         this.elements.header = document.createElement("div")
@@ -29,8 +29,8 @@ export default class SettingsForm {
      * Creates a section to add input fields 
      * @returns {SettingsSection}
      */
-    addSection() {
-        return new SettingsSection(this, ...arguments)
+    addSection(arg?: string) {
+        return new SettingsSection(this, ...(arguments as unknown as string[]))
     }
     /**
      * Adds a heading within the container

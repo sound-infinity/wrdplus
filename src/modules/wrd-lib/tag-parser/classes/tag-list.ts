@@ -1,6 +1,6 @@
 import { TagData } from '.'
 
-export default class TagList {
+export class TagList {
     public collection: TagData[]
     constructor(collection: TagData[] = []){
         this.collection = collection

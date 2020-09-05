@@ -1,4 +1,4 @@
-export default class LineData {
+export class LineData {
     public Target: HTMLElement
     public Value: string
 

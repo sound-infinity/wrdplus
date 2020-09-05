@@ -1,4 +1,2 @@
-import Popup from './popup.class'
-
-export default { Popup }
-export { Popup }
+export { Popup, ButtonData } from './popup.class'
+export { Notification } from './notification.class'

@@ -8,7 +8,7 @@ const cached: any = {}
 //TODO: Rename function
 export function searchThreadSync(): SearchResults {
     const currentLinkType = getLinkType(location.href)
-    if (currentLinkType === LinkType.SECTION) {
+    if (currentLinkType === LinkType.Section) {
         if (cached.searchResults) {
             return cached.searchResults
         } else {

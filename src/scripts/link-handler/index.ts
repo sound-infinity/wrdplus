@@ -1,6 +1,6 @@
-import { getLinkType, LinkType, parseTags, getThreadInfo, searchThreadAsync, getThreadIdFromUrl, searchThreadsAsync, SearchResults, getUsername } from "../../modules/wrd-lib"
+import { getLinkType, LinkType, parseTags, Popup, searchThreadAsync, getThreadIdFromUrl, searchThreadsAsync, SearchResults, getUsername, getThreadInfo } from "../../modules/wrd-lib"
 import { Info, DataStorage as DS, LastestThreads as LT } from "../globals"
-import { UpdateThreads } from "./thread-marker"
+import { UpdateThreads } from "./thread-markings"
 import { OtherSettings } from "../settings"
 
 try {
@@ -8,7 +8,7 @@ try {
 } catch (x) {}
 
 switch (getLinkType()) {
-    case LinkType.THREAD:
+    case LinkType.Thread:
         parseTags()
         const LocalThread = getThreadInfo()
                 
@@ -25,13 +25,13 @@ switch (getLinkType()) {
             }
         })
         break
-    case LinkType.PROFILE:
+    case LinkType.Profile:
         parseTags()
         break;
-    case LinkType.SECTION:
+    case LinkType.Section:
         UpdateThreads()
         break
-    case LinkType.INDEX:
+    case LinkType.Index:
         const names = [""]
         document.querySelectorAll('a[href*="/forum/t"').forEach((thread: HTMLAnchorElement) => {
             thread.setAttribute("read", "waiting")

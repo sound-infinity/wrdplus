@@ -1,15 +1,16 @@
 export default class Category {
-    constructor(name = 'default') {
-        this.isEnabled = false
+    public isEnabled: boolean = false
+    public containerClass: string
+    constructor(name: string = 'default') {
         this.containerClass = `${name}-style`
     }
-    select() {
+    select(): NodeListOf<HTMLStyleElement> {
         return document.querySelectorAll(`head > style.${this.containerClass}`)
     }
-    addStyle() {
-        let lastStyle
-        for (const source of arguments) {
-            const style = document.createElement('style')
+    addStyle(arg?: any) {
+        let lastStyle: HTMLStyleElement
+        for (const source of arguments as unknown as string[]) {
+            const style: HTMLStyleElement = document.createElement('style')
             style.className = this.containerClass
             style.innerHTML = source.toString()
             document.head.appendChild(style)
@@ -20,11 +21,11 @@ export default class Category {
     refresh() {
         this.select().forEach(style => style.sheet.disabled = !this.isEnabled)
     }
-    enable() {
+    enable(){
         this.isEnabled = true
         this.refresh()
     }
-    disable() {
+    disable(){
         this.isEnabled = false
         this.refresh()
     }

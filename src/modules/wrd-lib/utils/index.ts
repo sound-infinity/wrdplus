@@ -1,4 +1,2 @@
 export { insertExternalScript } from './script-inserter'
-export { getThreadInfo, getLinkType, getThreadIdFromUrl, getUsername } from './page'
-
-//export { insertExternalScript, getThreadInfo, getLinkType, getThreadIdFromUrl }
+export { getThreadInfo, getLinkType, getThreadIdFromUrl, getUsername, getLocalUserId, getUserInfoFromTag, copyText } from './page'

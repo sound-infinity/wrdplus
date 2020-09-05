@@ -1,3 +1,5 @@
+export const DataManagers: DataManager[] = []
+
 export default class DataManager {
     private containerName: string
     private doAutoParsing: boolean
@@ -5,6 +7,7 @@ export default class DataManager {
     constructor(containerName: string, doAutoParsing: boolean = true) {
         this.containerName = containerName
         this.doAutoParsing = doAutoParsing
+        DataManagers.push(this)
     }
 
     get Name(): string {
@@ -33,8 +36,11 @@ export default class DataManager {
         }
     }
 
-    get Size(): string {
-        return new Blob([this.raw]).size / 1000 + 'kb'
+    /**
+     * Returns size of data/string in kilobytes
+     */
+    get Size(): number {
+        return new Blob([this.raw]).size / 1000
     }
 
     getKey(name: string | number) {
@@ -46,5 +52,9 @@ export default class DataManager {
         const temp_data = this.data
         temp_data[name] = value
         this.data = temp_data
+    }
+
+    delete() {
+        localStorage.removeItem(this.containerName)
     }
 }

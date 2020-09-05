@@ -1,5 +1,5 @@
 import { LastestThreads as LT, DataStorage as DS } from '../globals'
-import { getThreadIdFromUrl } from '../../modules/wrd-lib'
+import { getThreadIdFromUrl, Notification } from '../../modules/wrd-lib'
 import { ThreadData } from '../../modules/wrd-lib'
 
 export enum ThreadStates {
@@ -27,24 +27,55 @@ export function getThreadStateById(threadId: number){
     }
 }
 
+const Stats = {
+    read: 0,
+    unreads: 0,
+    unknowns: 0,
+    unregistered: 0,
+    total: 0
+}
+
+function ShowStats() {
+    new Notification(`Read: ${Stats.read}<br/>Unread: ${Stats.unreads}<br/>Unknowns: ${Stats.unknowns}<br/>Unregistered: ${Stats.unregistered}<br/>Total: ${Stats.total}`, 'Thread(s) Found', 5000)
+}
+
 export function UpdateThreads() {
     document.querySelectorAll('a[href*="/forum/t"').forEach((thread: HTMLAnchorElement) => {
         switch (getThreadStateById(getThreadIdFromUrl(thread.href))) {
             case ThreadStates.Read:
-                thread.setAttribute('read', 'true')
+                thread.setAttribute('state', ThreadStates.Read)
                 thread.title = 'Read'
+                Stats.read++
                 break;
             case ThreadStates.Unregistered:
-                thread.setAttribute('read', 'false')
+                thread.setAttribute('state', ThreadStates.Unregistered)
                 thread.title = 'Unregistered'
+                Stats.unregistered++
+                break;
             case ThreadStates.Unread:
-                thread.setAttribute('read', 'false')
+                thread.setAttribute('state', ThreadStates.Unread)
                 thread.title = 'Unread'
+                Stats.unreads++
+                break;
             case ThreadStates.Unknown:
-                thread.setAttribute('read', 'false')
+                thread.setAttribute('state', ThreadStates.Unknown)
                 thread.title = 'Unknown'
+                Stats.unknowns++
+                break;
             default:
                 break;
         }
+
+        Stats.total++
     })
+    
+    if (document.readyState === 'complete') {
+        ShowStats()
+    } else {
+        document.addEventListener('readystatechange', () => {
+            if (document.readyState === 'complete'){
+                ShowStats()
+            }
+        })
+    }
 }

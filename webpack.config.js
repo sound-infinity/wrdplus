@@ -19,7 +19,12 @@ module.exports = {
         {
             test: /\.css$/,
             use: 'css-loader'
-        }]
+        },
+        {
+            test: /\.html$/i,
+            use: 'html-loader',
+          }
+        ]
     },
     resolve: {
         extensions: ['.css', '.tsx', '.ts', '.js'],

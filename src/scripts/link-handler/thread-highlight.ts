@@ -1,7 +1,7 @@
 import {getLinkType, LinkType} from "../../modules/wrd-lib";
 
 const PrefixRegex = /^[\[](.*?)[\]]|^[[\(](.*?)[\)]/g
-if (getLinkType() === LinkType.SECTION || getLinkType() === LinkType.INDEX) {
+if (getLinkType() === LinkType.Section || getLinkType() === LinkType.Index) {
     document.querySelectorAll('a[href*="/forum/t"').forEach((thread : HTMLAnchorElement) => {
         if (thread.textContent.match(PrefixRegex)) {
             const [TitleText] = thread.textContent.match(PrefixRegex)

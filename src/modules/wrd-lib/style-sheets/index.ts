@@ -6,23 +6,24 @@ import TagThemes from './tags'
 //Other
 import Category from './category.class'
 import booleans from '../website-booleans'
+import wrdplusNotifs from './wrdplus-notifs'
 
-const StyleSheets = {} // Category[]
+const StyleSheets: {[categoryName: string]: Category} = {}
 
-export const DefaultCategories = {
+export const DefaultCategories: {[themeName: string]: Category} = {
     General: CreateCategory('general'),
     Light: CreateCategory('lightmode'),
     Dark: CreateCategory('darkmode')
 }
 
-export function CreateCategory(categoryName) {
+export function CreateCategory(categoryName: string) {
     if (!(categoryName in StyleSheets)) {
         const NewCategory = new Category(categoryName)
         StyleSheets[categoryName] = NewCategory
 
         if (arguments.length > 0) {
             const args = Object.values(arguments).slice(1)
-            NewCategory.addStyle(...args)
+            NewCategory.addStyle(...args) 
         }
 
         return NewCategory
@@ -30,9 +31,9 @@ export function CreateCategory(categoryName) {
     }
 }
 
-export function AutoAdd(themeObject) {
+export function AutoAdd(themeObject: {[themeName: string]: string}) {
     for (const themeName in themeObject) {
-        const CategoryName = themeName[0].toUpperCase() + themeName.substring(1).toLowerCase()
+        const CategoryName: string = themeName[0].toUpperCase() + themeName.substring(1).toLowerCase()
         const Category = DefaultCategories[CategoryName]
         if (Category)
             Category.addStyle(themeObject[themeName])
@@ -44,6 +45,7 @@ export function defaultConfig() {
     AutoAdd(PopupThemes)
     AutoAdd(SettingsThemes)
     AutoAdd(ThreadMarks)
+    AutoAdd(wrdplusNotifs)
     
     DefaultCategories.General.enable()
 
