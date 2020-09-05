@@ -6,6 +6,6 @@
 !/images/
 !/images/**
 !/release/
-!/releaes/*
+!/releaes/**
 node_modules
 !readme.md
