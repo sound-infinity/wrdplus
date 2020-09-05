@@ -5,5 +5,7 @@
 !/src/**
 !/images/
 !/images/**
+!/release/
+!/releaes/*
 node_modules
 !readme.md
