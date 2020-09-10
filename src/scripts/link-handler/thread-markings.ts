@@ -1,6 +1,7 @@
 import { LastestThreads as LT, DataStorage as DS } from '../globals'
 import { getThreadIdFromUrl, Notification } from '../../modules/wrd-lib'
 import { ThreadData } from '../../modules/wrd-lib'
+import { OtherSettings } from '../settings'
 
 export enum ThreadStates {
     Read = 'Read',
@@ -36,7 +37,8 @@ const Stats = {
 }
 
 function ShowStats() {
-    new Notification(`Read: ${Stats.read}<br/>Unread: ${Stats.unreads}<br/>Unknowns: ${Stats.unknowns}<br/>Unregistered: ${Stats.unregistered}<br/>Total: ${Stats.total}`, 'Thread(s) Found', 5000)
+    if (OtherSettings.getCheckboxValue('devmode'))
+        new Notification(`Read: ${Stats.read}<br/>Unread: ${Stats.unreads}<br/>Unknowns: ${Stats.unknowns}<br/>Unregistered: ${Stats.unregistered}<br/>Total: ${Stats.total}`, 'Thread(s) Found', 5000)
 }
 
 export function UpdateThreads() {

@@ -1,5 +1,5 @@
 div#settings {
-  background-color: #101010;
+  background-color: #04040473;
 }
 
 div#settings .listbox {
@@ -29,7 +29,8 @@ div#settings input[type=submit]:active {
 }
 
 div#settings div.center {
-  border: 1px solid #212121;
+  background-color: #151515cc;
+  border: 1px solid #101010;
 }
 
 div#settings .header {

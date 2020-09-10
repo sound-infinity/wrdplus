@@ -1,4 +1,10 @@
 import { getLocalUserId, getLinkType, LinkType, copyText, Notification } from "../modules/wrd-lib";
+import { OtherSettings } from "./settings";
+
+// Warnings
+if (OtherSettings.getCheckboxValue('devmode')) {
+    new Notification('You are in developer mode. You might encounter some problems.', 'Warning', 3*1000)
+}
 
 // Profile Url Copying
 if (getLinkType() === LinkType.Profile) {

@@ -1,20 +1,21 @@
 /*SPOILER*/
 spoiler {
-    background-color: #181919;
+    background-color: #24272b;
+    border: 1px solid #384242b5;
     color: #fff;
 }
 
 spoiler::before {
     color: #fff;
-    border-bottom-color: #262929b5;
+    border-bottom-color: inherit;
 }
 /*CODE*/
 code {
-    background-color: #1c1d1d;
-    border-color: #0000006b;
+    background-color: #272a2f;
+    border-color: #384242b5;
 }
 code > div.head {
-    border-bottom-color: #262929b5;
+    border-bottom-color: inherit;
 }
 code > div.head > h1 {
     color: #fff;
