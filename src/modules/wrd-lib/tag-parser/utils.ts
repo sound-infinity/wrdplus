@@ -8,7 +8,7 @@ import { TagData, LineData } from './classes'
  * @returns List of text nodes. 
  */
 export function GetTextOnly(element: Element) {
-    return [].reduce.call(element.childNodes, function (child0: any, child1: any) {
+    return [].reduce.call(element.childNodes, function (child0: Node, child1: Node) {
         return child0 + (child1.nodeType === 3 ? child1.textContent : '')
     }, '')
 }

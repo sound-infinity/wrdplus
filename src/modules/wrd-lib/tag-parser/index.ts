@@ -4,25 +4,19 @@ import { CheckReplyList } from './utils'
 
 //insertExternalScript('https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js')
 
-function callback(mutationList: MutationRecord[]) {
+function callback(mutationList: MutationRecord[]): void {
     for (const mutation of mutationList) {
-        if (mutation.type === "childList") {
-            CheckReplyList(document.querySelectorAll(".activitycard > div")) // mutation.addedNodes);
+        if (mutation.type === 'childList') {
+            CheckReplyList(document.querySelectorAll('.activitycard > div'))
         }
     }
 }
 
-export default function CheckPage() {
+export default function revisePage() {
     if (getLinkType() === LinkType.Profile) {
-        CheckReplyList(document.querySelectorAll(".activitycard > div"));
-        try {
-            const Container = document.querySelector("#activityfeed > .activitycards");
-            const Observer = new MutationObserver(callback);
-
-            Observer.observe(Container, { childList: true });
-        } catch (errr) { }
+        CheckReplyList(document.querySelectorAll('.activitycard > div') as NodeListOf<HTMLDivElement>)
+        new MutationObserver(callback).observe(document.querySelector('#activitycard > div') as HTMLDivElement, { childList: true })
     } else {
-        CheckReplyList(document.querySelectorAll(".thread_replycontent"));
+        CheckReplyList(document.querySelectorAll(".thread_replycontent") as NodeListOf<HTMLDivElement>);
     }
 }
-
