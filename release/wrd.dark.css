@@ -50,8 +50,6 @@ header#navigationbar {
     border-radius: 5px;
 }
 /*container*/
-.notifications {
-}
 .notification {
     padding: 2px 1px;
     border-radius: 5px;
@@ -87,7 +85,3 @@ header#navigationbar {
     cursor: pointer;
     
 }
-/*avatar*/
-.notification img {
-    
-} 

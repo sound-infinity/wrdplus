@@ -1,9 +1,9 @@
 import { GetNotificationsContainer, NotiCount } from './utils'
 import timestamp from './timestamp'
 
-export default class Notification {
-    constructor(link, label = 'WRD+ Notification', thumbnail = '/favicon.ico') {
-        this.elements = {}
+export class Notification {
+    private elements: {[elementName: string]: HTMLElement} = {}
+    constructor(link: string, label: string = 'WRD+ Notification', thumbnail: string = '/favicon.ico') {
         this.elements.container = document.createElement("div")
         this.elements.subContainer = document.createElement("div")
         this.elements.description = document.createElement("a")
@@ -31,39 +31,39 @@ export default class Notification {
         this.elements.exit.className = "notif-exit"
         this.elements.time.className = "notif-time"
 
-        this.elements.exit.onclick = (function (e) {
+        this.elements.exit.onclick = (function (e: MouseEvent) {
             this.remove()
             e.stopPropagation()
             return false;
         }).bind(this)
     }
     //Description
-    get description() {
+    get description(): string {
         return this.elements.description.textContent
     }
-    set description(text = '') {
+    set description(text: string) {
         this.elements.description.textContent = text
     }
     //Link
-    get link() {
+    get link(): string {
         return this.elements.description.textContent
     }
-    set link(link = '') {
-        this.elements.description.href = link
+    set link(link: string) {
+        (this.elements.description as HTMLAnchorElement).href = link
     }
     //Thumbnail
-    get thumbnail() {
-        return this.elements.thumbnail.getAttribute(src)
+    get thumbnail(): string {
+        return this.elements.thumbnail.getAttribute('src')
     }
-    set thumbnail(thumbnail = '/favicon.ico') {
-        return this.elements.thumbnail.setAttribute('src', thumbnail)
+    set thumbnail(thumbnail: string) {
+        this.elements.thumbnail.setAttribute('src', thumbnail)
     }
 
-    remove() {
+    remove(): void {
         this.elements.container.remove()
         NotiCount.value--
     }
-    show() {
+    show(): void {
         const MainContainer = GetNotificationsContainer()
         if (MainContainer && this.elements.container.parentNode !== MainContainer) {
             MainContainer.appendChild(this.elements.container)

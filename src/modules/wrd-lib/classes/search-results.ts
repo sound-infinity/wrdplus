@@ -10,7 +10,14 @@ export default class SearchResults {
             }
         }
     }
-    getThreadByName(threadName: string): ThreadData[] {
+    getThreadByName(threadName: string): ThreadData {
+        for (const threadData of this.collection) {
+            if (threadData.Name === threadName) {
+                return threadData
+            }
+        }
+    }
+    getThreadsWithName(threadName: string): ThreadData[] {
         const results: ThreadData[] = []
         this.collection.forEach(threadData => {
             if (threadData.Name === threadName) {

@@ -3,7 +3,7 @@ const node_modules = path.resolve(__dirname, 'node_modules')
 
 module.exports = {
     mode: 'development',
-    entry: './src/',
+    entry: ['babel-polyfill', './src/'],
     cache: false,
     output: {
         publicPath: 'build/',

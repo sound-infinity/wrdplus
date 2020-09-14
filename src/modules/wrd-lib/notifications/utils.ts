@@ -17,7 +17,7 @@ export const NotiCount = {
     get value() {
         return parseInt(this.element.innerText)
     },
-    set value(value = 0) {
+    set value(value) {
         this.element.innerText = value
         UpdateNotificationContainer()
     }

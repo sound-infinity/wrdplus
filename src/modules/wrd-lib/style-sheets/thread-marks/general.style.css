@@ -1,8 +1,3 @@
-a[href][state = waiting]::before {
-    content: "W";
-    background-color: orange;
-}
-
 a[href*='forum/t/']:not([state='Read']){
     font-weight: 700;
 }
@@ -20,6 +15,11 @@ a[href][state]::before {
     width: 10px;
     height: 10px;
     display: inline-block;
+}
+
+a[href][state = Waiting]::before {
+    content: "W";
+    background-color: rgba(255, 166, 0, 0.5);
 }
 
 a[href][state = Read]::before {
