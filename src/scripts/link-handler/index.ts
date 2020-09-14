@@ -1,6 +1,6 @@
 import { getLinkType, LinkType, parseTags, Popup, searchThreadAsync, getThreadIdFromUrl, searchThreadsAsync, SearchResults, getUsername, getThreadInfo } from "../../modules/wrd-lib"
 import { Info, DataStorage as DS, LastestThreads as LT } from "../globals"
-import { UpdateThreads } from "./thread-markings"
+import { UpdateThreads, ThreadStates } from "./thread-markings"
 import { OtherSettings } from "../settings"
 
 try {
@@ -34,11 +34,12 @@ switch (getLinkType()) {
     case LinkType.Index:
         const names = [""]
         document.querySelectorAll('a[href*="/forum/t"').forEach((thread: HTMLAnchorElement) => {
-            thread.setAttribute("read", "waiting")
+            thread.setAttribute("state", ThreadStates.Waiting)
             if (DS.getKey(getThreadIdFromUrl(thread.href))) {
                 names.push(thread.textContent.trim())
             }
         })
+
         searchThreadsAsync(names).then(searchResults => {
             LT.Migrate(searchResults)
             UpdateThreads()

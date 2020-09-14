@@ -7,7 +7,8 @@ export enum ThreadStates {
     Read = 'Read',
     Unread = 'Unread',
     Unknown = 'Unknown',
-    Unregistered = 'Unregistered'
+    Unregistered = 'Unregistered',
+    Waiting = 'Waiting'
 }
 
 export function getThreadStateById(threadId: number){
