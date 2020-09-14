@@ -1,11 +1,11 @@
 import { searchThreadAsync } from './search-thread-async'
-import { SearchResults } from '../classes'
+import { SearchResults, ThreadData } from '../classes'
 
-export async function searchThreadsAsync(threadNames: string[]) {
+export async function searchThreadsAsync(threadNames: string[]): Promise<SearchResults> {
     const globalResults = new SearchResults()
     const searchResults = new SearchResults()
     for (const threadName of threadNames) {
-        const threadInGlobal = globalResults.getThreadByName(threadName)
+        const threadInGlobal: ThreadData = globalResults.getThreadByName(threadName)
         if (threadInGlobal != null) {
             if (searchResults.getThreadById(threadInGlobal.Id) == null) {
                 searchResults.Add(threadInGlobal)
