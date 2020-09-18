@@ -11,3 +11,4 @@ import Settings from './settings'
 import './style-sheets'
 
 export { TagParser as parseTags, Settings }
+
