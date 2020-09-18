@@ -1,13 +1,13 @@
 import { Popup } from '../dialogs'
-import SettingsForm from './settings-form'
+import { SettingsForm } from './settings-form'
 import DataManager from '../../data-manager'
+
 enum Suffixes {
     TextBox = 'txt',
     CheckBox = 'cbox'
 }
-//TODO: Rewrite for cleaner code
 
-export default class SettingsSection {
+export class SettingsSection {
     public name: string
     private inputs: any = {}
     private form: HTMLFormElement = document.createElement('form') 

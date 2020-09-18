@@ -1,6 +1,6 @@
-import SettingsSection from './settings-section'
+import { SettingsSection } from './settings-section'
 
-export default class SettingsForm {
+export class SettingsForm {
     public elements: {[element: string]: HTMLElement} = {}
     constructor() {
         this.elements.main = document.createElement("div")
