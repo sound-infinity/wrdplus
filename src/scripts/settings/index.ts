@@ -1,6 +1,6 @@
 import DataManager, { DataManagers } from '../../modules/data-manager'
 import { Settings, Popup, Notification, SettingsForm, SettingsSection } from '../../modules/wrd-lib'
-import { ButtonData } from '../../modules/wrd-lib/dialogs';
+import { ButtonData, dialogs } from '../../modules/wrd-lib/dialogs';
 
 const SettingsData = new DataManager('wrdplus-settings')
 const SettingsPanel = new Settings.Form();
@@ -43,25 +43,19 @@ OtherSettings.addButton('List Storage(s)', () => {
     for(let DM of DataManagers) {
         Listing.addLabel(`${DM.Name} = ${DM.Size}kb`)
         Listing.addButton('Clear', () => {
-            const response = new Popup()
-            response.title = 'DataManager'
-            response.description = [`Are you sure you want to delete <strong>${DM.Name}</strong> and all of its contents?`]
-            Listing.close()
-            response.buttons = {
-                Yes: new ButtonData((e: MouseEvent) => {
-                    DM.delete()
-                    location.reload()
-                }),
-                No: new ButtonData(function() {
-                    this.close()
-                })
-            }
-            response.onclose = () => {
-                response.onclose = null
-                Listing.show()
-                response.remove()
-            }
-            response.show()
+           Listing.close()
+           dialogs.askyesno({
+               title: 'DataManager',
+               description: [`Are you sure you want to delete <strong>${DM.Name}</strong> and all of its contents?`],
+               onresponse: (accepted) => {
+                   if (accepted) {
+                       DM.delete()
+                       location.reload()
+                   } else {
+                       Listing.show()
+                   }
+               }
+           })
         })
         Listing.addLineBreak()
     }

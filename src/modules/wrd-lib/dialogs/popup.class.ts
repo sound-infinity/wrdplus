@@ -213,15 +213,15 @@ export class Popup {
             this.onclose.call(this, ...(arguments as unknown as any[]))
     }
 
-    close() {
-        this.fireOnClose()
+    close(silent: boolean = false) {
+        if (!silent) this.fireOnClose()
         if (this.elements.container)
             document.head.appendChild(this.elements.container)
     }
 
-    remove() {
+    remove(silent: boolean = false) {
         this.elements.container.remove()
-        this.fireOnClose()
+        if(!silent) this.fireOnClose()
     }
     /**
      * Shows up popup in the document. 

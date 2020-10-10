@@ -1,5 +1,4 @@
 import { getLinkType, getQueries } from "./page";
-import { Popup } from "../dialogs";
 import { LinkType } from "../enums";
 // DIV#paginator
 
