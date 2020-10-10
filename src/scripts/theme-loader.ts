@@ -1,56 +1,48 @@
 import { Popup } from '../modules/wrd-lib'
 import { ThemeSettings } from './settings'
 
-const themeUrl = ThemeSettings.getTextboxValue('themeUrl')
-
 function getExtension(pathname: string): string {
     return pathname.split('.').reverse()[0]
 }
 
-function isThemeUrlValid(url: string): boolean {
+async function applyTheme(theme_url: string) {
     try {
-        const uri: URL = new URL(url)
-        if (uri != null) {
-            if (getExtension(uri.pathname) === 'css') {
-                return true
-            }
+        const url = new URL(theme_url)
+        if (url == null || getExtension(url.pathname) !== 'css') {
+            return
         }
-    } catch (x) {}
-    return false
+
+        const theme_src: string = await (await fetch(theme_url)).text()
+        const stylesheet: HTMLStyleElement = document.createElement('style')
+        stylesheet.innerHTML = theme_src
+        const appendSource = () => {
+            if (document.readyState === 'complete')
+                document.head.appendChild(stylesheet)
+        }
+
+        appendSource()
+        document.addEventListener('readystatechange', appendSource)
+    } catch (x) {
+        new Popup(`Failed to apply your theme. <a href='${theme_url}' class='round theme2 btn'>Theme's Link</a>`, 'Theme Settings', true)
+    }
 }
 
-if (isThemeUrlValid(themeUrl)) {
-    fetch(themeUrl)
-    .then(res => res.text())
-    .then(src => {
-      const style = document.createElement('style')
-      style.innerHTML = src
-      const append = function() {
-        if (document.readyState === 'complete') {
-            document.head.appendChild(style)
-        }
-      }
-      append();
-      document.addEventListener('readystatechange', append)
-    })
-    .catch(err => (new Popup([
-        'Failed to get theme\'s source.',
-        '',
-        `<a href='${themeUrl}' class='round theme2 btn'>Theme Link<a>`], 
-        'Theme Settings')).show())
+if (ThemeSettings.getTextboxValue('themeUrl').includes("://")) {
+    applyTheme(ThemeSettings.getTextboxValue('themeUrl'))
 }
-const bgUrl = ThemeSettings.getTextboxValue('backgroundUrl')
-const appBgFix = ThemeSettings.getCheckboxValue('applyFixBg')
 
-if(bgUrl) {
-    const exe = function () {
-        document.body.style.backgroundImage = `url(${ bgUrl })`
-        if (appBgFix) {
+const backgroundUrl = ThemeSettings.getTextboxValue('backgroundUrl')
+const apply_bg_fix = ThemeSettings.getCheckboxValue('applyFixBg')
+
+if(backgroundUrl) {
+    const setChanges = function () {
+        document.body.style.backgroundImage = `url(${ backgroundUrl })`
+        if (apply_bg_fix) {
             document.body.style.backgroundRepeat = 'round'
             document.body.style.backgroundSize = 'contain'
         }
     }
 
-    exe();
-    document.addEventListener('readystatechange', exe)
+    setChanges()
+    document.addEventListener('readystatechange', setChanges)
 }

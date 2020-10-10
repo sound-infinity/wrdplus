@@ -7,15 +7,36 @@ const SettingsPanel = new Settings.Form();
 
 // Theme Settings
 export const ThemeSettings = SettingsPanel.addSection('Theme Settings')
-ThemeSettings.addTextbox('themeUrl', 'CSS URL')
-ThemeSettings.addTextbox('backgroundUrl', 'Background Image URL')
-ThemeSettings.addCheckbox('applyFixBg', 'Apply semi-fixes (for background image)')
-ThemeSettings.addSaveButton(SettingsData)
+ThemeSettings.addTextboxWithData({
+    title: 'Theme Url',
+    fillX: true,
+    id: 'themeUrl',
+    placeholder: 'https://example.com/mytheme.css'
+})
+
+ThemeSettings.addTextboxWithData({
+    title: 'Background Image Url',
+    fillX: true,
+    id: 'backgroundUrl',
+    placeholder: 'https://example.com/myimage.jpeg'
+})
+
+ThemeSettings.addCheckboxWithData({
+    title: 'Apply semi-fixes (to background image)',
+    id: 'applyFixBg'
+})
+
+ThemeSettings.addSaveButtonWithData({dataManager: SettingsData})
 ThemeSettings.setValues(SettingsData.getKey('ThemeSettings') || {})
+
+
 
 // Other Settings
 export const OtherSettings = SettingsPanel.addSection('Other Settings')
-OtherSettings.addCheckbox('devmode', 'Developer Mode')
+OtherSettings.addCheckboxWithData({
+    title: 'Developer Mode',
+    id: 'devmode'
+})
 
 OtherSettings.addButton('List Storage(s)', () => {
     const Listing = new Popup()
@@ -24,7 +45,7 @@ OtherSettings.addButton('List Storage(s)', () => {
         Listing.addButton('Clear', () => {
             const response = new Popup()
             response.title = 'DataManager'
-            response.description = [`Are you sure you want to delete <strong>${DM.Name}</strong> and all its contents?`]
+            response.description = [`Are you sure you want to delete <strong>${DM.Name}</strong> and all of its contents?`]
             Listing.close()
             response.buttons = {
                 Yes: new ButtonData((e: MouseEvent) => {
@@ -48,7 +69,7 @@ OtherSettings.addButton('List Storage(s)', () => {
     Listing.show()
 })
 OtherSettings.addLineBreak()
-OtherSettings.addSaveButton(SettingsData)
+OtherSettings.addSaveButtonWithData({dataManager: SettingsData})
 OtherSettings.setValues(SettingsData.getKey('OtherSettings') || {})
 
 // KeyBind
