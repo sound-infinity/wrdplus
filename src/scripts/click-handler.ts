@@ -63,7 +63,7 @@ addEventListener('click', (e: any)  => {
                     e.preventDefault()
                 }
 
-                UpdateThreads()
+                if (getLinkType() !== LinkType.Thread) UpdateThreads()
             }
         }
     }

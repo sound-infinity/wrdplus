@@ -7,6 +7,7 @@ import TagThemes from './tags'
 import Category from './category.class'
 import booleans from '../website-booleans'
 import wrdplusNotifs from './wrdplus-notifs'
+import terminal from './terminal'
 
 const StyleSheets: {[categoryName: string]: Category} = {}
 
@@ -46,6 +47,7 @@ export function defaultConfig() {
     AutoAdd(SettingsThemes)
     AutoAdd(ThreadMarks)
     AutoAdd(wrdplusNotifs)
+    AutoAdd(terminal)
     
     DefaultCategories.General.enable()
 

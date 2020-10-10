@@ -1,13 +1,40 @@
 import { Popup } from '../dialogs'
-import SettingsForm from './settings-form'
+import { SettingsForm } from './settings-form'
 import DataManager from '../../data-manager'
+
 enum Suffixes {
     TextBox = 'txt',
     CheckBox = 'cbox'
 }
-//TODO: Rewrite for cleaner code
 
-export default class SettingsSection {
+//Interfaces
+interface InputData {
+    /**Text displayed to the user.*/
+    title: string,
+    /**Identifier used to lookup the input element.*/
+    id: string,
+}
+
+interface TextboxData extends InputData {
+    /**Sets the width of the element to fill the remaining space.*/
+    fillX?: boolean,
+    /**Text displayed when there is no input.*/
+    placeholder?: string,
+}
+
+interface CheckboxData extends InputData {
+    /**Defines the checked status of the element..*/
+    checked?: boolean,
+}
+
+interface SaveButtonData {
+    /**Defines the data holder, for the values to be save onto. */
+    dataManager: DataManager,
+    /**Displays a popup message, and reloads the page.*/
+    showSaveMessage?: boolean,
+}
+
+export class SettingsSection {
     public name: string
     private inputs: any = {}
     private form: HTMLFormElement = document.createElement('form') 
@@ -18,8 +45,8 @@ export default class SettingsSection {
         settingsForm.elements.center.appendChild(this.form)
     }
 
-    isNameValid(name: string): boolean {
-        return !(name in this.inputs)
+    exists(name: string): boolean {
+        return name in this.inputs
     }
     
     setNameSuffix(name: string, suffix: string): string {
@@ -58,37 +85,44 @@ export default class SettingsSection {
     getTextboxValue(name: string): string {
         return this.inputs[this.setNameSuffix(name, Suffixes.TextBox)].value
     }
-
-    addCheckbox(name: string, text: string): HTMLInputElement {
-        name = this.setNameSuffix(name, Suffixes.CheckBox)
-        if (this.isNameValid(name)) {
+    
+    addCheckboxWithData(data: CheckboxData) {
+        data.id = this.setNameSuffix(data.id, Suffixes.CheckBox)
+        if (!this.exists(data.id)) {
             const checkbox = document.createElement('input')
-            checkbox.name = name
+            
+            checkbox.name = data.id
             checkbox.type = 'checkbox'
+            checkbox.checked = data.checked || false
 
             this.form.appendChild(checkbox)
-            this.addLabel(text || name)
+            this.addLabel(data.title)
             this.addLineBreak()
-            this.inputs[name] = checkbox
+            this.inputs[data.id] = checkbox
 
             return checkbox
         }
     }
-    
-    addTextbox(name: string, text: string): HTMLInputElement {
-        name = this.setNameSuffix(name, Suffixes.TextBox)
-        if (this.isNameValid(name)) {
+
+    addTextboxWithData(data: TextboxData) {
+        data.id = this.setNameSuffix(data.id, Suffixes.TextBox)
+
+        if (!this.exists(data.id)) {
             const textbox = document.createElement('input')
-
+            
             textbox.type = 'text'
-            textbox.name = name
+            textbox.name = data.id
+            textbox.placeholder = data.placeholder
 
-            this.addLabel(text || name)
+            if (data.fillX)
+                textbox.style.width = "100%"
+            
+            this.addLabel(data.title)
             this.addLineBreak()
             this.form.appendChild(textbox)
             this.addLineBreak()
 
-            this.inputs[name] = textbox
+            this.inputs[data.id] = textbox
             return textbox
         }
     }
@@ -119,16 +153,19 @@ export default class SettingsSection {
 
         return submitBtn
     }
-
-
-    addSaveButton(dataManager: DataManager, showPopup: boolean = true): HTMLInputElement {
-        return this.addSubmitButton('Save', (e)=>{
-            dataManager.setKey(e.name.replace(/\s/g, ''), e.getValues())
-            if (showPopup){
-                (new Popup(`Saved "${ e.name }".`, 'Data Manager')).show()
+    
+    addSaveButtonWithData(data: SaveButtonData) {
+        const submitBtn = this.addSubmitButton('Save')
+        
+        submitBtn.onclick = (e) => {
+            data.dataManager.setKey(this.name.replace(/\s/g, ''), this.getValues())
+            if (data.showSaveMessage || true){
+                new Popup(`Saved "${ this.name }".`, 'Data Manager').show()
                 location.reload()
             }
-        })
+        }
+
+        return submitBtn
     }
     
     getValueFromInput(input: HTMLInputElement) {
@@ -143,10 +180,10 @@ export default class SettingsSection {
     setValueToInput(input: HTMLInputElement, value: any) {
         switch (input.type) {
             case 'checkbox':
-                input.checked = value
+                input.checked = value || false
                 break;
             default:
-                input.value = value
+                input.value = value || ""
                 break;
         }
     }

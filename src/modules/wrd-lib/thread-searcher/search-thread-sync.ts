@@ -5,7 +5,6 @@ import { LinkType } from '../enums'
 
 const cached: any = {}
 
-//TODO: Rename function
 export function searchThreadSync(): SearchResults {
     const currentLinkType = getLinkType(location.href)
     if (currentLinkType === LinkType.Section) {

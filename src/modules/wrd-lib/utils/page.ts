@@ -46,3 +46,52 @@ export function copyText(text: string): void {
     document.execCommand('copy')
     temp_input.remove()
 }
+
+export function getQueries(uri: string = location.href) {
+    let qs: string[]
+    let qs_len: number
+
+    const search_query: {[key:string]: string} = {}
+    
+    Object.defineProperty(search_query, "toString", {
+        enumerable: false,
+        value: function(){
+            const queries: string[] = []
+            for (const key in search_query) {
+                queries.push(`${key}=${search_query[key]}`)
+            }
+            uri_obj.search = "?"+queries.join("&")
+            return uri_obj.href
+        }
+    })
+
+    const uri_obj: URL = new URL(uri)
+
+    if (!uri_obj.search) {
+        return search_query
+    }
+
+    qs = uri_obj.search.replace(/^\?/, '').split(/&(?:amp;)?/)
+    qs_len = qs.length
+
+    while (qs_len > 0) {
+        qs_len--;
+        if (!qs[qs_len]) {
+            qs.splice(qs_len, 1)
+            continue
+        }
+    }
+
+    for (const query of qs) {
+        const [key, value]: string[] = query.split("=")
+        search_query[key] = value
+    }
+    
+    return search_query
+}
+
+export function modQueryString(key: string, val: string|number, uri: string = location.href): string {
+    const queries = getQueries(uri)
+    queries[key] = val.toString()
+    return queries.toString()
+}

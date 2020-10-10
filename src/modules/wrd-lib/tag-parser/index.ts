@@ -15,7 +15,7 @@ function callback(mutationList: MutationRecord[]): void {
 export default function revisePage() {
     if (getLinkType() === LinkType.Profile) {
         CheckReplyList(document.querySelectorAll('.activitycard > div') as NodeListOf<HTMLDivElement>)
-        new MutationObserver(callback).observe(document.querySelector('#activitycard > div') as HTMLDivElement, { childList: true })
+        new MutationObserver(callback).observe(document.querySelector('.activitycards') as HTMLDivElement, { childList: true })
     } else {
         CheckReplyList(document.querySelectorAll(".thread_replycontent") as NodeListOf<HTMLDivElement>);
     }
