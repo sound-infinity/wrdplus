@@ -1,5 +1,5 @@
 import DataManager, { DataManagers } from '../../modules/data-manager'
-import { Settings, Popup, Notification } from '../../modules/wrd-lib'
+import { Settings, Popup, Notification, SettingsForm, SettingsSection } from '../../modules/wrd-lib'
 import { ButtonData } from '../../modules/wrd-lib/dialogs';
 
 const SettingsData = new DataManager('wrdplus-settings')
@@ -55,3 +55,9 @@ OtherSettings.setValues(SettingsData.getKey('OtherSettings') || {})
 addEventListener('keydown', e => {
     if (e.altKey && e.key === 's') SettingsPanel.toggle()
 })
+
+export let DeveloperSettings: SettingsSection
+
+if (OtherSettings.getCheckboxValue("devmode")) {
+    DeveloperSettings = SettingsPanel.addSection('Developer Settings')
+}

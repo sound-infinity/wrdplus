@@ -2,8 +2,9 @@ import { GetNotificationsContainer, NotiCount } from './utils'
 import timestamp from './timestamp'
 
 export class Notification {
+    private _playSound: boolean
     private elements: {[elementName: string]: HTMLElement} = {}
-    constructor(link: string, label: string = 'WRD+ Notification', thumbnail: string = '/favicon.ico') {
+    constructor(link: string, label: string = 'WRD+ Notification', thumbnail: string = '/favicon.ico', playSound: boolean = false) {
         this.elements.container = document.createElement("div")
         this.elements.subContainer = document.createElement("div")
         this.elements.description = document.createElement("a")
@@ -36,6 +37,8 @@ export class Notification {
             e.stopPropagation()
             return false;
         }).bind(this)
+
+        this._playSound = playSound
     }
     //Description
     get description(): string {
@@ -68,6 +71,19 @@ export class Notification {
         if (MainContainer && this.elements.container.parentNode !== MainContainer) {
             MainContainer.appendChild(this.elements.container)
             NotiCount.value++
-        }
+            if (this._playSound) {
+                const context = new AudioContext()
+                const osi = context.createOscillator()
+                const gain = context.createGain()
+    
+                osi.connect(gain)
+                gain.connect(context.destination)
+                gain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime+0.250)
+                osi.frequency.value = 450
+                osi.start(0)
+    
+                setTimeout(() => osi.stop(), 250)
+            }
+            }
     }
 }
