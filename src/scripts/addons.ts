@@ -29,6 +29,7 @@ Paginator.appendButton("⯆", function(e: MouseEvent) {
         input_holder.remove()
         return
     }
+    this.title = 'Goto'
    this.style.position = "relative"
 
     const background: HTMLDivElement = document.createElement("div")
