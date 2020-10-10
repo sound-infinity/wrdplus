@@ -15,10 +15,7 @@ async function applyTheme(theme_url: string) {
         const theme_src: string = await (await fetch(theme_url)).text()
         const stylesheet: HTMLStyleElement = document.createElement('style')
         stylesheet.innerHTML = theme_src
-        const appendSource = () => {
-            if (document.readyState === 'complete')
-                document.head.appendChild(stylesheet)
-        }
+        const appendSource = () => document.readyState === 'complete' && document.head.appendChild(stylesheet)
 
         appendSource()
         document.addEventListener('readystatechange', appendSource)
@@ -27,9 +24,7 @@ async function applyTheme(theme_url: string) {
     }
 }
 
-if (ThemeSettings.getTextboxValue('themeUrl').includes("://")) {
-    applyTheme(ThemeSettings.getTextboxValue('themeUrl'))
-}
+if (ThemeSettings.getTextboxValue('themeUrl').includes("://")) applyTheme(ThemeSettings.getTextboxValue('themeUrl'))
 
 const backgroundUrl = ThemeSettings.getTextboxValue('backgroundUrl')
 const apply_bg_fix = ThemeSettings.getCheckboxValue('applyFixBg')
