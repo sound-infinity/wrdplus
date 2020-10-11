@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // NOTE Use https://rawcdn.githack.com/
 // ==UserScript==
 // @name WRD+
