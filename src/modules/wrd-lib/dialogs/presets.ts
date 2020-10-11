@@ -27,11 +27,11 @@ class DialogPresets {
 
         popup.buttons = {
             Yes: new ButtonData(() => {
-                popup.close(true)
+                popup.hide()
                 if(data?.onresponse(true) == null) popup.remove(true)
             }),
             No: new ButtonData(() => {
-                popup.close(true)
+                popup.hide()
                 if(data?.onresponse(false) == null) popup.remove(true)
             })
         }

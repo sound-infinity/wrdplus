@@ -56,8 +56,8 @@ export class Popup {
 
         //Events - functions
         this.onclose = onclose
-        this.onclick = (function (e: MouseEvent) {
-            this.close(e)
+        this.onclick = ((e:MouseEvent) => {
+            this.close()
         }).bind(this)
 
         //Events - User Input
@@ -204,24 +204,27 @@ export class Popup {
             element.remove()
         }
     }
-    /**
-     * Removes popup from the document.
-     */
 
     fireOnClose() {
+        console.log("Called upon thee", {onclose: this.onclose})
         if (typeof this.onclose === 'function')
             this.onclose.call(this, ...(arguments as unknown as any[]))
     }
 
-    close(silent: boolean = false) {
-        if (!silent) this.fireOnClose()
+    hide() {
+        if(this.elements.container) document.head.appendChild(this.elements.container)
+    }
+    
+    /**@deprecated */
+    close() {
+        this.fireOnClose()
         if (this.elements.container)
             document.head.appendChild(this.elements.container)
     }
-
+    /**Removes popup from the document.*/
     remove(silent: boolean = false) {
         this.elements.container.remove()
-        if(!silent) this.fireOnClose()
+        if(silent === true) this.fireOnClose()
     }
     /**
      * Shows up popup in the document. 

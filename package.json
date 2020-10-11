@@ -7,7 +7,7 @@
     "local-test": "webpack-dev-server",
     "tm-test": "webpack -w --mode development",
     "build": "webpack --mode production",
-    "release": "webpack --output-path release --output-filename wrdplus.user.js --mode production"
+    "release": "webpack --output-path release --output-filename wrdplus.user.js --mode production --progress"
   },
   "author": "infinity-script",
   "license": "ISC",
