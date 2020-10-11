@@ -1,0 +1,9 @@
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const scripttab = open('./wrdplus.user.js', "_blank")
+        scripttab.onblur = () => {
+            scripttab.close()
+            window.close()
+        }
+    })
+</script>
