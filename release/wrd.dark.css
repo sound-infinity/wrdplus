@@ -1,7 +1,7 @@
 /*
  * Made by SoundInfinity, this theme just darkens the current theme, currently unfinished.
  */
- html, body {
+ .container {
     background-color: #050505;
 }
 
