@@ -1,0 +1,29 @@
+body {
+    background-color: #002332;
+}
+
+
+body, .notif.message {
+    color: #f8f8f8;
+}
+
+#navigationbar {
+    background: none;
+    background-color: #2b759a45;
+}
+
+.forumcontainer h2 {
+    border-bottom: 1px solid #9cd7ff7d;
+}
+
+.theme1 {
+    color: inherit;
+    background-color: #2525255c;
+    border: 1px solid #81818140;
+}
+
+.theme2 {
+    border-color: #81818140;
+    color: inherit;
+    background-color: #2a2a2a4f;
+}
