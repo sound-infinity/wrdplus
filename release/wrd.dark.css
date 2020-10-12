@@ -1,7 +1,7 @@
 /*
  * Made by SoundInfinity, this theme just darkens the current theme, currently unfinished.
  */
-html, body {
+ html, body {
     background-color: #050505;
 }
 
@@ -59,7 +59,7 @@ header#navigationbar {
     z-index: 10;
 }
 
-.notification::before {
+.notification:not(:hover)::before {
     transition: 1s opacity;
     content: '';
     width: 100%;
