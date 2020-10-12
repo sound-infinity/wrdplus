@@ -3,7 +3,7 @@
 }
 
 
-body, .notif.message {
+.container, .notif.message {
     color: #f8f8f8;
 }
 
