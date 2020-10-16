@@ -40,6 +40,18 @@ class DialogPresets {
 
         popup.show()
     }
+
+    showinfo(data: DialogMessageData) {
+        const popup = this.make_popup(data)
+        
+        popup.buttons = {
+            Ok: new ButtonData(() => {
+                popup.remove()
+            })
+        }
+
+        popup.show()
+    }
 }
 
 

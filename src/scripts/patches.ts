@@ -22,15 +22,24 @@ function makeMentionButton(user: User): HTMLAnchorElement {
 }
 
 if (getLinkType() === LinkType.Thread) {
-    document.querySelectorAll('div.thread_replierdata').forEach((userInfoContainer: HTMLDivElement) => {
-        const desc: HTMLDivElement = userInfoContainer.querySelector('div.userdesc')
-        if (desc == null) return
-        if (desc.querySelector('.btnmention') != null) return
+    const fixMentions = () => {
+        document.querySelectorAll('div.thread_replierdata').forEach((userInfoContainer: HTMLDivElement) => {
+            const desc: HTMLDivElement = userInfoContainer.querySelector('div.userdesc')
+            if (desc == null) return
+            if (desc.querySelector('.btnmention') != null) return
+    
+            const userInfoElement: HTMLAnchorElement = desc.querySelector('a[href*=profile]')
+            if (userInfoElement == null) return
+    
+            const userInfo =  getUserInfoFromTag(userInfoElement)
+            desc.appendChild(makeMentionButton(userInfo))
+        })    
+    }
 
-        const userInfoElement: HTMLAnchorElement = desc.querySelector('a[href*=profile]')
-        if (userInfoElement == null) return
-
-        const userInfo =  getUserInfoFromTag(userInfoElement)
-        desc.appendChild(makeMentionButton(userInfo))
-    })
+    if (document.readyState === 'complete') fixMentions()
+    else {
+        document.addEventListener('readystatechange', () => {
+            if (document.readyState === 'complete') fixMentions()
+        })
+    }
 }

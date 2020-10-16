@@ -20,7 +20,6 @@ Commands.Add(["help", "cmds"], "Shows a list of commands.", () => {
 })
 
 Commands.Add("search", "Looks up a thread", (content) => {
-    const maxChar: number = 15
     pauseInput = true
     Terminal.sendMessage("Starting search...")
     searchThreadAsync(content||"").then((results) => {
@@ -33,7 +32,8 @@ Commands.Add("search", "Looks up a thread", (content) => {
         msgs.sort((a: string[], b: string[]) => {
             return a[0].length < b[0].length ? 1 : -1
         })
-
+        
+        let maxChar: number = msgs[0].length
         msgs.forEach((val: string[]) => {
             val[0] = val[0].substring(0, maxChar)
             if (val[0].length > maxChar) {

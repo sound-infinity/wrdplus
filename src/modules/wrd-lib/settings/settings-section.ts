@@ -4,7 +4,8 @@ import DataManager from '../../data-manager'
 
 enum Suffixes {
     TextBox = 'txt',
-    CheckBox = 'cbox'
+    CheckBox = 'cbox',
+    ColorPicker = 'color'
 }
 
 //Interfaces
@@ -25,6 +26,7 @@ interface TextboxData extends InputData {
 interface CheckboxData extends InputData {
     /**Defines the checked status of the element..*/
     checked?: boolean,
+    oncheck?: (e: {isChecked: boolean}) => void
 }
 
 interface SaveButtonData {
@@ -32,6 +34,13 @@ interface SaveButtonData {
     dataManager: DataManager,
     /**Displays a popup message, and reloads the page.*/
     showSaveMessage?: boolean,
+    /**Wether the data-manager should be imported to the its section.*/
+    loadSavedSettings?: boolean
+}
+
+interface ColorPickerData extends InputData {
+    /**HEX color code */
+    color?: string
 }
 
 export class SettingsSection {
@@ -86,7 +95,7 @@ export class SettingsSection {
         return this.inputs[this.setNameSuffix(name, Suffixes.TextBox)].value
     }
     
-    addCheckboxWithData(data: CheckboxData) {
+    addCheckbox(data: CheckboxData) {
         data.id = this.setNameSuffix(data.id, Suffixes.CheckBox)
         if (!this.exists(data.id)) {
             const checkbox = document.createElement('input')
@@ -94,6 +103,16 @@ export class SettingsSection {
             checkbox.name = data.id
             checkbox.type = 'checkbox'
             checkbox.checked = data.checked || false
+
+            if (data.oncheck != null){
+                checkbox.onchange = (e) => {
+                    data.oncheck.call(checkbox, {isChecked:checkbox.checked})
+                }
+
+                checkbox.onload = (e) => {
+                    data.oncheck.call(checkbox, {isChecked:checkbox.checked})
+                }
+            }
 
             this.form.appendChild(checkbox)
             this.addLabel(data.title)
@@ -104,7 +123,7 @@ export class SettingsSection {
         }
     }
 
-    addTextboxWithData(data: TextboxData) {
+    addTextbox(data: TextboxData) {
         data.id = this.setNameSuffix(data.id, Suffixes.TextBox)
 
         if (!this.exists(data.id)) {
@@ -124,6 +143,25 @@ export class SettingsSection {
 
             this.inputs[data.id] = textbox
             return textbox
+        }
+    }
+
+    addColorPicker(data: ColorPickerData) {
+        data.id = this.setNameSuffix(data.id, Suffixes.TextBox)
+
+        if (!this.exists(data.id)) {
+            const colorpicker = document.createElement('input')
+            
+            colorpicker.type = 'color'
+            colorpicker.name = data.id
+            if (data.color) colorpicker.value = data.color
+            
+            this.form.appendChild(colorpicker)
+            this.addLabel(data.title)
+            this.addLineBreak()
+
+            this.inputs[data.id] = colorpicker
+            return colorpicker
         }
     }
     
@@ -154,11 +192,14 @@ export class SettingsSection {
         return submitBtn
     }
     
-    addSaveButtonWithData(data: SaveButtonData) {
+    addSaveButton(data: SaveButtonData) {
+        const saveName = this.name.replace(/\s/g, '');
         const submitBtn = this.addSubmitButton('Save')
-        
+
+        if (data.loadSavedSettings) this.setValues(data.dataManager.getKey(saveName) || {})
+
         submitBtn.onclick = (e) => {
-            data.dataManager.setKey(this.name.replace(/\s/g, ''), this.getValues())
+            data.dataManager.setKey(saveName, this.getValues())
             if (data.showSaveMessage || true){
                 new Popup(`Saved "${ this.name }".`, 'Data Manager').show()
                 location.reload()

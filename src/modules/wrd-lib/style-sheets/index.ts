@@ -61,9 +61,14 @@ export function defaultConfig() {
         }
     }
 
+    document.addEventListener('readystatechange', () => {
+        if (document.readyState === 'complete') update()            
+    })
+
     update()
-    if (booleans.darkTheme.inputElement)
+    if (booleans.darkTheme.inputElement) {
         booleans.darkTheme.oninput = update
+    }
     return StyleSheets
 }
 

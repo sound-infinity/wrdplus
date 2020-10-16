@@ -1,39 +1,37 @@
-import DataManager, { DataManagers } from '../../modules/data-manager'
-import { Settings, Popup, Notification, SettingsForm, SettingsSection } from '../../modules/wrd-lib'
-import { ButtonData, dialogs } from '../../modules/wrd-lib/dialogs';
-
-const SettingsData = new DataManager('wrdplus-settings')
-const SettingsPanel = new Settings.Form();
+import { DataManagers } from '../../modules/data-manager'
+import { Popup, SettingsSection } from '../../modules/wrd-lib'
+import { dialogs } from '../../modules/wrd-lib/dialogs';
+import { settings, settingsData } from './globals'
 
 // Theme Settings
-export const ThemeSettings = SettingsPanel.addSection('Theme Settings')
-ThemeSettings.addTextboxWithData({
+export const ThemeSettings = settings.addSection('Theme Settings')
+ThemeSettings.addTextbox({
     title: 'Theme Url',
     fillX: true,
     id: 'themeUrl',
     placeholder: 'https://example.com/mytheme.css'
 })
 
-ThemeSettings.addTextboxWithData({
+ThemeSettings.addTextbox({
     title: 'Background Image Url',
     fillX: true,
     id: 'backgroundUrl',
     placeholder: 'https://example.com/myimage.jpeg'
 })
 
-ThemeSettings.addCheckboxWithData({
+ThemeSettings.addCheckbox({
     title: 'Apply semi-fixes (to background image)',
     id: 'applyFixBg'
 })
 
-ThemeSettings.addSaveButtonWithData({dataManager: SettingsData})
-ThemeSettings.setValues(SettingsData.getKey('ThemeSettings') || {})
+ThemeSettings.addSaveButton({dataManager: settingsData})
+ThemeSettings.setValues(settingsData.getKey('ThemeSettings') || {})
 
 
 
 // Other Settings
-export const OtherSettings = SettingsPanel.addSection('Other Settings')
-OtherSettings.addCheckboxWithData({
+export const OtherSettings = settings.addSection('Other Settings')
+OtherSettings.addCheckbox({
     title: 'Developer Mode',
     id: 'devmode'
 })
@@ -43,7 +41,7 @@ OtherSettings.addButton('List Storage(s)', () => {
     for(let DM of DataManagers) {
         Listing.addLabel(`${DM.Name} = ${DM.Size}kb`)
         Listing.addButton('Clear', () => {
-           Listing.close()
+           Listing.hide()
            dialogs.askyesno({
                title: 'DataManager',
                description: [`Are you sure you want to delete <strong>${DM.Name}</strong> and all of its contents?`],
@@ -63,16 +61,16 @@ OtherSettings.addButton('List Storage(s)', () => {
     Listing.show()
 })
 OtherSettings.addLineBreak()
-OtherSettings.addSaveButtonWithData({dataManager: SettingsData})
-OtherSettings.setValues(SettingsData.getKey('OtherSettings') || {})
+OtherSettings.addSaveButton({dataManager: settingsData})
+OtherSettings.setValues(settingsData.getKey('OtherSettings') || {})
 
 // KeyBind
 addEventListener('keydown', e => {
-    if (e.altKey && e.key === 's') SettingsPanel.toggle()
+    if (e.altKey && e.key === 's') settings.toggle()
 })
 
 export let DeveloperSettings: SettingsSection
 
 if (OtherSettings.getCheckboxValue("devmode")) {
-    DeveloperSettings = SettingsPanel.addSection('Developer Settings')
+    DeveloperSettings = settings.addSection('Developer Settings')
 }

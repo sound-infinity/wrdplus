@@ -1,4 +1,4 @@
-import { getLinkType, LinkType, parseTags, Popup, searchThreadAsync, getThreadIdFromUrl, searchThreadsAsync, SearchResults, getUsername, getThreadInfo } from "../../modules/wrd-lib"
+import { getLinkType, LinkType, parseTags, Popup, searchThreadAsync, getThreadIdFromUrl, searchThreadsAsync, SearchResults, getUsername, getThreadInfo, dialogs } from "../../modules/wrd-lib"
 import { Info, DataStorage as DS, LastestThreads as LT } from "../globals"
 import { UpdateThreads, ThreadStates } from "./thread-markings"
 import { OtherSettings } from "../settings"
@@ -17,11 +17,10 @@ switch (getLinkType()) {
             if (ThreadData) {
                 DS.setKey(ThreadData.Id, ThreadData)
             } else if (OtherSettings.getCheckboxValue('devmode')) {
-                Info.title = 'Thread Data'
-                Info.description = [
-                    'The query that was sent for this thread gave no results.'
-                ]
-                Info.show()
+                dialogs.showinfo({
+                    title: 'Thread Data',
+                    description: 'The query sent for this thread gave no results.'
+                })
             }
         })
         break
