@@ -66,10 +66,10 @@ export function defaultConfig() {
         if (booleans.darkTheme.inputElement) booleans.darkTheme.oninput = applysheets
     }
 
-    if (document.readyState === 'complete') oncomplete()
+    if (document.readyState === 'interactive') oncomplete()
     else {
         document.addEventListener('readystatechange', () => {
-            if (document.readyState === 'complete') oncomplete()
+            if (document.readyState === 'interactive') oncomplete()
         })
     }
 

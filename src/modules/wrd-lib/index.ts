@@ -8,6 +8,7 @@ export { ThreadData, User, SearchResults } from './classes'
 export { Popup, ButtonData, Notification, dialogs } from './dialogs'
 import TagParser from './tag-parser'
 import Settings from './settings'
+import './dropdown-menus'
 
 //Loaders
 require('./style-sheets')
