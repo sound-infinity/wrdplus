@@ -51,7 +51,7 @@ export function defaultConfig() {
     
     DefaultCategories.General.enable()
 
-    let update = () => {
+    const applysheets = () => {
         if (booleans.darkTheme.isEnabled) {
             DefaultCategories.Light.enable()
             DefaultCategories.Dark.disable()
@@ -61,14 +61,18 @@ export function defaultConfig() {
         }
     }
 
-    document.addEventListener('readystatechange', () => {
-        if (document.readyState === 'complete') update()            
-    })
-
-    update()
-    if (booleans.darkTheme.inputElement) {
-        booleans.darkTheme.oninput = update
+    const oncomplete = () => {
+        applysheets()
+        if (booleans.darkTheme.inputElement) booleans.darkTheme.oninput = applysheets
     }
+
+    if (document.readyState === 'complete') oncomplete()
+    else {
+        document.addEventListener('readystatechange', () => {
+            if (document.readyState === 'complete') oncomplete()
+        })
+    }
+
     return StyleSheets
 }
 
