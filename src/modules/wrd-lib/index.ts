@@ -6,9 +6,9 @@ export { Section as SettingsSection, Form as SettingsForm } from './settings'
 export { Notification as WRDNotification } from './notifications'
 export { ThreadData, User, SearchResults } from './classes'
 export { Popup, ButtonData, Notification, dialogs } from './dialogs'
+export {  } from './dropdown-menus'
 import TagParser from './tag-parser'
 import Settings from './settings'
-import './dropdown-menus'
 
 //Loaders
 require('./style-sheets')
