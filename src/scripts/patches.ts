@@ -1,5 +1,5 @@
 // This includes bug or other type of fixes/improvements for the WRD website
-import { Notification, LinkType, getLinkType, User, getUserInfoFromTag, getThreadIdFromUrl, getQueries } from '../modules/wrd-lib'
+import { Notification, LinkType, getLinkType, User, getUserInfoFromTag, getThreadIdFromUrl, getQueries, dialogs } from '../modules/wrd-lib'
 import { OtherSettings } from './settings'
 
 // 404 Page
@@ -7,7 +7,7 @@ if (document.title.match("^Page doesn't exist!") && location.search.match('jschl
     const queries = getQueries()
     delete queries["__cf_chl_jschl_tk__"]
     location.href = queries.toString()
-    new Notification('Reloading page...')
+    dialogs.notification({description:'Reloading page...'})
     //location.reload()
 } 
 

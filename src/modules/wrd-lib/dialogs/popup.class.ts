@@ -1,3 +1,4 @@
+//TODO: Rewrite ?
 import popup from "../style-sheets/popup"
 
 let open_dialog: Popup = null
@@ -57,7 +58,7 @@ export class Popup {
         //Events - functions
         this.onclose = onclose
         this.onclick = ((e:MouseEvent) => {
-            this.close()
+            this.hide()
         }).bind(this)
 
         //Events - User Input
@@ -214,13 +215,7 @@ export class Popup {
     hide() {
         if(this.elements.container) document.head.appendChild(this.elements.container)
     }
-    
-    /**@deprecated */
-    close() {
-        this.fireOnClose()
-        if (this.elements.container)
-            document.head.appendChild(this.elements.container)
-    }
+
     /**Removes popup from the document.*/
     remove(silent: boolean = false) {
         this.elements.container.remove()

@@ -72,6 +72,7 @@ export function UpdateThreads() {
         Stats.total++
     })
     
+    /*
     if (document.readyState === 'complete') {
         ShowStats()
     } else {
@@ -81,4 +82,5 @@ export function UpdateThreads() {
             }
         })
     }
+    */
 }

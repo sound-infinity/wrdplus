@@ -46,7 +46,10 @@ switch (getLinkType()) {
         break
     default:
         if (OtherSettings.getCheckboxValue('devmode')) {
-            (new Popup('No link type found for this page.', 'LinkTypes')).show()
+            dialogs.showinfo({
+                title: 'LinkTypes',
+                description: 'No link type found for this page'
+            })
         }
         break
 }

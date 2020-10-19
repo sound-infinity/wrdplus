@@ -1,11 +1,14 @@
 import { LastestThreads as LT, DataStorage as DS } from './globals'
-import { getLocalUserId, getLinkType, LinkType, copyText, Notification, Paginator, getQueries, getThreadIdFromUrl, ThreadData } from "../modules/wrd-lib";
-import { Notifications } from "../modules/wrd-lib/dropdown-menus/notifications";
+import { getLocalUserId, getLinkType, LinkType, copyText, Notification, Notifications, Paginator, getQueries, getThreadIdFromUrl, ThreadData, dialogs } from "../modules/wrd-lib";
 import { DeveloperSettings, OtherSettings } from "./settings";
 
 // Warnings
 if (OtherSettings.getCheckboxValue('devmode')) {
-    new Notification('You are in developer mode. You might encounter some problems.', 'Warning', 3*1000)
+    dialogs.notification({
+        title: 'Warning',
+        description: 'You are in developer mode. You might encounter some problems.',
+        timeout: 3000
+    })
 }
 
 // Profile Url Copying
@@ -16,8 +19,11 @@ if (getLinkType() === LinkType.Profile) {
     CopyBtn.classList.add('round', 'button', 'theme2')
     CopyBtn.addEventListener('click', () => {
         copyText(`https://wearedevs.net/profile?uid=${getLocalUserId()}`)
-
-        new Notification('Copied profile link to clipboard.', 'Addons', 1500)
+        dialogs.notification({
+            title: 'Addons',
+            description: 'Copied profile link to clipboard',
+            timeout: 1500
+        })
     })
     Info.appendChild(CopyBtn)
 }

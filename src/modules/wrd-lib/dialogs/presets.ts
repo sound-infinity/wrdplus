@@ -1,12 +1,17 @@
+import { Notification } from "./notification.class"
 import { ButtonData, Popup } from "./popup.class"
 
 interface DialogMessageData {
-    title: string,
+    title?: string,
     description: string|string[],
 }
 
 interface DialogYesNoData extends DialogMessageData {
     onresponse?: (accepted: boolean) => void
+}
+
+interface DialogNotificationData extends DialogMessageData {
+    timeout?: number
 }
 
 class DialogPresets {
@@ -51,6 +56,10 @@ class DialogPresets {
         }
 
         popup.show()
+    }
+
+    notification(data: DialogNotificationData) {
+        new Notification(typeof data.description === 'string' ? data.description : "", data.title || this.defaultTitle, data.timeout)
     }
 }
 
