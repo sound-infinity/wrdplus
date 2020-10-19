@@ -43,7 +43,7 @@ function ShowStats() {
 }
 
 export function UpdateThreads() {
-    document.querySelectorAll('a[href*="/forum/t"').forEach((thread: HTMLAnchorElement) => {
+    document.querySelectorAll('.forumcontainer a[href*="/forum/t"').forEach((thread: HTMLAnchorElement) => {
         switch (getThreadStateById(getThreadIdFromUrl(thread.href))) {
             case ThreadStates.Read:
                 thread.setAttribute('state', ThreadStates.Read)

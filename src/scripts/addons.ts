@@ -1,4 +1,6 @@
-import { getLocalUserId, getLinkType, LinkType, copyText, Notification, Paginator, getQueries } from "../modules/wrd-lib";
+import { LastestThreads as LT, DataStorage as DS } from './globals'
+import { getLocalUserId, getLinkType, LinkType, copyText, Notification, Paginator, getQueries, getThreadIdFromUrl, ThreadData } from "../modules/wrd-lib";
+import { Notifications } from "../modules/wrd-lib/dropdown-menus/notifications";
 import { DeveloperSettings, OtherSettings } from "./settings";
 
 // Warnings
@@ -68,4 +70,17 @@ if (OtherSettings.getCheckboxValue("devmode")) {
     DeveloperSettings.addButton("Run Terminal", () => {
         require("../modules/wrd-lib/console-cmds")
     })
+}
+
+//Notification Reply Page
+if (Notifications.messages.length > 0) {
+    for(const notif of Notifications.messages) {
+        if (getLinkType(notif.link) === LinkType.Thread) {
+            const tdata = DS.getKey(getThreadIdFromUrl(notif.link))
+            if (tdata) {
+                const link = notif.elements.link as HTMLAnchorElement;
+                if (!link.search.includes("page")) link.search = `?page=${Math.floor(tdata.Replies/10)}`
+            }
+        }
+    }
 }

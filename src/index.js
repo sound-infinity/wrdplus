@@ -13,9 +13,10 @@ let oncomplete = () => {
         LT.Migrate(searchThreadSync())
         require('./scripts/link-handler')
         require('./scripts/changelog')
+    require('./scripts/addons')
+
     }
 
-    require('./scripts/addons')
 }
 
 if (document.readyState === 'complete') oncomplete()

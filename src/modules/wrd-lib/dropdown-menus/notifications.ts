@@ -2,10 +2,11 @@ import timestamp from '../notifications/timestamp'
 import { MenuType, get_dropdown } from './utils'
 
 interface MessageData {
-    description: string,
-    thumbnail: string,
     link: string,
+    thumbnail?: string,
+    description: string,
     onclose?: () => void
+    elements?: {[key: string]: HTMLElement}
 }
 
 class Notification {
@@ -15,6 +16,7 @@ class Notification {
     link: HTMLAnchorElement
     time: HTMLParagraphElement
     exitBtn: HTMLParagraphElement
+    _data: MessageData
 
     constructor(data: MessageData) {
         this.main = document.createElement('div')
@@ -24,9 +26,6 @@ class Notification {
         this.time = document.createElement('p')
         this.exitBtn = document.createElement('p')
     
-        this.thumbnail.src = data.thumbnail || '/favicon.ico'
-        this.link.textContent = data.description
-        if (data.link) this.link.href = data.link
         this.time.innerText = timestamp.beautify(new Date())
 
         this.main.className = 'notification'
@@ -43,6 +42,19 @@ class Notification {
         this.message.appendChild(this.link)
         this.message.appendChild(this.time)
         this.main.appendChild(this.exitBtn)
+
+        this.data = data
+    }
+
+    get data() {
+        return this._data
+    }
+
+    set data(data: MessageData) {
+        this.thumbnail.src = data.thumbnail || '/favicon.ico'
+        this.link.textContent = data.description
+        if (data.link) this.link.href = data.link
+        this._data = data
     }
 
     remove() {
@@ -50,7 +62,7 @@ class Notification {
     }
 }
 
-export class Notifications {
+class NotificationManager {
     containers: {[name: string]: HTMLElement} = {}
 
     verify_elements() {
@@ -98,18 +110,40 @@ export class Notifications {
         return this.containers.messages.children.length > 0
     }
 
+    get messages() {
+        const messages: MessageData[] = []
+
+        for (const notif of Object.values(this.containers.messages.querySelectorAll<HTMLDivElement>('div.notification'))) {
+            const link = notif.querySelector("a")
+            const thumbnail = notif.querySelector("img")
+
+            messages.push({
+                get link() {
+                    return link.href
+                }, set link(url: string) {
+                    link.href = url
+                },
+                get thumbnail() {
+                    return thumbnail.src
+                }, set thumbnail(url: string) {
+                    thumbnail.src = url
+                },
+                get description() {
+                    return link.textContent
+                }, set description(text: string) {
+                    link.textContent = text
+                },
+
+                elements: {link: link, thumbnail: thumbnail}
+            })
+        }
+
+        return messages
+    }
+
     get length() {
         return this.containers.messages.children.length
     }
 }
 
-let oncomplete = () => {
-   // unsafeWindow.notis = (new Notifications())
-}
-
-if(document.readyState === 'complete') oncomplete()
-else {
-    document.addEventListener('readystatechange', () => {
-        if (document.readyState === 'complete') oncomplete()
-    })
-}
+export const Notifications = new NotificationManager()
