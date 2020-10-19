@@ -1,8 +1,8 @@
-import timestamp from '../notifications/timestamp'
+import timestamp from './timestamp'
 import { MenuType, get_dropdown } from './utils'
 
 interface MessageData {
-    link: string,
+    link?: string,
     thumbnail?: string,
     description: string,
     onclose?: () => void

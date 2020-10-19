@@ -1,5 +1,5 @@
 import { ThreadData } from '../classes'
-import { Notification } from '../notifications'
+import { Notifications } from '../dropdown-menus'
 import { searchThreadAsync } from '../thread-searcher'
 import { Terminal as TerminalClass } from './terminal'
 import { CommandInfo, CommandList } from  './utils'
@@ -19,6 +19,10 @@ Commands.Add(["help", "cmds"], "Shows a list of commands.", () => {
     }
 })
 
+Commands.Add(['clear', 'cls'], 'Clears the output window.', () => {
+    Terminal.elements.body.textContent = ""
+})
+
 Commands.Add("search", "Looks up a thread", (content) => {
     pauseInput = true
     Terminal.sendMessage("Starting search...")
@@ -30,7 +34,7 @@ Commands.Add("search", "Looks up a thread", (content) => {
         }
 
         msgs.sort((a: string[], b: string[]) => {
-            return a[0].length < b[0].length ? 1 : -1
+            return a[0].length > b[0].length ? 1 : -1
         })
         
         let maxChar: number = msgs[0].length
@@ -59,17 +63,19 @@ Commands.Add("fetch", "Fetches a url", (content, args) => {
 })
 
 Commands.Add("notification", "Tests notification function.", (content) => {
-    new Notification("javascript:void()", content, undefined, true).show()
+    Notifications.addMessage({
+        description: content, 
+    })
     Terminal.sendMessage("Notification sent!")
 })
 
-//Commands.Add()
-
-
-Terminal.sendMessage("Welcome to the terminal!")
+Terminal.sendMessage("Welcome to the wrdplus's terminal emulator!")
+Terminal.sendMessage("Made by SoundInfinity")
 
 Terminal.oncommand = function(e) {
-    if (pauseInput) return;
+    Terminal.elements.body.scrollTop = Terminal.elements.body.scrollHeight
+
+    if (pauseInput || this.value.length < 1) return;
     let args = this.value.split(" ")
     const cmd = Commands.Search(args[0])
     args = args.splice(1)

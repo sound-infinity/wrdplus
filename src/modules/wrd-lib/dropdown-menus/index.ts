@@ -1,2 +1,2 @@
 // DropDown Menus
-import './notifications'
+export { Notifications } from './notifications'
