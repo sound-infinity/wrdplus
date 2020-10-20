@@ -86,6 +86,8 @@ class NotificationManager {
             this.containers.main.querySelector('.notifbell').appendChild(messageCounter_element)
             this.containers.messageCounter = messageCounter_element
         }
+
+        this.update_elements()
     }
 
     update_elements() {
@@ -112,7 +114,8 @@ class NotificationManager {
 
     get messages() {
         const messages: MessageData[] = []
-
+        if (this.containers.messages == null) return messages;
+         
         for (const notif of Object.values(this.containers.messages.querySelectorAll<HTMLDivElement>('div.notification'))) {
             const link = notif.querySelector("a")
             const thumbnail = notif.querySelector("img")
