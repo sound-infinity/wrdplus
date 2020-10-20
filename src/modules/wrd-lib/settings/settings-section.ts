@@ -208,6 +208,20 @@ export class SettingsSection {
 
         return submitBtn
     }
+
+    get<T>(fieldName: string, suffix: string = 'auto'): T {
+        if (suffix === 'auto') {
+            for (const suffix of Object.values(Suffixes)) {
+                if (this.exists(this.setNameSuffix(fieldName, suffix)))
+                    fieldName = this.setNameSuffix(fieldName, suffix)
+            }
+        } else {
+            fieldName = this.setNameSuffix(fieldName, suffix)
+        }
+
+        if(this.exists(fieldName))
+            return this.getValueFromInput(this.inputs[fieldName]) as any as T
+    }
     
     getValueFromInput(input: HTMLInputElement) {
         switch (input.type) {

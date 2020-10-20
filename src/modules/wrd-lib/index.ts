@@ -1,4 +1,4 @@
-export { getLinkType, getThreadInfo, getThreadIdFromUrl, getUsername, getLocalUserId, getUserInfoFromTag, copyText } from './utils'
+export { getLinkType, getThreadInfo, getThreadIdFromUrl, getUsername, getLocalUserId, getUserInfoFromTag, setClipboardText } from './utils'
 export { searchThreadsAsync, searchThreadAsync, searchThreadSync } from './thread-searcher'
 export { getQueries, Paginator } from './utils'
 export { LinkType, PopupResponses } from './enums'

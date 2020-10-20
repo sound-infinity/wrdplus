@@ -1,6 +1,7 @@
 import { LastestThreads as LT, DataStorage as DS } from './globals'
-import { getLocalUserId, getLinkType, LinkType, copyText, Notification, Notifications, Paginator, getQueries, getThreadIdFromUrl, ThreadData, dialogs } from "../modules/wrd-lib";
+import { getLocalUserId, getLinkType, LinkType, setClipboardText, Notification, Notifications, Paginator, getQueries, getThreadIdFromUrl, ThreadData, dialogs } from "../modules/wrd-lib";
 import { DeveloperSettings, OtherSettings } from "./settings";
+import { Replies } from '../modules/wrd-lib/utils/threads/reply.class';
 
 // Warnings
 if (OtherSettings.getCheckboxValue('devmode')) {
@@ -16,9 +17,9 @@ if (getLinkType() === LinkType.Profile) {
     const Info = document.querySelector('#info')
     const CopyBtn = document.createElement('button')
     CopyBtn.textContent = 'Copy Profile Link'
-    CopyBtn.classList.add('round', 'button', 'theme2')
+    CopyBtn.className = 'round button theme2'
     CopyBtn.addEventListener('click', () => {
-        copyText(`https://wearedevs.net/profile?uid=${getLocalUserId()}`)
+        setClipboardText(`https://wearedevs.net/profile?uid=${getLocalUserId()}`)
         dialogs.notification({
             title: 'Addons',
             description: 'Copied profile link to clipboard',
@@ -29,21 +30,20 @@ if (getLinkType() === LinkType.Profile) {
 }
 
 // Goto page
+ 
+Paginator.appendButton("⯆", function (this:HTMLSpanElement, e: MouseEvent) {
+    if (this !== e.target) return
+    const input_holder = this.querySelector("#inputholder")
+    if (input_holder) return input_holder.remove()
 
-Paginator.appendButton("⯆", function(e: MouseEvent) {
-    if(this !== e.target) return
-    const input_holder = (this as HTMLSpanElement).querySelector("#inputholder")
-    if(input_holder){
-        input_holder.remove()
-        return
-    }
     this.title = 'Goto'
-   this.style.position = "relative"
+    this.style.position = "relative"
 
-    const background: HTMLDivElement = document.createElement("div")
-    const input: HTMLInputElement = document.createElement("input")
+    const background = document.createElement<"div">("div")
+    const input = document.createElement<"input">("input")
+
     background.id = "inputholder"
-    background.classList.add("round", "theme1")
+    background.className = 'round theme1'
     background.style.position = "absolute"
 
     background.style.padding = "2px"
@@ -56,37 +56,39 @@ Paginator.appendButton("⯆", function(e: MouseEvent) {
         const queries = getQueries()
 
         let pageNumber: number = parseInt(input.value)
-        if (pageNumber < 1) {
-            delete queries["page"]
-        } else if (pageNumber > Paginator.maxIndex) {
-            queries["page"] = Paginator.maxIndex.toString()
-        } else {
-            queries["page"] = pageNumber.toString()
-        }
+        if (pageNumber < 1) delete queries["page"]
+        else if (pageNumber > Paginator.maxIndex) queries["page"] = Paginator.maxIndex.toString()
+        else queries["page"] = pageNumber.toString()
 
         location.href = queries.toString()
     }
-    
+
     background.appendChild(input)
     this.appendChild(background)
 }, true)
 
 //Console
-if (OtherSettings.getCheckboxValue("devmode")) {
+if (OtherSettings.get<boolean>("devmode")) {
     DeveloperSettings.addButton("Run Terminal", () => {
         require("../modules/wrd-lib/console-cmds")
     })
 }
 
 //Notification Reply Page
+Notifications.addMessage({
+    description: "KissMeOnMouth",
+    link: "https://wearedevs.net/forum/t/15681"
+})
 if (Notifications.messages.length > 0) {
-    for(const notif of Notifications.messages) {
+    for (const notif of Notifications.messages) {
         if (getLinkType(notif.link) === LinkType.Thread) {
             const tdata = DS.getKey(getThreadIdFromUrl(notif.link))
             if (tdata) {
                 const link = notif.elements.link as HTMLAnchorElement;
-                if (!link.search.includes("page")) link.search = `?page=${Math.floor(tdata.Replies/10)}`
+                if (!link.search.includes("page")) link.search = `?page=${Math.floor(tdata.Replies / 10)}`
             }
         }
     }
 }
+
+console.log(Replies)

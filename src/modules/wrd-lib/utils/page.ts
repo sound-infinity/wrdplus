@@ -7,6 +7,11 @@ export function getThreadInfo(): ThreadData {
     return new ThreadData(threadTitle.join('-').trim(), getThreadIdFromUrl(location.href))
 }
 
+export function getReplyList() {
+    if (getLinkType() === LinkType.Thread) {
+    }
+}
+
 export function getLinkType(url: string = location.href) {
     if (url.match(/\/profile[/]?$|profile\?uid=[0-9]+/)) {
         return LinkType.Profile
@@ -37,7 +42,7 @@ export function getUserInfoFromTag(tag: HTMLAnchorElement): User {
     return new User(tag.textContent, parseInt(tag.href.match(/=([0-9]+)/)[1]))
 }
 
-export function copyText(text: string): void {
+export function setClipboardText(text: string): void {
     const temp_input = document.createElement('input')
     temp_input.value = text
     document.body.appendChild(temp_input)

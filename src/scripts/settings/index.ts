@@ -71,6 +71,6 @@ addEventListener('keydown', e => {
 
 export let DeveloperSettings: SettingsSection
 
-if (OtherSettings.getCheckboxValue("devmode")) {
+if (OtherSettings.get("devmode")) {
     DeveloperSettings = settings.addSection('Developer Settings')
 }
