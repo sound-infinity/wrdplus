@@ -68,14 +68,23 @@ class NotificationManager {
     verify_elements() {
         this.containers.main = get_dropdown(MenuType.Notifications)
         if (this.containers.main == null) return;
+        
+        this.containers.menu = this.containers.main.querySelector('div.menu')
+        
+        if (this.containers.menu) {
+            const container_element = document.createElement("div")
+            container_element.className = 'menu'
+            this.containers.main.appendChild(container_element)
+            this.containers.messagesContainer = container_element
+        }
 
-        this.containers.messages = this.containers.main.querySelector('div.menu > .notifications')
+        this.containers.messages = this.containers.messagesContainer.querySelector('.notifications')
         this.containers.messageCounter = this.containers.main.querySelector('.notifcount')
 
         if (this.containers.messages == null) {
             const messages_element = document.createElement('div')
             messages_element.className = 'notifications'
-            this.containers.main.querySelector('.menu').appendChild(messages_element)
+            this.containers.menu.appendChild(messages_element)
             this.containers.messages = messages_element
         }
 
@@ -83,7 +92,7 @@ class NotificationManager {
             const messageCounter_element = document.createElement('span')
             messageCounter_element.className = 'notifcount'
             messageCounter_element.textContent = this.containers.messages.children.length.toString()
-            this.containers.main.querySelector('.notifbell').appendChild(messageCounter_element)
+            this.containers.main.querySelector(".dropmenu-title").appendChild(messageCounter_element)
             this.containers.messageCounter = messageCounter_element
         }
 
@@ -101,6 +110,7 @@ class NotificationManager {
     constructor () {this.verify_elements()}
 
     addMessage(data: MessageData) {
+        this.verify_elements()
         const notif = new Notification(data)
         this.containers.messages.appendChild(notif.main)
 

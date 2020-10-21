@@ -37,11 +37,6 @@ const Stats = {
     total: 0
 }
 
-function ShowStats() {
-    if (OtherSettings.getCheckboxValue('devmode'))
-        new Notification(`Read: ${Stats.read}<br/>Unread: ${Stats.unreads}<br/>Unknowns: ${Stats.unknowns}<br/>Unregistered: ${Stats.unregistered}<br/>Total: ${Stats.total}`, 'Thread(s) Found', 5000)
-}
-
 export function UpdateThreads() {
     document.querySelectorAll('.forumcontainer a[href*="/forum/t"').forEach((thread: HTMLAnchorElement) => {
         switch (getThreadStateById(getThreadIdFromUrl(thread.href))) {
@@ -71,16 +66,4 @@ export function UpdateThreads() {
 
         Stats.total++
     })
-    
-    /*
-    if (document.readyState === 'complete') {
-        ShowStats()
-    } else {
-        document.addEventListener('readystatechange', () => {
-            if (document.readyState === 'complete'){
-                ShowStats()
-            }
-        })
-    }
-    */
 }

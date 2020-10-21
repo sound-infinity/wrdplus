@@ -1,10 +1,10 @@
 import { LastestThreads as LT, DataStorage as DS } from './globals'
 import { getLocalUserId, getLinkType, LinkType, setClipboardText, Notification, Notifications, Paginator, getQueries, getThreadIdFromUrl, ThreadData, dialogs } from "../modules/wrd-lib";
 import { DeveloperSettings, OtherSettings } from "./settings";
-import { Replies } from '../modules/wrd-lib/utils/threads/reply.class';
+import { Replies as replies } from '../modules/wrd-lib/utils/threads/reply-manager';
 
 // Warnings
-if (OtherSettings.getCheckboxValue('devmode')) {
+if (OtherSettings.get('devmode')) {
     dialogs.notification({
         title: 'Warning',
         description: 'You are in developer mode. You might encounter some problems.',
@@ -29,8 +29,7 @@ if (getLinkType() === LinkType.Profile) {
     Info.appendChild(CopyBtn)
 }
 
-// Goto page
- 
+// Goto Page Button
 Paginator.appendButton("⯆", function (this:HTMLSpanElement, e: MouseEvent) {
     if (this !== e.target) return
     const input_holder = this.querySelector("#inputholder")
@@ -91,4 +90,11 @@ if (Notifications.messages.length > 0) {
     }
 }
 
-console.log(Replies)
+const queries = getQueries()
+const gotoMention = parseInt(queries['mentionFrom'])
+if (gotoMention) {
+    console.log(gotoMention)
+    for (const reply of replies.get_replies_from(gotoMention)) {
+        console.log(reply)
+    }
+}

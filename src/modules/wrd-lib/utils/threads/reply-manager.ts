@@ -14,8 +14,14 @@ class ReplyElements {
 }
 */
 
-interface ReplyAuthor {
+import { getUserInfoFromTag } from "../page";
+
+interface User {
     name: string
+    id: number
+}
+
+interface ReplyAuthor extends User {
     reputation: number
     profileLink: string
     profilePictureLink: string
@@ -24,9 +30,11 @@ interface ReplyAuthor {
 
 class ReplyData {
     private elements: {[key: string]: Element} = {}
+    mentions: User[] = []
     author: ReplyAuthor
 
     constructor (container: HTMLDivElement) {
+        //#region Indexing of reply elements
         this.elements.main = container;
         this.elements.profilePictureLink = container.querySelector(".thread_replierdata > a")
         this.elements.profilePicture = container.querySelector(".thread_replierdata > a > div")
@@ -46,21 +54,35 @@ class ReplyData {
         this.elements.replyContent = ReplyCard.querySelector("div.thread_replycontent")
 
         this.elements.signature = container.querySelector("signature")
-
         this.author = {
             name: this.elements.profileUserName.textContent,
             reputation: parseInt(this.elements.profileStatReputationCount.textContent),
             profileLink: (this.elements.profileUserLink as HTMLAnchorElement).href,
-            profilePictureLink: (this.elements.profilePicture as HTMLDivElement).style.backgroundImage.match(/url\("(.*?)"\)/)[1] || null
+            profilePictureLink: (this.elements.profilePicture as HTMLDivElement).style.backgroundImage.match(/url\("(.*?)"\)/)[1] || null,
+            id: getUserInfoFromTag(this.elements.profileUserLink as HTMLAnchorElement).Id
         }
+        //#endregion   
+
+        //#region Indexing Of Mentions Within Body
+        if (this.elements.replyContent != null) {
+            for (const anchorLink of Object.values(this.elements.replyContent.querySelectorAll("a[href*=\"uid=\"]")) as HTMLAnchorElement[]) {
+                if (anchorLink.textContent.startsWith("@")) {
+                    const info = getUserInfoFromTag(anchorLink)
+                    this.mentions.push({name: info.Name.substring(1), id: info.Id})    
+                }
+            }
+        }
+        //#endregion
     }
 
+    public get actions() : HTMLButtonElement[] {
+        return this.elements.replyMenu.children as unknown as HTMLButtonElement[]
+    }
     
     public get contents() : string {
         return this.elements.replyContent.textContent
     }
 
-    
     public set contents(v : string) {
         this.elements.replyContent.textContent = v;
     }
@@ -75,11 +97,20 @@ class RepliesManager {
             this.replies.push(new ReplyData(replyContainer))
         }
     }
-    
+
     constructor() {
         this.update_list()
     }
 
+    get_replies_from(userId: number) {
+        const collection: ReplyData[] = []
+
+        for (const reply of this.replies) {
+            if (reply.author.id === userId) collection.push(reply)
+        }
+
+        return collection
+    }
 }
 
 export const Replies = new RepliesManager()
