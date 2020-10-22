@@ -1,19 +1,3 @@
-/**
-TODO: Complete Reply Element
-class ReplyElements {
-    elements: any = {}
-    constructor() {
-        this.elements.main_container = document.createElement<"div">("div")
-         this.elements.user_container = document.createElement<"div">("div")
-          this.elements.user_picture_container = document.createElement<"div">("div")
-           this.elements.user_picture = document.createElement<"div">("div")
-          this.elements.user_description = document.createElement("div")
-           this.elements.user_name_link = document.createElement("a")
-            this.elements.user_name_link = document.createElement("")
-    }
-}
-*/
-
 import { getUserInfoFromTag } from "../page";
 
 interface User {

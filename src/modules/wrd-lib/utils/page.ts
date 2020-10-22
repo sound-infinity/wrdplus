@@ -7,11 +7,6 @@ export function getThreadInfo(): ThreadData {
     return new ThreadData(threadTitle.join('-').trim(), getThreadIdFromUrl(location.href))
 }
 
-export function getReplyList() {
-    if (getLinkType() === LinkType.Thread) {
-    }
-}
-
 export function getLinkType(url: string = location.href) {
     if (url.match(/\/profile[/]?$|profile\?uid=[0-9]+/)) {
         return LinkType.Profile
@@ -95,10 +90,4 @@ export function getQueries(uri: string = location.href) {
     }
     
     return search_query
-}
-
-export function modQueryString(key: string, val: string|number, uri: string = location.href): string {
-    const queries = getQueries(uri)
-    queries[key] = val.toString()
-    return queries.toString()
 }
