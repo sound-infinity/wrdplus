@@ -1,4 +1,4 @@
-import { User, ThreadData, searchThreadAsync, getThreadIdFromUrl, dialogs, Popup } from '../modules/wrd-lib'
+import { dialogs, getThreadIdFromUrl, Popup, searchThreadAsync, ThreadData, User } from '../modules/wrd-lib'
 import { LatestThreads as LT, DataStorage } from './globals'
 import { getThreadStateById } from './link-handler/thread-markings'
 
@@ -16,10 +16,6 @@ function showDataOnPopup(popup: Popup, threadData: ThreadData) {
         'Read status: ' + getThreadStateById(threadData.Id),
         '<hr/>',
     ]
-
-    popup.addButton("Visit", () => {
-        console.log("Using V2")
-    })
 }
 
 addEventListener('click', ev => {
@@ -38,11 +34,13 @@ addEventListener('click', ev => {
                 if (ev.ctrlKey) {
                     showDataOnPopup(popup, threadData)
 
+                    popup.addButton("Visit", () => {
+                        console.log("Using V2")
+                    })
                     ev.preventDefault()
                 }
                 //#endregion Found ThreadData Locally
             } else if (ev.ctrlKey) {
-                ev.preventDefault()
                 popup.reset()
                 popup.description = "Thread data not found within database."
                 popup.addButton("Search Async", () => {

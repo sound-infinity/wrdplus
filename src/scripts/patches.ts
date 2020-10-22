@@ -1,6 +1,5 @@
 // This includes bug or other type of fixes/improvements for the WRD website
 import { LinkType, getLinkType, User, getUserInfoFromTag, getThreadIdFromUrl, getQueries, dialogs } from '../modules/wrd-lib'
-import { Replies } from '../modules/wrd-lib/utils/threads/reply-manager'
 import { OtherSettings } from './settings'
 
 // 404 Page
@@ -24,10 +23,6 @@ function makeMentionButton(user: User): HTMLAnchorElement {
 
 if (getLinkType() === LinkType.Thread) {
     const fixMentions = () => {
-        Replies.update_list()
-        Replies.replies.forEach((reply) => {
-            console.log(reply.actions);
-        })
         document.querySelectorAll('div.thread_replierdata').forEach((userInfoContainer: HTMLDivElement) => {
             const desc: HTMLDivElement = userInfoContainer.querySelector('div.userdesc')
             if (desc == null) return

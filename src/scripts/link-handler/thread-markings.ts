@@ -1,4 +1,4 @@
-import { LastestThreads as LT, DataStorage as DS } from '../globals'
+import { LatestThreads as LT, DataStorage as DS } from '../globals'
 import { getThreadIdFromUrl, Notification } from '../../modules/wrd-lib'
 import { ThreadData } from '../../modules/wrd-lib'
 import { OtherSettings } from '../settings'

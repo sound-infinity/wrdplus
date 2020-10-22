@@ -1,5 +1,4 @@
 //TODO: Rewrite ?
-import popup from "../style-sheets/popup"
 
 let open_dialog: Popup = null
 
@@ -127,6 +126,8 @@ export class Popup {
     set buttons(_buttons: {[label: string]: ButtonData}) {
         for (const button in this.buttons)
             this.buttons[button].remove()
+        for (const button of this.added_elements.map(val => val.tagName === 'BUTTON' && val))
+            button.remove()
         for (const buttonLabel in _buttons) {
             //If a button with the same name exists, remove it.
             if (this.buttons[buttonLabel]) {
@@ -190,7 +191,7 @@ export class Popup {
         const btn = document.createElement('button')
         btn.textContent = text
         btn.className = 'btn theme2 round'
-        btn.onclick = onclick.bind(popup)
+        btn.onclick = onclick.bind(this)
 
         this.elements.body.appendChild(btn)
         this.added_elements.push(btn)
@@ -207,7 +208,6 @@ export class Popup {
     }
 
     fireOnClose() {
-        console.log("Called upon thee", {onclose: this.onclose})
         if (typeof this.onclose === 'function')
             this.onclose.call(this, ...(arguments as unknown as any[]))
     }

@@ -1,4 +1,4 @@
-/*
+/**
 TODO: Complete Reply Element
 class ReplyElements {
     elements: any = {}
@@ -75,8 +75,14 @@ class ReplyData {
         //#endregion
     }
 
+    /**
     public get actions() : HTMLButtonElement[] {
         return this.elements.replyMenu.children as unknown as HTMLButtonElement[]
+    }
+    */
+
+    scrollIntoView() {
+        this.elements.main.scrollIntoView()
     }
     
     public get contents() : string {

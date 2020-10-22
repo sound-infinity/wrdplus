@@ -1,17 +1,26 @@
 import { Notification } from "./notification.class"
 import { ButtonData, Popup } from "./popup.class"
 
-interface DialogMessageData {
+interface DialogBasicData {
     title?: string,
     description: string|string[],
 }
 
-interface DialogYesNoData extends DialogMessageData {
+interface DialogYesNoData extends DialogBasicData {
     onresponse?: (accepted: boolean) => void
 }
 
-interface DialogNotificationData extends DialogMessageData {
+interface DialogNotificationData extends DialogBasicData {
     timeout?: number
+}
+
+interface DialogButtonData {
+    name: string,
+    onclick: (this: Popup) => void
+}
+
+interface DialogPopupData extends DialogBasicData {
+    buttons?: DialogButtonData[]
 }
 
 class DialogPresets {
@@ -20,10 +29,18 @@ class DialogPresets {
         this.defaultTitle = default_title
     }
 
-    private make_popup(data: DialogMessageData) {
+    private make_popup(data: DialogBasicData) {
         const popup = new Popup()
         popup.title = data.title || this.defaultTitle
         popup.description = data.description
+        return popup
+    }
+
+    showpopup(data: DialogPopupData) {
+        const popup = this.make_popup(data)
+        if(data.buttons != null)
+            for (const btn_data of data.buttons)
+                popup.addButton(btn_data.name, btn_data.onclick)
         return popup
     }
 
@@ -46,7 +63,7 @@ class DialogPresets {
         popup.show()
     }
 
-    showinfo(data: DialogMessageData) {
+    showinfo(data: DialogBasicData) {
         const popup = this.make_popup(data)
         
         popup.buttons = {

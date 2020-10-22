@@ -3,7 +3,7 @@ import { SearchResults } from '../modules/wrd-lib/classes'
 import DataManager from '../modules/data-manager'
 
 export const DataStorage: DataManager = new DataManager('wrdplus-test')
-export const LastestThreads: SearchResults = new SearchResults()
+export const LatestThreads: SearchResults = new SearchResults()
 export const Info: Popup = new Popup(undefined, undefined, false)
 
 export function isFirstRun(): boolean {

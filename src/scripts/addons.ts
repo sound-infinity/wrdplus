@@ -1,10 +1,10 @@
-import { LastestThreads as LT, DataStorage as DS } from './globals'
-import { getLocalUserId, getLinkType, LinkType, setClipboardText, Notification, Notifications, Paginator, getQueries, getThreadIdFromUrl, ThreadData, dialogs } from "../modules/wrd-lib";
+import { DataStorage as DS } from './globals'
+import { getLocalUserId, getLinkType, LinkType, setClipboardText, Notifications, Paginator, getQueries, getThreadIdFromUrl, dialogs, getUsername } from "../modules/wrd-lib";
 import { DeveloperSettings, OtherSettings } from "./settings";
 import { Replies as replies } from '../modules/wrd-lib/utils/threads/reply-manager';
 
 // Warnings
-if (OtherSettings.get('devmode')) {
+if (OtherSettings.get<boolean>('devmode')) {
     dialogs.notification({
         title: 'Warning',
         description: 'You are in developer mode. You might encounter some problems.',
@@ -30,7 +30,7 @@ if (getLinkType() === LinkType.Profile) {
 }
 
 // Goto Page Button
-Paginator.appendButton("⯆", function (this:HTMLSpanElement, e: MouseEvent) {
+Paginator.appendButton("⯆", function (this: HTMLSpanElement, e: MouseEvent) {
     if (this !== e.target) return
     const input_holder = this.querySelector("#inputholder")
     if (input_holder) return input_holder.remove()
@@ -82,19 +82,45 @@ if (Notifications.messages.length > 0) {
     for (const notif of Notifications.messages) {
         if (getLinkType(notif.link) === LinkType.Thread) {
             const tdata = DS.getKey(getThreadIdFromUrl(notif.link))
-            if (tdata) {
+            
+            if (tdata != null) {
                 const link = notif.elements.link as HTMLAnchorElement;
-                if (!link.search.includes("page")) link.search = `?page=${Math.floor(tdata.Replies / 10)}`
+                const queries = getQueries(link.href)
+                if (queries['page'] == null) {
+                    queries['page'] = Math.floor((tdata.Replies+1) / 10).toString()
+                    queries['mentionTo'] = getUsername()
+                }
+                link.href = queries.toString()
             }
         }
     }
 }
 
-const queries = getQueries()
-const gotoMention = parseInt(queries['mentionFrom'])
-if (gotoMention) {
-    console.log(gotoMention)
-    for (const reply of replies.get_replies_from(gotoMention)) {
-        console.log(reply)
+const oncomplete = () => {
+    const queries = getQueries()
+    const mentionAuthor = queries['mentionFrom']
+    const mentionTarget = queries['mentionTo']
+
+    if (mentionTarget) {
+        let list = replies.replies
+        
+        if (mentionAuthor != null){
+            list = list.map(reply => reply.author.name.toUpperCase() === mentionAuthor && reply)
+        }
+
+        let lastReply: any
+ 
+        for (const reply of list) {
+            for (const mentioned of reply.mentions) {
+                if (mentioned.name.toUpperCase() === mentionTarget.toUpperCase()) lastReply = reply
+            }
+        }
+
+        if (lastReply != null) {
+            setTimeout(() => lastReply.scrollIntoView(), 1000)
+        }
     }
 }
+
+if (document.readyState === 'complete') oncomplete()
+else document.addEventListener('readystatechange', () => document.readyState === 'complete' && oncomplete())

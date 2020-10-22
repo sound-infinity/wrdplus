@@ -27,7 +27,9 @@ export function getLinkType(url: string = location.href) {
 }
 
 export function getThreadIdFromUrl(url: string = location.href): number {
-    return parseInt(url.match(/\/([0-9]+)/)[1])
+    const matches = url.match(/\/([0-9]+)/)
+
+    if (matches != null) return parseInt(matches[1])
 }
 
 export function getUsername(): string { 

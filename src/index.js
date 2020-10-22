@@ -4,7 +4,7 @@ require('./scripts/patches')
 
 // Modules
 import { searchThreadSync } from './modules/wrd-lib'
-import { LastestThreads as LT } from './scripts/globals'
+import { LatestThreads as LT } from './scripts/globals'
 
 let oncomplete = () => {
     if (!document.body.innerText.match('Checking your browser')){
