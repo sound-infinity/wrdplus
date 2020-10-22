@@ -1,6 +1,6 @@
 import { DataStorage as DS } from './globals'
 import { getLocalUserId, getLinkType, LinkType, setClipboardText, Notifications, Paginator, getQueries, getThreadIdFromUrl, dialogs, getUsername } from "../modules/wrd-lib";
-import { DeveloperSettings, OtherSettings } from "./settings";
+import { DeveloperSettings, ExtraFeatures, OtherSettings } from "./settings";
 import { Replies as replies } from '../modules/wrd-lib/utils/threads/reply-manager';
 
 // Warnings
@@ -74,26 +74,24 @@ if (OtherSettings.get<boolean>("devmode")) {
 }
 
 //Notification Reply Page
-Notifications.addMessage({
-    description: "KissMeOnMouth",
-    link: "https://wearedevs.net/forum/t/15681"
-})
-if (Notifications.messages.length > 0) {
-    for (const notif of Notifications.messages) {
-        if (getLinkType(notif.link) === LinkType.Thread) {
-            const tdata = DS.getKey(getThreadIdFromUrl(notif.link))
-            
-            if (tdata != null) {
-                const link = notif.elements.link as HTMLAnchorElement;
-                const queries = getQueries(link.href)
-                if (queries['page'] == null) {
-                    queries['page'] = Math.floor((tdata.Replies+1) / 10).toString()
-                    queries['mentionTo'] = getUsername()
+if (ExtraFeatures.get<boolean>("notification_redirection")) {
+    if (Notifications.messages.length > 0) {
+        for (const notif of Notifications.messages) {
+            if (getLinkType(notif.link) === LinkType.Thread) {
+                const tdata = DS.getKey(getThreadIdFromUrl(notif.link))
+                
+                if (tdata != null) {
+                    const link = notif.elements.link as HTMLAnchorElement;
+                    const queries = getQueries(link.href)
+                    if (queries['page'] == null) {
+                        queries['page'] = Math.floor((tdata.Replies+1) / 10).toString()
+                        queries['mentionTo'] = getUsername()
+                    }
+                    link.href = queries.toString()
                 }
-                link.href = queries.toString()
             }
         }
-    }
+    }        
 }
 
 const oncomplete = () => {

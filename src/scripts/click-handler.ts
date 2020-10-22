@@ -7,13 +7,13 @@ function makeUserLink(user: User) {
 }
 
 function showDataOnPopup(popup: Popup, threadData: ThreadData) {
+    const {Name, Views, Replies, Author, LastReplier, Id} = threadData
+
     popup.description = [
-        "Title: " + threadData.Name,
-        "Views: " + threadData.Views,
-        "Replies: " + threadData.Replies,
-        "Author: " + makeUserLink(threadData.Author),
-        "Last Reply: " + (threadData.LastReplier ? makeUserLink(threadData.LastReplier) : "None"),
-        'Read status: ' + getThreadStateById(threadData.Id),
+        `Title: ${Name}`, `Views: ${Views}`,
+        `Replies: ${Replies}`, `Author: ${makeUserLink(Author)}`,
+        `Last Reply: ${(LastReplier ? makeUserLink(LastReplier) : "None")}`,
+        `Read status: ${getThreadStateById(Id)}`,
         '<hr/>',
     ]
 
@@ -42,6 +42,7 @@ addEventListener('click', ev => {
                 }
                 //#endregion Found ThreadData Locally
             } else if (ev.ctrlKey) {
+                //#region Alternative Actions
                 ev.preventDefault()
                 popup.reset()
                 popup.description = "Thread data not found within database."
@@ -65,6 +66,9 @@ addEventListener('click', ev => {
                 popup.addButton("Close", function(){
                     this.remove()
                 })
+                //#endregion Alternative Actions
+            } else {
+                popup.remove()
             }
         }
     }

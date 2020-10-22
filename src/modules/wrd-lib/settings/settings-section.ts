@@ -45,6 +45,8 @@ interface ColorPickerData extends InputData {
 
 export class SettingsSection {
     public name: string
+    private dataManager: DataManager
+    private savedName: string
     private inputs: any = {}
     private form: HTMLFormElement = document.createElement('form') 
     constructor(settingsForm: SettingsForm, heading: string = 'SECTION') {
@@ -105,11 +107,11 @@ export class SettingsSection {
             checkbox.checked = data.checked || false
 
             if (data.oncheck != null){
-                checkbox.onchange = (e) => {
+                checkbox.onchange = () => {
                     data.oncheck.call(checkbox, {isChecked:checkbox.checked})
                 }
 
-                checkbox.onload = (e) => {
+                checkbox.onload = () => {
                     data.oncheck.call(checkbox, {isChecked:checkbox.checked})
                 }
             }
@@ -193,13 +195,14 @@ export class SettingsSection {
     }
     
     addSaveButton(data: SaveButtonData) {
-        const saveName = this.name.replace(/\s/g, '');
         const submitBtn = this.addSubmitButton('Save')
+        this.dataManager = data.dataManager
+        this.savedName = this.name.replace(/\s/g, '')
 
-        if (data.loadSavedSettings) this.setValues(data.dataManager.getKey(saveName) || {})
+        // if (data.loadSavedSettings) this.setValues(data.dataManager.getKey(saveName) || {})
 
-        submitBtn.onclick = (e) => {
-            data.dataManager.setKey(saveName, this.getValues())
+        submitBtn.onclick = () => {
+            data.dataManager.setKey(this.savedName, this.getValues())
             if (data.showSaveMessage || true){
                 new Popup(`Saved "${ this.name }".`, 'Data Manager').show()
                 location.reload()
@@ -254,6 +257,12 @@ export class SettingsSection {
     setValues(values: any) {
         for (const input of Object.values(this.inputs) as HTMLInputElement[]) {
             this.setValueToInput(this.inputs[input.name], values[input.name])
+        }
+    }
+
+    load_data() {
+        if (this.dataManager != null && this.dataManager.getKey(this.savedName) != null) {
+            this.setValues(this.dataManager.getKey(this.savedName))
         }
     }
 }

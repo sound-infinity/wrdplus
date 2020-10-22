@@ -27,7 +27,8 @@ ThemeSettings.addCheckbox({
 ThemeSettings.addSaveButton({dataManager: settingsData})
 ThemeSettings.setValues(settingsData.getKey('ThemeSettings') || {})
 
-
+// Extra Features
+export { settings as ExtraFeatures } from "./extra-features"
 
 // Other Settings
 export const OtherSettings = settings.addSection('Other Settings')
