@@ -27,7 +27,7 @@ export class Popup {
     onclose: (this: any, e: Event) => void
     onclick: (this: any, e: MouseEvent) => void
 
-    constructor(description: string|string[] = "", title:string = "WRD+", showOnDone: boolean = true, onclose?: (this: any, e:Event) => void) {
+    constructor(description: string|string[] = "", title:string = "WRD+", onclose?: (this: any, e:Event) => void) {
         const elements = {
             close_button: document.createElement("div"),
             description: document.createElement("p"),
@@ -76,9 +76,6 @@ export class Popup {
         //set props
         this.title = title
         this.description = description
-
-        //show
-        if (showOnDone) this.show()
     }
 
     //*Properties

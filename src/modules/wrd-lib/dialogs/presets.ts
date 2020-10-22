@@ -21,6 +21,7 @@ interface DialogButtonData {
 
 interface DialogPopupData extends DialogBasicData {
     buttons?: DialogButtonData[]
+    isHidden?: boolean
 }
 
 class DialogPresets {
@@ -41,6 +42,7 @@ class DialogPresets {
         if(data.buttons != null)
             for (const btn_data of data.buttons)
                 popup.addButton(btn_data.name, btn_data.onclick)
+        if(!data.isHidden) popup.show()
         return popup
     }
 

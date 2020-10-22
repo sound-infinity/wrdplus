@@ -20,6 +20,8 @@ function showDataOnPopup(popup: Popup, threadData: ThreadData) {
     popup.addButton("Visit", () => {
         console.log("Using V2")
     })
+
+    popup.show()
 }
 
 addEventListener('click', ev => {
@@ -29,7 +31,8 @@ addEventListener('click', ev => {
             const threadData = LT.getThreadById(getThreadIdFromUrl(target.href))
             const popup = dialogs.showpopup({
                 title: "Thread Data",
-                description: "Working..."
+                description: "Working...",
+                isHidden: true
             })
 
             if (threadData != null) {
