@@ -7,5 +7,17 @@ settings.addCheckbox({
     id: "notification_redirection"
 })
 
+settings.addCheckbox({
+    checked: true,
+    title: "Thread Markings",
+    id: "threadmarkings",
+})
+
+settings.addCheckbox({
+    checked: true,
+    title: "Thread Highlighting",
+    id: "threadhighlights"
+})
+
 settings.addSaveButton({dataManager:settings_data})
 settings.load_data()

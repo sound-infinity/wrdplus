@@ -75,6 +75,7 @@ if (OtherSettings.get<boolean>("devmode")) {
 
 //Notification Reply Page
 if (ExtraFeatures.get<boolean>("notification_redirection")) {
+    console.log(Notifications.messages.length)
     if (Notifications.messages.length > 0) {
         for (const notif of Notifications.messages) {
             if (getLinkType(notif.link) === LinkType.Thread) {
@@ -85,7 +86,11 @@ if (ExtraFeatures.get<boolean>("notification_redirection")) {
                     const queries = getQueries(link.href)
                     if (queries['page'] == null) {
                         queries['page'] = Math.floor((tdata.Replies+1) / 10).toString()
-                        queries['mentionTo'] = getUsername()
+                        queries['mentionTo'] = encodeURIComponent(getUsername())
+                        const mentionAuthor = link.textContent.match(/^(.*?) has mention/)
+                        if (mentionAuthor != null) {
+                            queries['mentionFrom'] = encodeURIComponent(mentionAuthor[1])
+                        }
                     }
                     link.href = queries.toString()
                 }
@@ -96,21 +101,23 @@ if (ExtraFeatures.get<boolean>("notification_redirection")) {
 
 const oncomplete = () => {
     const queries = getQueries()
-    const mentionAuthor = queries['mentionFrom']
-    const mentionTarget = queries['mentionTo']
+    const mentionAuthor = queries['mentionFrom'] && decodeURIComponent(queries['mentionFrom'])
+    const mentionTarget = queries['mentionTo'] && decodeURIComponent(queries['mentionTo'])
 
     if (mentionTarget) {
         let list = replies.replies
-        
+
         if (mentionAuthor != null){
-            list = list.map(reply => reply.author.name.toUpperCase() === mentionAuthor && reply)
+            list = list.map(reply => reply.author.name.toUpperCase() === mentionAuthor.toUpperCase() && reply)
         }
 
         let lastReply: any
  
-        for (const reply of list) {
-            for (const mentioned of reply.mentions) {
-                if (mentioned.name.toUpperCase() === mentionTarget.toUpperCase()) lastReply = reply
+        if (list.length > 0) {
+            for (const reply of list) {
+                for (const mentioned of reply.mentions) {
+                    if (mentioned.name.toUpperCase() === mentionTarget.toUpperCase()) lastReply = reply
+                }
             }
         }
 

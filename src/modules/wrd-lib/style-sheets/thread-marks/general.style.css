@@ -1,4 +1,4 @@
-a[href*='forum/t/']:not([state='Read']){
+a[registered][href*='forum/t/']:not([state='Read']){
     font-weight: 700;
 }
 

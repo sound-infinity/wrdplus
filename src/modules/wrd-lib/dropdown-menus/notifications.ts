@@ -71,14 +71,14 @@ class NotificationManager {
         
         this.containers.menu = this.containers.main.querySelector('div.menu')
         
-        if (this.containers.menu) {
+        if (this.containers.menu == null) {
             const container_element = document.createElement("div")
             container_element.className = 'menu'
             this.containers.main.appendChild(container_element)
-            this.containers.messagesContainer = container_element
+            this.containers.menu = container_element
         }
 
-        this.containers.messages = this.containers.messagesContainer.querySelector('.notifications')
+        this.containers.messages = this.containers.menu.querySelector('.notifications')
         this.containers.messageCounter = this.containers.main.querySelector('.notifcount')
 
         if (this.containers.messages == null) {
@@ -123,7 +123,9 @@ class NotificationManager {
     }
 
     get messages() {
+        this.verify_elements()
         const messages: MessageData[] = []
+        
         if (this.containers.messages == null) return messages;
          
         for (const notif of Object.values(this.containers.messages.querySelectorAll<HTMLDivElement>('div.notification'))) {
