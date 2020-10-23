@@ -4,8 +4,10 @@
       "sourceMap": true,
       "noImplicitAny": true,
       "module": "commonjs",
-      "target": "es5",
+      "target": "ES5",
       "jsx": "react",
-      "allowJs": true
+      "allowJs": true,
+      "downlevelIteration": true,
+      "lib": ["ES2020.String", "DOM"]
     }
   }
