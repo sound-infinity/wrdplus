@@ -75,7 +75,6 @@ if (OtherSettings.get<boolean>("devmode")) {
 
 //Notification Reply Page
 if (ExtraFeatures.get<boolean>("notification_redirection")) {
-    console.log(Notifications.messages.length)
     if (Notifications.messages.length > 0) {
         for (const notif of Notifications.messages) {
             if (getLinkType(notif.link) === LinkType.Thread) {
