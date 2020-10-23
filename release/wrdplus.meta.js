@@ -2,6 +2,6 @@
 // ==UserScript==
 // @name WRD+
 // @author SoundInfinity
-// @version 3.1.2
+// @version 3.2.2
 // @include http*://wearedevs.net/*
 // ==/UserScript==

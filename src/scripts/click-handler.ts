@@ -47,6 +47,7 @@ addEventListener('click', ev => {
             } else if (ev.ctrlKey) {
                 //#region Alternative Actions
                 ev.preventDefault()
+                popup.show()
                 popup.reset()
                 popup.description = "Thread data not found within database."
                 popup.addButton("Search Async", () => {

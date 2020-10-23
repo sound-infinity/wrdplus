@@ -107,7 +107,7 @@ const oncomplete = () => {
         let list = replies.replies
 
         if (mentionAuthor != null){
-            list = list.map(reply => reply.author.name.toUpperCase() === mentionAuthor.toUpperCase() && reply)
+            list = list.filter(reply => reply.author.name.toUpperCase() === mentionAuthor.toUpperCase())
         }
 
         let lastReply: any

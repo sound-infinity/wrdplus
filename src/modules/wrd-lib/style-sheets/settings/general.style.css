@@ -24,6 +24,13 @@ div#settings {
     z-index: 99997;
 }
 
+div#settings input[type=text] {
+    width: 100%;
+    padding: 4px 10px;
+    background-color: #f3f3f3;
+    border-radius: 4px;
+}
+
 div#settings .heading {
     font-weight: bold;
     font-size: 14px;
