@@ -5,7 +5,6 @@ import PopupThemes from './popup'
 import TagThemes from './tags'
 //Other
 import Category from './category.class'
-import booleans from '../website-booleans'
 import wrdplusNotifs from './wrdplus-notifs'
 import terminal from './terminal'
 
@@ -41,6 +40,15 @@ export function AutoAdd(themeObject: {[themeName: string]: string}) {
     }
 }
 
+enum WRDTheme {
+    Night = 0,
+    Bright
+}
+
+function getWRDTheme() {
+    return document.querySelector<HTMLInputElement>('.switch>input#themer').checked == true ? WRDTheme.Bright : WRDTheme.Night
+}
+
 export function defaultConfig() {
     AutoAdd(TagThemes)
     AutoAdd(PopupThemes)
@@ -52,7 +60,7 @@ export function defaultConfig() {
     DefaultCategories.General.enable()
 
     const applysheets = () => {
-        if (booleans.darkTheme.isEnabled) {
+        if (getWRDTheme() === WRDTheme.Bright) {
             DefaultCategories.Light.enable()
             DefaultCategories.Dark.disable()
         } else {
@@ -63,7 +71,7 @@ export function defaultConfig() {
 
     const oncomplete = () => {
         applysheets()
-        if (booleans.darkTheme.inputElement) booleans.darkTheme.oninput = applysheets
+        document.querySelector<HTMLInputElement>('.switch>input#themer').oninput = () => applysheets()
     }
 
     if (document.readyState === 'interactive') oncomplete()

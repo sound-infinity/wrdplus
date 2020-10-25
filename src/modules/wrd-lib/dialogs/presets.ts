@@ -4,6 +4,7 @@ import { ButtonData, Popup } from "./popup.class"
 interface DialogBasicData {
     title?: string,
     description: string|string[],
+    onclose?: (e: MouseEvent) => void
 }
 
 interface DialogYesNoData extends DialogBasicData {
@@ -39,6 +40,7 @@ class DialogPresets {
 
     showpopup(data: DialogPopupData) {
         const popup = this.make_popup(data)
+        popup.onclose = (e: MouseEvent) => data?.onclose(e)
         if(data.buttons != null)
             for (const btn_data of data.buttons)
                 popup.addButton(btn_data.name, btn_data.onclick)

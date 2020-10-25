@@ -57,7 +57,11 @@ export class Popup {
         //Events - functions
         this.onclose = onclose
         this.onclick = ((e:MouseEvent) => {
-            this.hide()
+            if (this.onclose) {
+                this.remove()
+            } else {
+                this.hide()
+            }     
         }).bind(this)
 
         //Events - User Input
@@ -206,7 +210,7 @@ export class Popup {
 
     fireOnClose() {
         if (typeof this.onclose === 'function')
-            this.onclose.call(this, ...(arguments as unknown as any[]))
+            return this.onclose.call(this, ...(arguments as unknown as any[]))
     }
 
     hide() {
@@ -216,7 +220,7 @@ export class Popup {
     /**Removes popup from the document.*/
     remove(silent: boolean = false) {
         this.elements.container.remove()
-        if(silent === true) this.fireOnClose()
+        if(silent !== true) this.fireOnClose()
     }
     /**
      * Shows up popup in the document. 

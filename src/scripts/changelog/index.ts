@@ -6,15 +6,18 @@ import changes from './changelog.html'
 import { DeveloperSettings } from '../settings'
 
 export function showChangelog() {
-    const Changelog = new Popup('???', `Changelog`, false)
+    const changelog = dialogs.showpopup({
+        title: "Changelog",
+        description: "...",
+        onclose: () => {
+            dialogs.notification({description: 'WRD+ developed by SoundInfinity', timeout: 5000})
+            DataStorage.setKey('changelogDismissed', _VERSION)
+        }
+    })
 
-    Changelog.setHtml(changes.replace('_VERSION', _VERSION))
-    Changelog.onclose = () => {
-        dialogs.notification({description: 'WRD+ developed by SoundInfinity', timeout: 5000})
-        DataStorage.setKey('changelogDismissed', _VERSION)
-    }
+    changelog.setHtml(changes.replace('_VERSION', _VERSION))
 
-    Changelog.show()
+    changelog.show()
 }
 
 if (DataStorage.getKey('changelogDismissed') !== _VERSION) showChangelog()
