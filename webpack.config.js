@@ -1,14 +1,13 @@
 const path = require('path')
-const node_modules = path.resolve(__dirname, 'node_modules')
 
 module.exports = {
     mode: 'development',
     entry: ['babel-polyfill', './src/'],
     cache: false,
     output: {
-        publicPath: 'build/',
+        publicPath: 'release/',
         path: path.resolve(__dirname, 'build'),
-        filename: 'bundle.js'
+        filename: 'wrdplus.user.js'
     },
     module: {
         rules: [

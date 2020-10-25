@@ -11,16 +11,17 @@ except:
 def log_info(text):
     print('wrdplus:', text)
 
-if path.exists('wrdplus.meta.js') and path.exists('wrdplus.user.js'):
+if path.exists('wrdplus.meta.js'):
     log_info('Starting build...')
-    system("yarn run release")
-    
-    with open('wrdplus.meta.js', 'r', encoding='utf8') as metafile: meta = metafile.read()
-    with open('wrdplus.user.js', 'r', encoding='utf8') as scriptfile: script=scriptfile.read()
-    with open('wrdplus.user.js', 'w', encoding='utf8') as scriptfile:
-        scriptfile.write(meta + '\n' + script)
-    
-    if input("Do you wanna install it?") in 'Yy':
-        open_url('file:{}'.format(pathtourl(path.abspath('redirect.html'))))
+    system("yarn build")
+
+    if (path.exists('wrdplus.user.js')):
+        with open('wrdplus.meta.js', 'r', encoding='utf8') as metafile: meta = metafile.read()
+        with open('wrdplus.user.js', 'r', encoding='utf8') as scriptfile: script=scriptfile.read()
+        with open('wrdplus.user.js', 'w', encoding='utf8') as scriptfile:
+            scriptfile.write(meta + '\n' + script)
+        
+        if input("Do you wanna install it? ") in 'Yy':
+            open_url('file:{}'.format(pathtourl(path.abspath('redirect.html'))))
 else:
     log_info("Unable to find WRD+ files.")
