@@ -13,7 +13,7 @@ def log_info(text):
 
 if path.exists('wrdplus.meta.js'):
     log_info('Starting build...')
-    system("yarn build")
+    system("start /wait cmd /c yarn build")
 
     if (path.exists('wrdplus.user.js')):
         with open('wrdplus.meta.js', 'r', encoding='utf8') as metafile: meta = metafile.read()

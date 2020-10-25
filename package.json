@@ -6,7 +6,7 @@
   "scripts": {
     "local-test": "webpack-dev-server",
     "tm-test": "webpack -w --mode development",
-    "build": "webpack --mode production --progress"
+    "build": "webpack --mode production --output-path release --progress"
   },
   "author": "infinity-script",
   "license": "ISC",
