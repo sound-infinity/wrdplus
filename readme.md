@@ -1,11 +1,3 @@
-# Contents
-* [[What is WRD+?|Home#What is WRD+?]]
-* [[Features|Home#Features]]
-* [[Usage|Home#Usage]]
-  * [[WRD+ Settings|Home#wrd settings]]
-  * [[WRD+ Post Tags|Home#How Post Tags]]
-* [[Credits|Home#Credits]]
-
 # What is WRD+?
 WRD+ is a User-Script made to improve the user experience on the [WeAreDevs](https://www.wearedevs.net) website, mainly targeting its forum page.
 
