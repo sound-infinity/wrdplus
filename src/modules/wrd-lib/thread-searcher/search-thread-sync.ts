@@ -1,9 +1,39 @@
-import { GetThreadInfoFromAnchorTag, MakeUserFromAnchorTag } from './utils'
-import { getLinkType } from '../utils'
+import { getLinkType, getThreadIdFromUrl, getUserInfoFromTag } from '../utils'
 import { SearchResults, ThreadData, User } from '../classes'
 import { LinkType } from '../enums'
 
 const cached: any = {}
+
+class TableData {
+     headers: { [key: number]: string } = {}
+     rows: {columns: {[header:string]: HTMLTableDataCellElement}, element: HTMLTableRowElement}[] = []
+
+    constructor(table: HTMLTableElement) {
+        const tableHeaders = table.tHead.firstElementChild.children
+        const tableRows = table.tBodies[0].rows
+        
+        for (let i = 0; i < tableHeaders.length; ++i) {
+            const header = tableHeaders[i]
+            this.headers[i] = header.textContent.toLowerCase().replace(/\s/g, '')
+        }
+
+        for (let rowIndex = 0; rowIndex < tableRows.length; ++rowIndex) {
+            const row = tableRows[rowIndex]
+            const rowColumns: HTMLTableDataCellElement[] = row.children as unknown as HTMLTableDataCellElement[]
+            
+            this.rows.push({
+                columns: {},
+                element: row,
+            })
+
+            for (let columnIndex=0;columnIndex < rowColumns.length;++columnIndex) {
+                const column = rowColumns[columnIndex]
+
+                this.rows[rowIndex].columns[this.headers[columnIndex]] = column
+            }
+        }
+    }
+}
 
 export function searchThreadSync(): SearchResults {
     const currentLinkType = getLinkType(location.href)
@@ -11,46 +41,36 @@ export function searchThreadSync(): SearchResults {
         if (cached.searchResults) {
             return cached.searchResults
         } else {
-            const ForumContainer = document.querySelector("div.forumcontainer > table")
-            const ThreadList = new SearchResults()
-            if (ForumContainer) {
-                const IndexSkip = ForumContainer.querySelector("thead>tr").children.length - 5
-                ForumContainer.querySelectorAll("tbody>tr").forEach(row => {
-                    const RowChildren = row.children
-                    const ThreadMeta = RowChildren[IndexSkip + 1]
-                    const ThreadLink = ThreadMeta.children[0] as HTMLAnchorElement
-                    const ThreadAuthorMeta = ThreadMeta.children[1]
-                    const ThreadAuthorLink = ThreadAuthorMeta.children[0] as HTMLAnchorElement
-                    const ThreadReplies = RowChildren[IndexSkip + 2]
-                    const ThreadViews = RowChildren[IndexSkip + 3]
-                    const ThreadLastReplierMeta = RowChildren[IndexSkip + 4]
-                    const ThreadLastReplierLink = ThreadLastReplierMeta.children[0] as HTMLAnchorElement
-
-                    const BasicThreadData = GetThreadInfoFromAnchorTag(ThreadLink)
-                    const BasicAuthorData = MakeUserFromAnchorTag(ThreadAuthorLink)
-                    const BasicReplierData = ThreadLastReplierLink ? MakeUserFromAnchorTag(ThreadLastReplierLink) : new User('undefined')
-                    let threadSection: string | string[] | HTMLAnchorElement
-
-                    if (location.href.match(/[\/]all/)) {
-                        threadSection = RowChildren[0].children[0] as HTMLAnchorElement
-                        if (threadSection) {
-                            threadSection = threadSection.href.split("/").reverse()[0]
-                        } else {
-                            threadSection = null
-                        }
-                    } else {
-                        threadSection = document.title.split('-')
-                        threadSection.pop()
-                        threadSection = threadSection.join('-').trim()
+            const forumContainer = document.querySelector<HTMLTableElement>("div.forumcontainer > table")
+            const threadList = new SearchResults()
+            if (forumContainer != null) {
+                const tableData = new TableData(forumContainer)
+                for (let i=0;i<tableData.rows.length;++i) {
+                    const threadData = new ThreadData()
+                    const trow = tableData.rows[i]
+                    const threadColumn = trow.columns["thread"]
+                    if (threadColumn != null) {
+                        const threadAnchor = threadColumn?.firstElementChild as HTMLAnchorElement
+                        const threadAuthorAnchor = threadColumn.children[1]?.firstElementChild as HTMLAnchorElement
+                        threadData.Name = threadAnchor.textContent
+                        threadData.Id = getThreadIdFromUrl(threadAnchor.href)
+                        threadData.Author = getUserInfoFromTag(threadAuthorAnchor)
                     }
-
-                    ThreadList.Add(new ThreadData(BasicThreadData.Name, BasicThreadData.Id,
-                        ThreadReplies.textContent, ThreadViews.textContent,
-                        BasicAuthorData, BasicReplierData, threadSection as string))
-                })
+                    if (trow.columns["replies"] != null) {
+                        threadData.Replies = parseInt(trow.columns["replies"]?.textContent)
+                    }
+                    if (trow.columns["views"] != null) {
+                        threadData.Views = parseInt(trow.columns["views"]?.textContent)
+                    }
+                    if (trow.columns["lastreplier"]?.firstElementChild != null) {
+                        threadData.LastReplier = getUserInfoFromTag(trow.columns["lastreplier"]?.firstElementChild as HTMLAnchorElement)
+                    }
+                    threadData.Section = trow.columns["forum"]?.firstElementChild?.textContent
+                    threadList.Add(threadData)
+                }
             }
-            cached.searchResults = ThreadList
-            return ThreadList
+            cached.searchResults = threadList
+            return threadList
         }
     }
 }
