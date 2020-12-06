@@ -66,13 +66,6 @@ Paginator.appendButton("⯆", function (this: HTMLSpanElement, e: MouseEvent) {
     this.appendChild(background)
 }, true)
 
-//Console
-if (OtherSettings.get<boolean>("devmode")) {
-    DeveloperSettings.addButton("Run Terminal", () => {
-        require("../modules/wrd-lib/console-cmds")
-    })
-}
-
 //Notification Reply Page
 if (ExtraFeatures.get<boolean>("notification_redirection")) {
     if (Notifications.messages.length > 0) {
@@ -84,9 +77,13 @@ if (ExtraFeatures.get<boolean>("notification_redirection")) {
                     const link = notif.elements.link as HTMLAnchorElement;
                     const queries = getQueries(link.href)
                     if (queries['page'] == null) {
-                        queries['page'] = Math.floor((tdata.Replies+1) / 10).toString()
+                        let pageNumber = Math.floor((tdata.Replies+1) / 10)+1
+                        if (pageNumber > 0) {
+                            queries['page'] = pageNumber.toString()
+                        }
                         queries['mentionTo'] = encodeURIComponent(getUsername())
                         const mentionAuthor = link.textContent.match(/^(.*?) has mention/)
+
                         if (mentionAuthor != null) {
                             queries['mentionFrom'] = encodeURIComponent(mentionAuthor[1])
                         }
@@ -100,15 +97,16 @@ if (ExtraFeatures.get<boolean>("notification_redirection")) {
 
 const oncomplete = () => {
     const queries = getQueries()
-    const mentionAuthor = queries['mentionFrom'] && decodeURIComponent(queries['mentionFrom'])
-    const mentionTarget = queries['mentionTo'] && decodeURIComponent(queries['mentionTo'])
+    const mentionAuthor = queries['mentionFrom'] ? decodeURIComponent(queries['mentionFrom']) : null
+    const mentionTarget = queries['mentionTo'] ? decodeURIComponent(queries['mentionTo']) : null
 
-    if (mentionTarget) {
+    if (mentionTarget != null) {
         let list = replies.replies
 
         if (mentionAuthor != null){
             list = list.filter(reply => reply.author.name.toUpperCase() === mentionAuthor.toUpperCase())
         }
+
 
         let lastReply: any
  
@@ -124,6 +122,13 @@ const oncomplete = () => {
             setTimeout(() => lastReply.scrollIntoView(), 1000)
         }
     }
+}
+
+//Console
+if (OtherSettings.get<boolean>("devmode")) {
+    DeveloperSettings.addButton("Run Terminal", () => {
+        require("../modules/wrd-lib/console-cmds")
+    })
 }
 
 if (document.readyState === 'complete') oncomplete()

@@ -1,6 +1,6 @@
-import { getLinkType, LinkType, parseTags, Popup, searchThreadAsync, getThreadIdFromUrl, searchThreadsAsync, SearchResults, getUsername, getThreadInfo, dialogs } from "../../modules/wrd-lib"
-import { Info, DataStorage as DS, LatestThreads as LT } from "../globals"
-import { UpdateThreads, ThreadStates } from "./thread-markings"
+import { getLinkType, LinkType, parseTags, searchThreadAsync, getThreadIdFromUrl, searchThreadsAsync, SearchResults, getThreadInfo, dialogs } from "../../modules/wrd-lib"
+import { DataStorage as DS, LatestThreads as LT } from "../globals"
+import { UpdateThreads } from "./thread-markings"
 import { ExtraFeatures, OtherSettings } from "../settings"
 
 try {
@@ -12,7 +12,6 @@ if (ExtraFeatures.get<boolean>("threadmarkings")) {
         case LinkType.Thread:
             parseTags()
             const LocalThread = getThreadInfo()
-                    
             searchThreadAsync(LocalThread.Name).then((searchResults: SearchResults) => {
                 const ThreadData = searchResults.getThreadById(LocalThread.Id)
                 if (ThreadData) {
@@ -33,13 +32,13 @@ if (ExtraFeatures.get<boolean>("threadmarkings")) {
             break
         case LinkType.Index:
             const names = [""]
-            document.querySelectorAll('a[href*="/forum/t"').forEach((thread: HTMLAnchorElement) => {
-                thread.setAttribute("state", ThreadStates.Waiting)
+            const threadAnchors = document.querySelectorAll<HTMLAnchorElement>('a[href*="/forum/t"')
+            for (let i=0;i<threadAnchors.length;++i) {
+                const thread = threadAnchors[i]
                 if (DS.getKey(getThreadIdFromUrl(thread.href))) {
                     names.push(thread.textContent.trim())
                 }
-            })
-    
+            }
             searchThreadsAsync(names).then(searchResults => {
                 LT.Migrate(searchResults)
                 UpdateThreads()

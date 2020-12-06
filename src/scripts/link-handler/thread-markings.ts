@@ -1,7 +1,6 @@
 import { LatestThreads as LT, DataStorage as DS } from '../globals'
-import { getThreadIdFromUrl, Notification } from '../../modules/wrd-lib'
+import { getThreadIdFromUrl } from '../../modules/wrd-lib'
 import { ThreadData } from '../../modules/wrd-lib'
-import { OtherSettings } from '../settings'
 
 export enum ThreadStates {
     Read = 'Read',
@@ -38,7 +37,9 @@ const Stats = {
 }
 
 export function UpdateThreads() {
-    document.querySelectorAll('.forumcontainer a[href*="/forum/t"').forEach((thread: HTMLAnchorElement) => {
+    const threadAnchors = document.querySelectorAll<HTMLAnchorElement>('.forumcontainer a[href*="/forum/t"')
+    for (let i=0;i<threadAnchors.length;i++) {
+        const thread = threadAnchors[i]
         switch (getThreadStateById(getThreadIdFromUrl(thread.href))) {
             case ThreadStates.Read:
                 thread.setAttribute('state', ThreadStates.Read)
@@ -63,7 +64,6 @@ export function UpdateThreads() {
             default:
                 break;
         }
-
-        Stats.total++
-    })
+    }
+    Stats.total = threadAnchors.length
 }

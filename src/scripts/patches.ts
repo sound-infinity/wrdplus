@@ -8,7 +8,6 @@ if (document.title.match("^Page doesn't exist!") && location.search.match('jschl
     delete queries["__cf_chl_jschl_tk__"]
     location.href = queries.toString()
     dialogs.notification({description:'Reloading page...'})
-    //location.reload()
 } 
 
 // Mention buttons
@@ -17,22 +16,23 @@ function makeMentionButton(user: User): HTMLAnchorElement {
     btn.className = 'theme1 border1 btnmention'
     btn.textContent = OtherSettings.get<boolean>('devmode') ? 'WRD+ Mention' : 'Mention'
     btn.href = `/forum/t/${getThreadIdFromUrl()}/newreply?mention=${user.Id}`
-
     return btn
 }
 
 if (getLinkType() === LinkType.Thread) {
     const fixMentions = () => {
         document.querySelectorAll('div.thread_replierdata').forEach((userInfoContainer: HTMLDivElement) => {
-            const desc: HTMLDivElement = userInfoContainer.querySelector('div.userdesc')
-            if (desc == null) return
-            if (desc.querySelector('.btnmention') != null) return
-    
-            const userInfoElement: HTMLAnchorElement = desc.querySelector('a[href*=profile]')
-            if (userInfoElement == null) return
-    
-            const userInfo =  getUserInfoFromTag(userInfoElement)
-            desc.appendChild(makeMentionButton(userInfo))
+            const userDescription = userInfoContainer.querySelector<HTMLDivElement>('div.userdesc')
+            if (userDescription == null) return
+            if (userDescription != null) {
+                if (userDescription.querySelector('.btnmention') == null) {
+                    const userInfoElement = userDescription.querySelector<HTMLAnchorElement>('a[href*=profile]')
+                    if (userInfoElement == null) {
+                        const userInfo =  getUserInfoFromTag(userInfoElement)
+                        userDescription.appendChild(makeMentionButton(userInfo))    
+                    }
+                }        
+            }
         })    
     }
 
