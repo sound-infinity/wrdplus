@@ -41,10 +41,8 @@
 }
 .modal-popup .btn {
     cursor: pointer;
-    color: #e8e8e8;
     font-weight: 700;
     padding: 5px;
-    background: #151719;
     min-width: 80px;
     margin-top: 4px;
     margin-right: 4px;
@@ -54,6 +52,5 @@
     width: 100%;
 }
 .modal-popup .modal-contents a[href] {
-    color: lightblue;
     font-weight: bolder;
 }

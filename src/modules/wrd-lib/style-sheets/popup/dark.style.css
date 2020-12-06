@@ -1,0 +1,9 @@
+.modal-popup .modal-contents a[href] {
+    color: lightblue;
+}
+
+.modal-popup .btn {
+    color: #e8e8e8;
+    background: #151719;
+}
+
