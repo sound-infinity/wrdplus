@@ -1,4 +1,4 @@
-import { Popup } from '../modules/wrd-lib'
+import { dialogs } from '../modules/wrd-lib'
 import { ThemeSettings } from './settings'
 
 function getExtension(pathname: string): string {
@@ -20,7 +20,10 @@ async function applyTheme(theme_url: string) {
         document.head.appendChild(stylesheet)
 
     } catch (x) {
-        new Popup(`Failed to apply your theme. <a href='${theme_url}' class='round theme2 btn'>Theme's Link</a>`, 'Theme Settings', true)
+        dialogs.showinfo({
+            title: "Theme Settings",
+            description: ['Failed to apply your theme.', `<a href='${theme_url}'>Link Of Theme</a>`],
+        })
     }
 }
 
