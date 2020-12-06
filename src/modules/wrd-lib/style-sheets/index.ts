@@ -46,7 +46,10 @@ enum WRDTheme {
 }
 
 function getWRDTheme() {
-    return document.querySelector<HTMLInputElement>('.switch>input#themer').checked == true ? WRDTheme.Bright : WRDTheme.Night
+    const input = document.querySelector<HTMLInputElement>('.switch>input#themer')
+    if (input != null) {
+        return input.checked == true ? WRDTheme.Bright : WRDTheme.Night
+    }
 }
 
 export function defaultConfig() {
@@ -71,7 +74,10 @@ export function defaultConfig() {
 
     const oncomplete = () => {
         applysheets()
-        document.querySelector<HTMLInputElement>('.switch>input#themer').oninput = () => applysheets()
+        const themerInput = document.querySelector<HTMLInputElement>('.switch>input#themer')
+        if (themerInput != null) {
+            themerInput.oninput = () => applysheets()
+        }
     }
 
     if (document.readyState === 'interactive') oncomplete()
