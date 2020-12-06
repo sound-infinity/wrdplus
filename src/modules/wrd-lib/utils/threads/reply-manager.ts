@@ -9,7 +9,6 @@ interface ReplyAuthor extends User {
     reputation: number
     profileLink: string
     profilePictureLink: string
-
 }
 
 class ReplyData {
@@ -32,10 +31,10 @@ class ReplyData {
         this.elements.profileStatReputationLabel = profileStats[3]
         this.elements.profileStatReputationCount = this.elements.profileStatReputationLabel.firstElementChild
 
-        const ReplyCard = container.querySelector("div.replycard")
-        this.elements.replyMenu = ReplyCard.querySelector("ul.reply_menu")
-        this.elements.replyTime = ReplyCard.querySelector(".thread_replytime")
-        this.elements.replyContent = ReplyCard.querySelector("div.thread_replycontent")
+        const replyCard = container.querySelector("div.replycard")
+        this.elements.replyMenu = replyCard.querySelector("ul.reply_menu")
+        this.elements.replyTime = replyCard.querySelector(".thread_replytime")
+        this.elements.replyContent = replyCard.querySelector("div.thread_replycontent")
 
         this.elements.signature = container.querySelector("signature")
         this.author = {
