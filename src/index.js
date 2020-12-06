@@ -18,9 +18,22 @@ let oncomplete = () => {
 
 }
 
-if (document.readyState === 'complete') oncomplete()
+if (document.readyState === 'complete'){
+    require("./scripts/precedents")
+    oncomplete()
+}
 else {
     document.onreadystatechange = () => {
-        if (document.readyState === 'complete') oncomplete()
+        switch (document.readyState) {
+            case 'complete':
+                oncomplete()                
+                break
+            case 'interactive':
+                require('./scripts/settings')
+                require('./scripts/precedents')
+                break
+            default:
+                break
+        }
     }
 }
