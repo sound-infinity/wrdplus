@@ -5,24 +5,23 @@ function getExtension(pathname: string): string {
     return pathname.split('.').reverse()[0]
 }
 
-async function applyTheme(theme_url: string) {
+async function applyTheme(themeUrl: string) {
     try {
+        /*
         const url = new URL(theme_url)
         if (url == null || getExtension(url.pathname) !== 'css') {
             return
         }
+        */
 
-        const theme_src: string = await (await fetch(theme_url)).text()
-        const stylesheet: HTMLStyleElement = document.createElement('style')
-        stylesheet.innerHTML = theme_src
-        //const appendSource = () => document.readyState === 'complete' && 
-        //appendSource()
+        const themeCode = await (await fetch(themeUrl)).text()
+        const stylesheet = document.createElement('style')
+        stylesheet.innerHTML = themeCode
         document.head.appendChild(stylesheet)
-
     } catch (x) {
         dialogs.showinfo({
             title: "Theme Settings",
-            description: ['Failed to apply your theme.', `<a href='${theme_url}'>Link Of Theme</a>`],
+            description: ['Failed to apply your theme.', `<a href='${themeUrl}'>Link Of Theme</a>`],
         })
     }
 }
@@ -35,10 +34,16 @@ function applyBackground(background_url: string, applyFixes: boolean) {
 }
 
 function applySettings(){
-    applyBackground(ThemeSettings.getTextboxValue('backgroundUrl'), ThemeSettings.getCheckboxValue('applyFixBg'))
+    const backgroundUrl = ThemeSettings.get<string>('backgroundUrl')
+    const applyFixBg = ThemeSettings.get<boolean>('applyFixBg')
+    const themeUrl = ThemeSettings.get<string>('themeUrl')
 
-    if (ThemeSettings.getTextboxValue('themeUrl').includes("://")) {
-        applyTheme(ThemeSettings.getTextboxValue('themeUrl'))
+    if (typeof backgroundUrl === 'string' && backgroundUrl.length > 3) {
+        applyBackground(backgroundUrl, applyFixBg)
+    }
+
+    if (themeUrl.includes('://')) {
+        applyTheme(themeUrl)
     }
 }
 
