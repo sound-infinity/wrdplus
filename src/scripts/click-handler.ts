@@ -2,8 +2,8 @@ import { User, ThreadData, searchThreadAsync, getThreadIdFromUrl, dialogs, Popup
 import { LatestThreads as LT, DataStorage } from './globals'
 import { getThreadStateById } from './link-handler/thread-markings'
 
-function makeUserLink(user: User) {
-    return `<a href="${user.profileUrl}">${user.toString()}</a>`
+function createUserLinkAsText(user: User) {
+    return `<a href="${user.profileUrl}">${user.toString()}</a>"`
 }
 
 function showDataOnPopup(popup: Popup, threadData: ThreadData) {
@@ -11,14 +11,14 @@ function showDataOnPopup(popup: Popup, threadData: ThreadData) {
 
     popup.description = [
         `Title: ${Name}`, `Views: ${Views}`,
-        `Replies: ${Replies}`, `Author: ${makeUserLink(Author)}`,
-        `Last Reply: ${(LastReplier ? makeUserLink(LastReplier) : "None")}`,
+        `Replies: ${Replies}`, `Author: ${createUserLinkAsText(Author)}`,
+        `Last Reply: ${(LastReplier ? createUserLinkAsText(LastReplier) : "None")}`,
         `Read status: ${getThreadStateById(Id)}`,
         '<hr/>',
     ]
 
     popup.addButton("Visit", () => {
-        console.log("Using V2")
+        document.location.href = threadData.Url
     })
 
     popup.show()

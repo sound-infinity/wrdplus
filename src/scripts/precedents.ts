@@ -1,6 +1,6 @@
-// Code that runs before any other script to setup items before they are used.
+// Code that runs before any other script, to setup items before they are used.
 // ##########
-// Should not use external sources
+// Recommended to import from direct sources
 
 import { LinkType } from "../modules/wrd-lib/enums/link-type"
 import { getLinkType } from "../modules/wrd-lib/utils/page"

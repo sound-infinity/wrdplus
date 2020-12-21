@@ -226,7 +226,7 @@ export class Popup {
      * Shows up popup in the document. 
      * @param {boolean} reset Determines if reset should be called, by default it's disabled.
      */
-    show(reset = false) {
+    show(reset: boolean = false) {
         if (reset) this.reset()
         if(document.readyState !== 'complete'){
             setTimeout((() => {
