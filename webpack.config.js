@@ -1,31 +1,37 @@
-const path = require('path')
+const path = require("path");
 
 module.exports = {
-    mode: 'development',
-    entry: ['babel-polyfill', './src/'],
-    cache: false,
-    output: {
-        publicPath: 'release/',
-        path: path.resolve(__dirname, 'build'),
-        filename: 'wrdplus.user.js'
-    },
-    module: {
-        rules: [
-            {
-              test: [/.js$/, /.ts$/, /\.tsx?$/],
-              loader: 'babel-loader',
-            },
-        {
-            test: /\.css$/,
-            use: 'css-loader'
-        },
-        {
-            test: /\.html$/i,
-            use: 'html-loader',
-          }
-        ]
-    },
-    resolve: {
-        extensions: ['.css', '.tsx', '.ts', '.js'],
-    }
-}
+  entry: path.resolve(__dirname, "src/index.ts"),
+  mode: "production",
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre",
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+      {
+        test: [/\.css$/i, /\.html$/i],
+        use: "raw-loader",
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".css", ".html", ".js"],
+  },
+  output: {
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
+  },
+};
