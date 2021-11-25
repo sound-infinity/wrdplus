@@ -1,3 +1,5 @@
+//
+require("./modules/wrd-lib-v2");
 // Loader
 require("./scripts/theme-loader");
 require("./scripts/patches");
