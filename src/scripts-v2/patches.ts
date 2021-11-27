@@ -1,12 +1,4 @@
 // This script contains improvements or fixes for the WRD website.
-/*
-import {
-    User,
-    getUserInfoFromTag,
-    getThreadIdFromUrl,
-    getQueries,
-} from "../modules/wrd-lib"
-*/
 import { SiteNotification } from "../modules/wrd-lib-v2"
 import { LinkType, getLinkType } from "../modules/wrd-lib-v2/utils/link-type"
 import { parse as qs_parse, stringify as qs_stringify } from "query-string"
