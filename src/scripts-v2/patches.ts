@@ -1,7 +1,6 @@
 // This script contains improvements or fixes for the WRD website.
 import { SiteNotification } from "../modules/wrd-lib-v2"
 import { LinkType, getLinkType } from "../modules/wrd-lib-v2/utils/link-type"
-import { parse as qs_parse, stringify as qs_stringify } from "query-string"
 import {
     extractThreadIdFromUrl,
     extractUserInfoFromTag,
@@ -12,9 +11,10 @@ if (
     document.title.match("^Page doesn't exist!") &&
     location.search.match("jschl")
 ) {
-    const queries = qs_parse(new URL(location.href).search)
-    delete queries["__cf_chl_jschl_tk__"]
-    location.search = `?${qs_stringify(queries)}`
+    const queries = new URLSearchParams(location.search)
+    queries.delete("__cf_chl_jschl_tk__")
+    location.search = `?${queries.toString()}`
+
     const notif = new SiteNotification()
     notif.message = "Reloading page..."
     notif.render()
