@@ -1,5 +1,9 @@
 //
-require("./modules/wrd-lib-v2");
+import "./modules/wrd-lib-v2"
+import "./scripts-v2/precedents"
+import "./scripts-v2/patches"
+
+/*
 // Loader
 require("./scripts/theme-loader");
 require("./scripts/patches");
@@ -37,3 +41,4 @@ if (document.readyState === "complete") {
     }
   };
 }
+*/
