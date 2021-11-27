@@ -21,4 +21,8 @@ export class SettingsForm {
             })
         }
     }
+
+    addSection() {
+        return new SettingsSection(this)
+    }
 }

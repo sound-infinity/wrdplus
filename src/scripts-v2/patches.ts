@@ -5,7 +5,7 @@ import {
     getLinkType,
     extractThreadIdFromUrl,
     extractUserInfoFromTag,
-} from "wearedevs-lib"
+} from "../modules/wearedevs-lib"
 
 //404 Page
 if (
