@@ -8,7 +8,9 @@ function parseHtml(htmlString: string): HTMLDivElement {
     return container.firstElementChild as HTMLDivElement
 }
 
-const SectionTemplates = parseHtml(HtmlSectionTemplates)
+function getTemplatesContainer(): HTMLElement {
+    return parseHtml(HtmlSectionTemplates)
+}
 
 export class SettingsSection {
     contents: HTMLDivElement | null = null
@@ -41,16 +43,16 @@ export class SettingsSection {
 
     public addHeading(text: string) {
         const headingContainer =
-            SectionTemplates.querySelector("#heading")?.firstElementChild
+            getTemplatesContainer().querySelector("#heading")?.firstElementChild
 
         if (headingContainer != null) {
-            const heading = headingContainer?.querySelector(
+            const heading = headingContainer.querySelector(
                 ".settings-section-heading"
             )
             if (heading != null) {
                 heading.textContent = text
             }
-            this.parentForm?.contents?.appendChild(headingContainer)
+            this.contents?.appendChild(headingContainer)
         }
     }
 

@@ -23,6 +23,8 @@ export class SettingsForm {
     }
 
     addSection() {
-        return new SettingsSection(this)
+        const section = new SettingsSection(this)
+        section.render()
+        return section
     }
 }
