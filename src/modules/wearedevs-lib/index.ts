@@ -11,3 +11,4 @@ export {
 
 export { LocalUser } from "./utils/local-user"
 export { LinkType, getLinkType } from "./utils/link-type"
+export { isLightModeActive } from "./utils/website-booleans"
