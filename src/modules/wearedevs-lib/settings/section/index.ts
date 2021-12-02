@@ -12,6 +12,11 @@ function getTemplatesContainer(): HTMLElement {
     return parseHtml(HtmlSectionTemplates)
 }
 
+export enum SectionInputType {
+    Checkbox = 0,
+    TextField,
+}
+
 export class SettingsSection {
     contents: HTMLDivElement | null = null
     parentForm: SettingsForm | null = null
@@ -39,6 +44,7 @@ export class SettingsSection {
         element.textContent = text
         element.className = "flat"
         this.contents?.appendChild(element)
+        return element
     }
 
     public addHeading(text: string) {
@@ -89,15 +95,16 @@ export class SettingsSection {
         return label
     }
 
-    addCheckbox(title: string) {
+    addCheckbox(title: string, name: string) {
         const checkbox = document.createElement("input")
 
-        //checkbox.name = data.id
+        checkbox.name = name
         checkbox.type = "checkbox"
         //checkbox.checked = data.checked || false
         this.contents?.appendChild(checkbox)
         this.addLabel(title)
         this.addLineBreak()
+        return checkbox
     }
 
     addSubmitButton(

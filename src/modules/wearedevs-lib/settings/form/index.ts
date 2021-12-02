@@ -1,6 +1,5 @@
 import { SettingsSection } from "../section"
 import HtmlSettings from "./form.html"
-
 export class SettingsForm {
     contents: null | HTMLDivElement = null
     public render() {
