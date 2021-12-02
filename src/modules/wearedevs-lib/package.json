@@ -1,9 +1,0 @@
-{
-    "name": "wearedevs-lib",
-    "version": "1.0.1",
-    "description": "Library used to help out in manipulating the website.",
-    "main": "index.ts",
-    "repository": "https://github.com/sound-infinity/wrdplus/",
-    "author": "SoundInfinity",
-    "license": "MIT"
-}

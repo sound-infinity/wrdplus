@@ -4,7 +4,7 @@ export default class DataManager {
     private containerName: string
     private doAutoParsing: boolean
 
-    constructor(containerName: string, doAutoParsing = true) {
+    constructor(containerName: string, doAutoParsing: boolean = true) {
         this.containerName = containerName
         this.doAutoParsing = doAutoParsing
         DataManagers.push(this)
@@ -15,14 +15,14 @@ export default class DataManager {
     }
 
     get raw(): string {
-        return localStorage.getItem(this.containerName) || ""
+        return localStorage.getItem(this.containerName)
     }
 
     get data() {
         const itemVal = this.raw
 
         if (this.doAutoParsing) {
-            return JSON.parse(itemVal || "{}") || {}
+            return JSON.parse(itemVal || '{}') || {}
         } else {
             return itemVal
         }
@@ -30,11 +30,8 @@ export default class DataManager {
 
     set data(newData) {
         if (this.doAutoParsing) {
-            localStorage.setItem(
-                this.containerName,
-                JSON.stringify(newData || {})
-            )
-        } else if (typeof newData === "string") {
+            localStorage.setItem(this.containerName, JSON.stringify(newData || {}))
+        } else if (typeof newData === 'string') {
             localStorage.setItem(this.containerName, newData)
         }
     }
@@ -50,7 +47,7 @@ export default class DataManager {
         return this.data[name]
     }
 
-    setKey(name: string | number, value: string | object) {
+    setKey(name: string | number, value: any) {
         this.data = this.data
         const temp_data = this.data
         temp_data[name] = value

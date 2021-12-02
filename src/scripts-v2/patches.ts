@@ -1,11 +1,10 @@
 // This script contains improvements or fixes for the WRD website.
+import { SiteNotification } from "../modules/wrd-lib-v2"
+import { LinkType, getLinkType } from "../modules/wrd-lib-v2/utils/link-type"
 import {
-    SiteNotification,
-    LinkType,
-    getLinkType,
     extractThreadIdFromUrl,
     extractUserInfoFromTag,
-} from "../modules/wearedevs-lib"
+} from "../modules/wrd-lib-v2/utils/data-extractor"
 
 //404 Page
 if (
