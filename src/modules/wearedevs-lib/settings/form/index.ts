@@ -20,4 +20,10 @@ export class SettingsForm {
             })
         }
     }
+
+    addSection() {
+        const section = new SettingsSection(this)
+        section.render()
+        return section
+    }
 }
