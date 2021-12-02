@@ -1,6 +1,7 @@
 import {
     SectionInputType,
     SettingsForm,
+    SettingsSection,
     SiteNotification,
     SitePopupPreset,
     SitePopupWithPreset,
@@ -12,10 +13,20 @@ import {
 import { DB_GENERAL_NAME } from "./constants"
 import "./storage"
 import { loadItem, removeItem, setItem, size, storages } from "./storage"
-
 let isSaving = false
 
-function save(name: string, data: object) {
+interface IOptionData {
+    id: string
+    title: string
+    inputType: SectionInputType
+}
+
+interface IInstanceData {
+    element: HTMLInputElement
+    optionData: IOptionData
+}
+
+function save(name: string, data: { [key: string]: string | boolean | null }) {
     if (isSaving === true) {
         const popup = new SitePopupWithPreset(SitePopupPreset.Okay)
         popup.message = "Saving in progress. Try again later."
@@ -30,6 +41,25 @@ function save(name: string, data: object) {
 }
 
 const form = new SettingsForm()
+
+function loadInstancesFromSaved(
+    storage: string,
+    instances: { [id: string]: IInstanceData }
+) {
+    loadItem(storage).then((res) => {
+        for (const id in res) {
+            const instance = instances[id]
+            switch (instance.optionData.inputType) {
+                case SectionInputType.Checkbox:
+                    instance.element.checked = res[id]
+                    break
+                case SectionInputType.TextField:
+                    instance.element.value = res[id]
+                    break
+            }
+        }
+    })
+}
 
 function GeneralSection() {
     const section = form.addSection()
@@ -51,62 +81,84 @@ function GeneralSection() {
     )
 }
 
-function FeaturesSection() {
-    const section = form.addSection()
-    section.addHeading("Features")
-    const options: [string, string, SectionInputType][] = [
-        [
-            "better_notifications",
-            "Better Notifications",
-            SectionInputType.Checkbox,
-        ],
-        [
-            "thread_highlights",
-            "Better Thread Titles",
-            SectionInputType.Checkbox,
-        ],
-    ]
-    const instances: [HTMLInputElement, [string, string, SectionInputType]][] =
-        []
+declare type InstanceList = { [id: string]: IInstanceData }
+declare type OptionList = { [id: string]: IOptionData }
+declare type SectionList = { [section: string]: OptionList }
 
-    for (const data of options) {
-        switch (data[2]) {
+function loadSectionInstances(section: SettingsSection, options: OptionList) {
+    const instances: { [id: string]: IInstanceData } = {}
+
+    for (const option of Object.values(options)) {
+        switch (option.inputType) {
             case SectionInputType.Checkbox:
-                const checkbox = section.addCheckbox(data[1], data[0])
-                instances.push([checkbox, data])
+                {
+                    const element = section.addCheckbox(option.title, option.id)
+                    instances[option.id] = {
+                        element: element,
+                        optionData: option,
+                    }
+                }
                 break
             case SectionInputType.TextField:
-                const textfield = section.addTextbox(data[1], data[0])
-                instances.push([textfield, data])
+                {
+                    const element = section.addTextbox(option.title, option.id)
+                    instances[option.id] = {
+                        element: element,
+                        optionData: option,
+                    }
+                }
                 break
         }
     }
+    return instances
+}
 
-    function getValues() {
-        const data: { [key: string]: string | boolean | null } = {}
-        for (const instance of instances) {
-            switch (instance[1][2]) {
-                case SectionInputType.Checkbox:
-                    {
-                        const element = instance[0]
-                        const id = instance[1][1]
-                        if (typeof id === "string") data[id] = element.checked
-                    }
-                    break
-                case SectionInputType.TextField:
-                    {
-                        const element = instance[0]
-                        const id = instance[1][1]
-                        if (typeof id === "string")
-                            data[id] = element.textContent
-                    }
-                    break
-            }
+function indexInstancesValues(instances: InstanceList) {
+    const data: { [key: string]: string | boolean | null } = {}
+    for (const instance of Object.values(instances)) {
+        switch (instance.optionData.inputType) {
+            case SectionInputType.Checkbox:
+                {
+                    const element = instance.element
+                    const id = instance.optionData.id
+                    if (typeof id === "string") data[id] = element.checked
+                }
+                break
+            case SectionInputType.TextField:
+                {
+                    const element = instance.element
+                    const id = instance.optionData.id
+                    if (typeof id === "string") data[id] = element.value
+                }
+                break
         }
-        return data
     }
+    return data
+}
 
-    section.addSubmitButton("Save", () => save("wrdplus_features", getValues()))
+const Sections: SectionList = {
+    wrdplus_features: {
+        better_notifications: {
+            id: "better_notifications",
+            title: "Better Notifications",
+            inputType: SectionInputType.Checkbox,
+        },
+        thread_highlights: {
+            id: "thread_highlights",
+            title: "Better Thread Titles",
+            inputType: SectionInputType.Checkbox,
+        },
+    },
+}
+
+function loadSection(sectionName: string, sectionId: string) {
+    const section = form.addSection()
+    section.addHeading(sectionName)
+    const instances = loadSectionInstances(section, Sections[sectionId])
+    section.addSubmitButton("Save", () =>
+        save(sectionId, indexInstancesValues(instances))
+    )
+    loadInstancesFromSaved(sectionId, instances)
 }
 
 function AdvancedSection() {
@@ -150,7 +202,7 @@ function AdvancedSection() {
 }
 
 GeneralSection()
-FeaturesSection()
+loadSection("Features", "wrdplus_features")
 AdvancedSection()
 
 document.addEventListener("keydown", (key) => {

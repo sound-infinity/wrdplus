@@ -12,11 +12,6 @@ function getTemplatesContainer(): HTMLElement {
     return parseHtml(HtmlSectionTemplates)
 }
 
-export enum SectionInputType {
-    Checkbox = 0,
-    TextField,
-}
-
 export class SettingsSection {
     contents: HTMLDivElement | null = null
     parentForm: SettingsForm | null = null

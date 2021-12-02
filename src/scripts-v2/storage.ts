@@ -22,7 +22,11 @@ function exists(name: string) {
 function read(name: string) {
     if (exists(name)) {
         register(name)
-        return JSON.parse(localStorage.getItem(name) || "{}")
+        try {
+            return JSON.parse(localStorage.getItem(name) || "{}")
+        } catch {
+            return "{}"
+        }
     }
 }
 
