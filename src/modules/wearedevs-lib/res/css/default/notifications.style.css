@@ -1,0 +1,99 @@
+@keyframes show-notif {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes hide-notif {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.notif.contents[hidden] {
+    transition: 1s all;
+
+    animation-name: hide-notif;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+}
+
+.notif.contents {
+    transition: 1s all;
+
+    animation-name: show-notif;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+}
+
+.notif.frame {
+    z-index: 99998;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: block;
+    position: relative;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+}
+
+.notif.stacks {
+    display: block;
+    width: 5vh;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    width: 20vw;
+}
+
+.notif.stacks > * {
+    margin: 2px;
+}
+
+.notif.contents {
+    position: relative;
+    padding: 5px;
+    display: block;
+    height: auto;
+    min-height: 5vh;
+}
+
+.notif.outline {
+    padding: 4px;    
+}
+
+.notif.title {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.notif.message {
+    font-family: inherit;
+    margin: 0;
+    min-height: 5vh;
+}
+
+.notif.mark {
+    user-select: none;
+    position: absolute;
+    display: flex;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+    top: 50%;
+    font-size: 30px;
+    font-weight: bolder;
+    opacity: 0.1;
+}
