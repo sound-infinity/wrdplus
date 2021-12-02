@@ -1,18 +1,18 @@
 {
-  "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
-    // "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": false,
-    "jsx": "react",
-    "target": "ES6"
-  },
-  "exclude": ["node_modules", "dist", "release", ".html"]
+    "compilerOptions": {
+        "lib": ["dom", "dom.iterable", "esnext"],
+        // "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": false,
+        "jsx": "react",
+        "target": "ES6"
+    },
+    "exclude": ["node_modules", "dist", "release", ".html", "disabled"]
 }

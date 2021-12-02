@@ -1,5 +1,4 @@
 //
-import "./modules/wrd-lib-v2"
 import "./scripts-v2/precedents"
 import "./scripts-v2/patches"
 import "./scripts-v2/settings"

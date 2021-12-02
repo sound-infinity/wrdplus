@@ -2,7 +2,7 @@
 // ##########
 // Recommended to import from direct sources
 
-import { LinkType, getLinkType } from "../modules/wrd-lib-v2/utils/link-type"
+import { LinkType, getLinkType } from "../modules/wearedevs-lib"
 //import { ExtraFeatures } from "./settings"
 
 //#region ThreadAnchors

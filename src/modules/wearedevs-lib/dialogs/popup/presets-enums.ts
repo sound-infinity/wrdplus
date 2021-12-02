@@ -1,9 +1,9 @@
 export enum SitePopupPreset {
-  Default = 1,
-  YesNo,
+    Okay = 1,
+    YesNo,
 }
 
 export enum SitePopupYesNoResponse {
-  Yes = 1,
-  No,
+    Yes = 1,
+    No,
 }
