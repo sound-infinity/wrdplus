@@ -1,4 +1,3 @@
-import { LoaderOptionsPlugin } from "webpack"
 import {
     SectionInputType,
     SettingsForm,
@@ -11,7 +10,6 @@ import {
     SitePopup,
     SitePopupYesNoResponse,
 } from "../modules/wearedevs-lib/dialogs"
-import { DB_GENERAL_NAME } from "./constants"
 import "./storage"
 import { loadItem, removeItem, setItem, size, storages } from "./storage"
 let isSaving = false
@@ -60,26 +58,6 @@ async function loadInstancesFromSaved(
         }
     }
     return res
-}
-
-function GeneralSection() {
-    const section = form.addSection()
-
-    section.addHeading("General")
-
-    function updateUI() {
-        loadItem(DB_GENERAL_NAME).then((res) => {
-            //check.checked = res[check.name]
-        })
-    }
-
-    updateUI()
-
-    section.addSubmitButton("Save", () =>
-        save(DB_GENERAL_NAME, {
-            //[check.name]: check.checked,
-        })
-    )
 }
 
 declare type InstanceList = { [id: string]: IInstanceData }
