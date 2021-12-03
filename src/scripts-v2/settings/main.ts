@@ -1,7 +1,12 @@
-import { SectionInputType, SettingsForm, SettingsSection, SiteNotification, SitePopupPreset, SitePopupWithPreset } from "../../modules/wearedevs-lib"
-import { SitePopup, SitePopupYesNoResponse } from "../../modules/wearedevs-lib/dialogs"
-import "../storage"
+import { indexInstancesValues, loadInstancesFromSaved, loadSectionInstances } from "./utils"
+import { InstanceList } from "./InstanceList"
+import { InstanceListOfValues } from "./InstanceListOfValues"
+import { IOnSectionLoad } from "./IOnSectionLoad"
 import { loadItem, removeItem, setItem, size, storages } from "../storage"
+import { Sections } from "./sections"
+import { SettingsForm, SettingsSection, SiteNotification, SitePopup, SitePopupPreset, SitePopupWithPreset, SitePopupYesNoResponse } from "../../modules/wearedevs-lib"
+import "../storage"
+
 let isSaving = false
 
 function save(name: string, data: { [key: string]: string | boolean | null }) {
@@ -19,80 +24,6 @@ function save(name: string, data: { [key: string]: string | boolean | null }) {
 }
 
 const form = new SettingsForm()
-
-async function loadInstancesFromSaved(storage: string, instances: { [id: string]: IInstanceData }) {
-    const res = await loadItem(storage)
-    for (const id in res) {
-        const instance = instances[id]
-        switch (instance.optionData.inputType) {
-            case SectionInputType.Checkbox:
-                instance.element.checked = res[id]
-                break
-            case SectionInputType.TextField:
-                instance.element.value = res[id]
-                break
-        }
-    }
-    return res
-}
-
-function loadSectionInstances(section: SettingsSection, options: OptionList) {
-    const instances: { [id: string]: IInstanceData } = {}
-
-    for (const option of Object.values(options)) {
-        switch (option.inputType) {
-            case SectionInputType.Checkbox:
-                {
-                    const element = section.addCheckbox(option.title, option.id)
-                    instances[option.id] = {
-                        element: element,
-                        optionData: option,
-                    }
-                }
-                break
-            case SectionInputType.TextField:
-                {
-                    const element = section.addTextbox(option.title, option.id)
-                    instances[option.id] = {
-                        element: element,
-                        optionData: option,
-                    }
-                }
-                break
-        }
-    }
-    return instances
-}
-
-function indexInstancesValues(instances: InstanceList) {
-    const data: InstanceListOfValues = {}
-    for (const instance of Object.values(instances)) {
-        switch (instance.optionData.inputType) {
-            case SectionInputType.Checkbox:
-                {
-                    const element = instance.element
-                    const id = instance.optionData.id
-                    if (typeof id === "string") data[id] = element.checked
-                }
-                break
-            case SectionInputType.TextField:
-                {
-                    const element = instance.element
-                    const id = instance.optionData.id
-                    if (typeof id === "string") data[id] = element.value
-                }
-                break
-        }
-    }
-    return data
-}
-
-import { Sections } from "./sections"
-import { IOnSectionLoad } from "./IOnSectionLoad"
-import { InstanceList } from "./InstanceList"
-import { InstanceListOfValues } from "./InstanceListOfValues"
-import { OptionList } from "./OptionList"
-import { IInstanceData } from "./IInstanceData"
 
 function new_details(instances: InstanceList, section: SettingsSection, sectionId: string) {
     const values = indexInstancesValues(instances)

@@ -65,14 +65,6 @@ export async function loadItem(name: string) {
     const storage = exists(name) ? read(name) : create(name)
     if (storage == null) return
     write(name, storage)
-    /*
-    Object.defineProperty(storage, "write", {
-        enumerable: false,
-
-        value: function () {
-            write(name, this)
-        },
-    })*/
     return storage
 }
 

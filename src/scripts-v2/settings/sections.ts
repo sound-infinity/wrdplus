@@ -1,7 +1,7 @@
 import { SectionInputType } from "../../modules/wearedevs-lib"
-import { SectionList } from "./SectionList"
+import { IOptionData } from "./IOptionData"
 
-export const Sections: SectionList = {
+export const Sections: Record<string, Record<string, IOptionData>> = {
     wrdplus_features: {
         better_notifications: {
             id: "better_notifications",
