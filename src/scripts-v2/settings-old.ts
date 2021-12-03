@@ -188,7 +188,7 @@ const Sections: SectionList = {
     },
 }
 
-declare interface IOnSectionLoad {
+export declare interface IOnSectionLoad {
     sectionId: string
     section: SettingsSection
     values: InstanceListOfValues
