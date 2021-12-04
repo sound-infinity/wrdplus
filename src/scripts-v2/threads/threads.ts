@@ -37,15 +37,16 @@ easyLoad.getSavedValue(DB.DB_FEATURES, "thread_highlights").then((value) => {
         let threadTitles = document.querySelector("table>tbody")?.querySelectorAll("a[href*=t].thread-title")
 
         function alternative() {
-            threadTitles = document.querySelectorAll('a[href*="forum/t/"')
+            threadTitles = document.querySelectorAll('a[href*="forum/t/"]:not([class*=btn])')
             console.log(threadTitles)
         }
 
-        if (threadTitles == null) alternative()
-        if (threadTitles == null) return
-        if (threadTitles.length < 1) {
-            alternative()
+        function alternative_2() {
+            threadTitles = document.querySelectorAll("#topic")
         }
+
+        if (threadTitles == null || threadTitles.length < 1) alternative()
+        if (threadTitles == null || threadTitles.length < 1) alternative_2()
         if (threadTitles == null) return
 
         for (const threadTitle of Object.values(threadTitles)) {
@@ -55,14 +56,12 @@ easyLoad.getSavedValue(DB.DB_FEATURES, "thread_highlights").then((value) => {
                     const tag_Element = title_element(parsedThreadTitle.title, parsedThreadTitle.tag)
                     if (tag_Element && threadTitle.parentNode) {
                         threadTitle.parentNode.insertBefore(tag_Element, threadTitle)
-                        tag_Element.setAttribute("href", threadTitle.getAttribute("href") || 'javascript:alert("WRD+ Error")')
+                        if (threadTitle.getAttribute("href") != null) tag_Element.setAttribute("href", threadTitle.getAttribute("href") || "")
                         threadTitle.remove()
                     }
                 }
             }
         }
-    } else {
-        console.log("NO!!!!!!")
     }
 })
 
