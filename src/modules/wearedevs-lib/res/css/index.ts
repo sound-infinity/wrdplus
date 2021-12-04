@@ -23,13 +23,10 @@ function RemoveSheets() {
         sheet.remove()
     }
 }
-function InsertSheet(
-    sourceCode: string,
-    destination: SheetDestination = SheetDestination.Head
-) {
+export function InsertSheet(sourceCode: string, destination: SheetDestination = SheetDestination.Head, anonymous = false) {
     const sheet = document.createElement("style")
     sheet.textContent = sourceCode
-    sheets.push(sheet)
+    if (!anonymous) sheets.push(sheet)
     switch (destination) {
         case SheetDestination.Head:
             if (document.head != null) {
