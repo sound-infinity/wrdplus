@@ -9,4 +9,4 @@ export { extractThreadIdFromUrl, extractUserInfoFromTag } from "./utils/data-ext
 export { LocalUser } from "./utils/local-user"
 export { LinkType, getLinkType } from "./utils/link-type"
 export { getThemeMode } from "./utils/website-theme"
-export { InsertSheet } from "./res/css/index"
+export { InsertSheet, AddExternalSheet, ExternalSheetType } from "./res/css/index"

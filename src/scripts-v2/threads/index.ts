@@ -1,5 +1,11 @@
 import "./threads"
-import ThreadModSheet from "./res/general.style.css"
-import { InsertSheet } from "../../modules/wearedevs-lib"
+import GeneralThreadModSheet from "./res/general.style.css"
+import LightThreadModSheet from "./res/light.style.css"
+import DarkThreadModSheet from "./res/dark.style.css"
 
-InsertSheet(ThreadModSheet, undefined, true)
+import { AddExternalSheet, ExternalSheetType, InsertSheet } from "../../modules/wearedevs-lib"
+
+InsertSheet(GeneralThreadModSheet, undefined, true)
+
+AddExternalSheet(LightThreadModSheet, ExternalSheetType.Light)
+AddExternalSheet(DarkThreadModSheet, ExternalSheetType.Dark)

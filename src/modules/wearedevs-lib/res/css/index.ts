@@ -16,7 +16,18 @@ enum SheetDestination {
     Body,
 }
 
+export enum ExternalSheetType {
+    Dark = 1,
+    Light,
+    General,
+}
+
 const sheets: HTMLStyleElement[] = []
+const externalSheets: Record<string, string[]> = {
+    dark: [],
+    light: [],
+    general: [],
+}
 
 function RemoveSheets() {
     for (const sheet of sheets) {
@@ -55,21 +66,38 @@ export function InsertSheet(sourceCode: string, destination: SheetDestination = 
     }
 }
 
+export function AddExternalSheet(sourceCode: string, sheetType: ExternalSheetType) {
+    switch (sheetType) {
+        case ExternalSheetType.Dark:
+            externalSheets.dark.push(sourceCode)
+            break
+        case ExternalSheetType.Light:
+            externalSheets.light.push(sourceCode)
+            break
+        case ExternalSheetType.General:
+            externalSheets.general.push(sourceCode)
+            break
+    }
+    main()
+}
+
 function main() {
     RemoveSheets()
     InsertSheet(default_sheet)
     InsertSheet(notifications_sheet)
     InsertSheet(popups_sheet)
     InsertSheet(settings_sheet)
+    for (const sourceCode of externalSheets["general"]) InsertSheet(sourceCode)
 
     switch (getThemeMode()) {
         case ThemeMode.Light:
             InsertSheet(notifications_light_sheet)
-            // InsertSheet(settings_light_sheet)
+            for (const sourceCode of externalSheets["light"]) InsertSheet(sourceCode)
             break
         case ThemeMode.Night:
             InsertSheet(notifications_dark_sheet)
             InsertSheet(settings_dark_sheet)
+            for (const sourceCode of externalSheets["dark"]) InsertSheet(sourceCode)
             break
 
         default:

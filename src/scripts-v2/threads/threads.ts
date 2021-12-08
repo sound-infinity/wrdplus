@@ -38,7 +38,6 @@ easyLoad.getSavedValue(DB.DB_FEATURES, "thread_highlights").then((value) => {
 
         function alternative() {
             threadTitles = document.querySelectorAll('a[href*="forum/t/"]:not([class*=btn])')
-            console.log(threadTitles)
         }
 
         function alternative_2() {

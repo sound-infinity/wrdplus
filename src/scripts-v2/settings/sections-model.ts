@@ -25,11 +25,11 @@ export const Sections: Record<string, Record<string, IOptionData>> = {
             title: "Custom Background",
             inputType: SectionInputType.TextField,
         },
-        custom_background_fixes: {
-            id: "custom_background_fixes",
-            title: "Fix Custom Background",
-            inputType: SectionInputType.Checkbox,
-        },
+        // custom_background_fixes: {
+        //     id: "custom_background_fixes",
+        //     title: "Fix Custom Background",
+        //     inputType: SectionInputType.Checkbox,
+        // },
         wearedevs_logo_asImage: {
             id: "wearedevs_logo_asImage",
             title: 'Replace "WeAreDevs" logo with Icon',

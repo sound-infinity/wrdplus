@@ -3,9 +3,10 @@ import { InstanceList } from "./InstanceList"
 import { InstanceListOfValues } from "./InstanceListOfValues"
 import { IOnSectionLoad } from "./IOnSectionLoad"
 import { loadItem, removeItem, setItem, size, storages } from "../storage"
-import { Sections } from "./sections"
+import { Sections } from "./sections-model"
 import { SettingsForm, SettingsSection, SiteNotification, SitePopup, SitePopupPreset, SitePopupWithPreset, SitePopupYesNoResponse } from "../../modules/wearedevs-lib"
 import "../storage"
+import { DB_ADVANCED } from "./constants"
 
 let isSaving = false
 
@@ -121,6 +122,11 @@ document.addEventListener("sectionsaved", () => {
         const popup = new SitePopupWithPreset(SitePopupPreset.Okay)
         popup.title = "Settings"
         popup.message = "Your window will be refreshed after closing the settings menu!"
+        popup.addButton("Apply Settings").onclick = () => {
+            popup.dismiss()
+            display_working_popup()
+            location.reload()
+        }
         popup.render()
     }
 })
@@ -146,9 +152,9 @@ function disable_notification(detail: IOnSectionLoad, notification: SiteNotifica
 }
 
 document.addEventListener("sectionload", (e: CustomEvent | Event) => {
-    if (!("detail" in e)) return
-    const detail = e.detail as IOnSectionLoad
-    if (detail.sectionId === "wrdplus_advanced_settings") {
+    const detail = (<CustomEvent<IOnSectionLoad>>e).detail
+
+    if (detail.sectionId === DB_ADVANCED) {
         if (detail.values["disable_notification_settingsKeyBind"] === false) {
             const notif = new SiteNotification()
             notif.message = 'You can press "ALT+S" to config the script.\n(click here to never show again)'
@@ -163,7 +169,6 @@ document.addEventListener("sectionload", (e: CustomEvent | Event) => {
     }
 })
 
-// loadSection("Features", "wrdplus_features")
 loadSection("Features", "wrdplus_features", (values) => {
     if (values["advanced_settings"] === true) {
         loadSection("Advanced Settings", "wrdplus_advanced_settings", (_, section) => {
