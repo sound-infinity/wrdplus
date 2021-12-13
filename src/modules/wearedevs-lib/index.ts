@@ -1,5 +1,6 @@
 import "./settings"
-require("./res/css")
+import "./res/css"
+export { notifications } from "./navbar"
 export { SettingsForm, SettingsSection, SectionInputType } from "./settings"
 export { SitePopup, SiteNotification } from "./dialogs"
 export { SitePopupPreset, SitePopupWithPreset, SitePopupYesNoResponse } from "./dialogs"
