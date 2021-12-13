@@ -14,9 +14,9 @@ export const scripts: Record<string, IScriptInfo | IScriptInfo[]> = {
         handler: <T>(value?: T, detail?: IOnSectionLoad) => {
             if (typeof value === "string" && detail != null) {
                 if (detail.values["custom_background_enabled"] === true) {
-                    const image = createImage()
-                    image.setAttribute("src", value)
-                    document.body.insertBefore(image, document.body.firstChild)
+                    const elements = createImage()
+                    elements.image.setAttribute("src", value)
+                    document.body.insertBefore(elements.container, document.body.firstChild)
                 }
             }
         },
