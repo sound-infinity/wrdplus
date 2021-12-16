@@ -47,6 +47,7 @@ div#settings span {
 }
 
 div#settings input[type="text"] {
+    color: wheat;
     background-color: #28303c;
 }
 /*# sourceMappingURL=dark.theme.css.map */
