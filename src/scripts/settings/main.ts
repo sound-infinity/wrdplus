@@ -133,15 +133,16 @@ document.addEventListener("sectionsaved", () => {
 
 form.onclosed = () => onClose()
 
-document.addEventListener("keydown", (key) => {
+document.addEventListener("keydown", (ev) => {
     // updateUI()
-    if (key.altKey && key.key.toUpperCase() == "S") {
+    if (ev.altKey && ev.key.toUpperCase() == "S") {
         if (form.contents != null && form.contents.parentNode == document.body) {
             document.head.appendChild(form.contents)
             onClose()
         } else {
             form.render()
         }
+        ev.preventDefault()
     }
 })
 

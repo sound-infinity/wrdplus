@@ -92,6 +92,7 @@ function main() {
     switch (getThemeMode()) {
         case ThemeMode.Light:
             InsertSheet(notifications_light_sheet)
+            InsertSheet(settings_dark_sheet)
             for (const sourceCode of externalSheets["light"]) InsertSheet(sourceCode)
             break
         case ThemeMode.Night:
