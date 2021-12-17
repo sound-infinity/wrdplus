@@ -1,9 +1,50 @@
+<style>
+    body {
+        background-color: #000;
+        font-family: "Segoe UI";
+    }
+    .installer {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        align-content: center;
+    }
+    button {
+        cursor: pointer;
+        font-weight: bolder;
+        font-size: 10em;
+        padding: 0.2em;
+        border-radius: 14px;
+        border-color: transparent;
+        background-color: rgb(47 141 77);
+        color: #f3f3f3;
+    }
+    .logo {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        align-content: center;
+        opacity: 0.5;
+        color: white;
+        font-size: 15em;
+    }
+</style>
+
 <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const scripttab = open('./wrdplus.user.js', "_blank")
+    function install() {
+        location.href = "./wrdplusV4.user.js"
+        /*
+        const scripttab = open("./wrdplusV4.user.js", "_blank")
         scripttab.onblur = () => {
             scripttab.close()
             window.close()
         }
-    })
+        */
+    }
 </script>
+<div class="logo">
+    <div>WRD<span style="color: gold">+</span></div>
+</div>
+<div class="installer">
+    <button onclick="install()">INSTALL</button>
+</div>

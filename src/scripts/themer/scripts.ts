@@ -1,4 +1,4 @@
-import { IOnSectionLoad } from "../settings/IOnSectionLoad"
+import { IOnSectionLoad } from "../settings/@types/IOnSectionLoad"
 import { createImage } from "./utils"
 
 export type ScriptHandlerArgs = boolean | string | null

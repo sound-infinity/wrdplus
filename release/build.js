@@ -20,6 +20,7 @@ async function format_userscript(files) {
             log_info("writing packed file...")
             fs.writeFile(files.output, buffer.join("\n"), "utf-8", (err) => {
                 log_info(`output file: "${files.output}"`)
+                //if (files.redirect) log_info(`install file: "${new URL("file:\\\\" + files.redirect).href}"`)
             })
         })
     })
@@ -27,14 +28,15 @@ async function format_userscript(files) {
 
 function resolve_files() {
     return {
-        output: path.resolve(__dirname, "wrdplusV4.user.js"),
+        output: path.resolve(__dirname, "wrdplus.user.js"),
         metadata: path.resolve(__dirname, "meta.js"),
         userscript: path.resolve(__dirname, "bundle.js"),
+        redirect: path.resolve(__dirname, "redirect.html"),
     }
 }
 
 log_cmd("yarn webpack")
-process.exec("yarn webpack", (err, stdout, stderr) => {
+process.exec("yarn webpack", (err) => {
     if (err) return
     format_userscript(resolve_files())
 })

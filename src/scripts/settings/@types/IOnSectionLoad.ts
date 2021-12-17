@@ -1,4 +1,4 @@
-import { SettingsSection } from "../../modules/wearedevs-lib"
+import { SettingsSection } from "../../../modules/wearedevs-lib"
 import { InstanceListOfValues } from "./InstanceListOfValues"
 
 export declare interface IOnSectionLoad {

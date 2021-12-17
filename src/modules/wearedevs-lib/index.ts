@@ -1,5 +1,6 @@
 import "./settings"
 import "./res/css"
+import "./paginator"
 export { notifications } from "./navbar"
 export { SettingsForm, SettingsSection, SectionInputType } from "./settings"
 export { SitePopup, SiteNotification } from "./dialogs"
