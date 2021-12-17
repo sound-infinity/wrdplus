@@ -4,9 +4,18 @@ import { InstanceListOfValues } from "./@types/InstanceListOfValues"
 import { IOnSectionLoad } from "./@types/IOnSectionLoad"
 import { loadItem, removeItem, setItem, size, storages } from "../storage"
 import { Sections } from "./sections-model"
-import { SettingsForm, SettingsSection, SiteNotification, SitePopup, SitePopupPreset, SitePopupWithPreset, SitePopupYesNoResponse } from "../../modules/wearedevs-lib"
+import {
+    SettingsForm,
+    SettingsSection,
+    SiteNotification,
+    SitePopup,
+    SitePopupPreset,
+    SitePopupWithPreset,
+    SitePopupYesNoResponse,
+} from "../../modules/wearedevs-lib"
 import "../storage"
 import { DB_ADVANCED } from "./constants"
+import { initialize as navbar_initialize } from "./navbar"
 
 let isSaving = false
 
@@ -37,7 +46,11 @@ function new_details(instances: InstanceList, section: SettingsSection, sectionI
     }
 }
 
-function loadSection(sectionName: string, sectionId: string, onload?: (valuesOfInstances: InstanceListOfValues, section: SettingsSection) => void): void {
+function loadSection(
+    sectionName: string,
+    sectionId: string,
+    onload?: (valuesOfInstances: InstanceListOfValues, section: SettingsSection) => void
+): void {
     const section = form.addSection()
     section.addHeading(sectionName)
     const instances = loadSectionInstances(section, Sections[sectionId])
@@ -52,7 +65,10 @@ function loadSection(sectionName: string, sectionId: string, onload?: (valuesOfI
 
         if (onload != null) onload(values, section)
 
-        const OnSectionLoadEvent = new CustomEvent<IOnSectionLoad>("sectionload", new_details(instances, section, sectionId))
+        const OnSectionLoadEvent = new CustomEvent<IOnSectionLoad>(
+            "sectionload",
+            new_details(instances, section, sectionId)
+        )
         document.dispatchEvent(OnSectionLoadEvent)
     })
 }
@@ -151,6 +167,10 @@ function disable_notification(detail: IOnSectionLoad, notification: SiteNotifica
     save(detail.sectionId, detail.values)
     notification.dismiss()
 }
+
+document.addEventListener("readystatechange", () => {
+    if (document.readyState === "interactive") navbar_initialize(form)
+})
 
 document.addEventListener("sectionload", (e: CustomEvent | Event) => {
     const detail = (<CustomEvent<IOnSectionLoad>>e).detail

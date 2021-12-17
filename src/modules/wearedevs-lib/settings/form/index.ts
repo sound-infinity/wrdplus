@@ -13,9 +13,7 @@ export class SettingsForm {
         const container = document.createElement("div")
         container.innerHTML = HtmlSettings
         this.contents = container.firstElementChild as HTMLDivElement
-        const btnCloseSettings = this.contents?.querySelector(
-            ".settings-close-btn"
-        )
+        const btnCloseSettings = this.contents?.querySelector(".settings-close-btn")
         if (btnCloseSettings != null) {
             btnCloseSettings.addEventListener("click", () => {
                 this.contents?.remove()
