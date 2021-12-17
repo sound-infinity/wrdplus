@@ -1,7 +1,7 @@
 import "./settings"
 import "./res/css"
 import "./paginator"
-export { notifications } from "./navbar"
+export { notifications, account_setMenuStatus } from "./navbar"
 export { SettingsForm, SettingsSection, SectionInputType } from "./settings"
 export { SitePopup, SiteNotification } from "./dialogs"
 export { SitePopupPreset, SitePopupWithPreset, SitePopupYesNoResponse } from "./dialogs"

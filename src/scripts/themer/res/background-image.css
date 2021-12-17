@@ -13,7 +13,12 @@
     overflow: hidden;
 }
 
-.wrdplus-background-screen {
+.wrdplus-background-screen-2 {
     background: linear-gradient(90deg, #00000000, #000000, #000000, #000000, #00000000);
     opacity: 0.8;
+}
+
+.wrdplus-background-screen {
+    background: linear-gradient(90deg, #00000080, #000000b0, #000000d6, #000000b0, #00000080);
+    opacity: 1;
 }

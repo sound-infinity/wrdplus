@@ -9,14 +9,14 @@
     -webkit-font-smoothing: antialiased;
     display: inline-flex;
     /* font-family: sans-serif; */
-    font-size: 8pt;
-    height: 2vh;
-    min-width: 2vw;
+    font-size: 0.7em;
+    height: 1em;
+    min-width: 4em;
     width: auto;
-    padding: 0 4px;
+    padding: 0.6rem 0.4em;
     text-align: center;
     align-items: center;
     justify-content: center;
-    margin-right: 0.2vw;
+    margin-right: 0.4em;
     border-radius: 4px;
 }

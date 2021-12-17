@@ -32,22 +32,27 @@ function parse_title(title: string) {
     return parsed
 }
 
+function getThreadTitles() {
+    return [
+        document.querySelectorAll("#topic"),
+        document.querySelector("table>tbody")?.querySelectorAll("a[href*=t].thread-title"),
+        document.querySelectorAll('a[href*="forum/t/"]:not([class*=btn])'),
+    ]
+}
+
 function load_thread_highlights() {
     // if (value === true) {
-    let threadTitles = document.querySelector("table>tbody")?.querySelectorAll("a[href*=t].thread-title")
-
-    function alternative() {
-        threadTitles = document.querySelectorAll('a[href*="forum/t/"]:not([class*=btn])')
+    let threadTitles
+    for (const threadTitlesArr of getThreadTitles()) {
+        if (threadTitlesArr) {
+            if (threadTitlesArr.length > 0) {
+                threadTitles = threadTitlesArr
+                break
+            }
+        }
     }
 
-    function alternative_2() {
-        threadTitles = document.querySelectorAll("#topic")
-    }
-
-    if (threadTitles == null || threadTitles.length < 1) alternative()
-    if (threadTitles == null || threadTitles.length < 1) alternative_2()
-    if (threadTitles == null) return
-
+    if (threadTitles == null) return null
     for (const threadTitle of Object.values(threadTitles)) {
         if (threadTitle.textContent != null) {
             const parsedThreadTitle = parse_title(threadTitle.textContent)
@@ -55,7 +60,8 @@ function load_thread_highlights() {
                 const tag_Element = title_element(parsedThreadTitle.title, parsedThreadTitle.tag)
                 if (tag_Element && threadTitle.parentNode) {
                     threadTitle.parentNode.insertBefore(tag_Element, threadTitle)
-                    if (threadTitle.getAttribute("href") != null) tag_Element.setAttribute("href", threadTitle.getAttribute("href") || "")
+                    if (threadTitle.getAttribute("href") != null)
+                        tag_Element.setAttribute("href", threadTitle.getAttribute("href") || "")
                     threadTitle.remove()
                 }
             }
