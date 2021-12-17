@@ -1,0 +1,19 @@
+.wrdplus-background {
+    object-fit: cover;
+    position: fixed;
+    width: 100vw;
+    /* opacity: 0.5; */
+    height: 100vh;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    right: 0;
+    margin: auto;
+    overflow: hidden;
+}
+
+.wrdplus-background-screen {
+    background: linear-gradient(90deg, #00000000, #000000, #000000, #000000, #00000000);
+    opacity: 0.8;
+}

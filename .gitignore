@@ -1,12 +1,6 @@
-**
-!/release/
-!/release/**
-!/src/
-!/src/**
-!/images/
-!/images/**
-!/release/
-!/release/**
-build
 node_modules
-!readme.md
+dist
+dist/*
+dist/**
+disabled
+dist/bundle.js
