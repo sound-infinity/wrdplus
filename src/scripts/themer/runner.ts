@@ -1,6 +1,6 @@
 import { AddExternalSheet, ExternalSheetType } from "../../modules/wearedevs-lib"
 import { DB_THEME_MODIFICATIONS } from "../settings/constants"
-import { IOnSectionLoad } from "../settings/IOnSectionLoad"
+import { IOnSectionLoad } from "../settings/@types/IOnSectionLoad"
 import CssBackgroundImage from "./res/background-image.css"
 import { IScriptInfo, ScriptHandlerArgs, scripts } from "./scripts"
 
@@ -34,7 +34,6 @@ document.addEventListener("sectionload", (e: CustomEvent | Event): void => {
                         if (run() === false) document.addEventListener("readystatechange", run)
                     } else {
                         for (const info of <IScriptInfo[]>scriptInfo) {
-                            console.log({ info: info, value: value, detail: detail })
                             const run = () => script_try_run(<IScriptInfo>info, value, detail)
                             if (run() === false) document.addEventListener("readystatechange", run)
                         }

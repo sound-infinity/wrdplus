@@ -1,11 +1,16 @@
 import { SectionInputType } from "../../modules/wearedevs-lib"
-import { IOptionData } from "./IOptionData"
+import { IOptionData } from "./@types/IOptionData"
 
 export const Sections: Record<string, Record<string, IOptionData>> = {
     wrdplus_features: {
         better_notifications: {
             id: "better_notifications",
             title: "Better Notifications",
+            inputType: SectionInputType.Checkbox,
+        },
+        better_paginator: {
+            id: "better_paginator",
+            title: "Better Paginator",
             inputType: SectionInputType.Checkbox,
         },
         thread_highlights: {

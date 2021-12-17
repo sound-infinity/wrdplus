@@ -1,8 +1,8 @@
 import { SectionInputType, SettingsSection } from "../../modules/wearedevs-lib"
 import { loadItem } from "../storage"
-import { IInstanceData } from "./IInstanceData"
-import { InstanceList } from "./InstanceList"
-import { InstanceListOfValues } from "./InstanceListOfValues"
+import { IInstanceData } from "./@types/IInstanceData"
+import { InstanceList } from "./@types/InstanceList"
+import { InstanceListOfValues } from "./@types/InstanceListOfValues"
 import { OptionList } from "./OptionList"
 
 export async function loadInstancesFromSaved(storage: string, instances: { [id: string]: IInstanceData }) {
