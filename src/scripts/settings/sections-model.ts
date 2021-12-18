@@ -7,15 +7,23 @@ export const Sections: Record<string, Record<string, IOptionData>> = {
             id: "better_notifications",
             title: "Better Notifications",
             inputType: SectionInputType.Checkbox,
+            defaultValue: true,
         },
         better_paginator: {
             id: "better_paginator",
             title: "Better Paginator",
             inputType: SectionInputType.Checkbox,
+            defaultValue: true,
         },
         thread_highlights: {
             id: "thread_highlights",
             title: "Better Thread Titles",
+            inputType: SectionInputType.Checkbox,
+            defaultValue: true,
+        },
+        disable_signatures: {
+            id: "disable_signatures",
+            title: "Disable Signatures",
             inputType: SectionInputType.Checkbox,
         },
         advanced_settings: {
@@ -29,6 +37,11 @@ export const Sections: Record<string, Record<string, IOptionData>> = {
             id: "custom_background",
             title: "Custom Background",
             inputType: SectionInputType.TextField,
+        },
+        custom_background_asSVG: {
+            id: "custom_background_asSVG",
+            title: "Image Is A SVG",
+            inputType: SectionInputType.Checkbox,
         },
         custom_background_enabled: {
             id: "custom_background_enabled",

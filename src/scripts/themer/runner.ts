@@ -1,15 +1,16 @@
 import { AddExternalSheet, ExternalSheetType } from "../../modules/wearedevs-lib"
 import { DB_THEME_MODIFICATIONS } from "../settings/constants"
-import { IOnSectionLoad } from "../settings/@types/IOnSectionLoad"
 import CssBackgroundImage from "./res/background-image.css"
 import { IScriptInfo, ScriptHandlerArgs, scripts } from "./scripts"
+import * as easyLoad from "../settings/easy-load"
+import { Sections } from "../settings/sections-model"
 
 AddExternalSheet(CssBackgroundImage, ExternalSheetType.General)
 
-function script_try_run(info: IScriptInfo, value: ScriptHandlerArgs, detail: IOnSectionLoad) {
+function script_try_run(info: IScriptInfo, value: ScriptHandlerArgs, sectionId: string) {
     if (document.readyState === info.runAt) {
         try {
-            info.handler(value, detail)
+            info.handler(value, sectionId)
         } finally {
             return true
         }
@@ -17,29 +18,28 @@ function script_try_run(info: IScriptInfo, value: ScriptHandlerArgs, detail: IOn
     return false
 }
 
-document.addEventListener("sectionload", (e: CustomEvent | Event): void => {
-    const detail = (<CustomEvent<IOnSectionLoad>>e).detail
-    if (detail.sectionId === DB_THEME_MODIFICATIONS) {
-        for (const fieldId in detail.values) {
-            const value = detail.values[fieldId]
-            switch (typeof value) {
-                case "boolean":
-                    if (value === false) break
-                default:
-                    const scriptInfo = scripts[fieldId]
-                    if (scriptInfo == null) break
+// function try_run() {
+for (const fieldId in Sections[DB_THEME_MODIFICATIONS]) {
+    const value = easyLoad.getSavedValue(DB_THEME_MODIFICATIONS, fieldId)
+    switch (value) {
+        case false:
+        case undefined:
+        case null:
+            break
+        default:
+            const scriptInfo = scripts[fieldId]
+            if (scriptInfo == null) break
 
-                    if ((<IScriptInfo>scriptInfo)["runAt"] != null) {
-                        const run = () => script_try_run(<IScriptInfo>scriptInfo, value, detail)
-                        if (run() === false) document.addEventListener("readystatechange", run)
-                    } else {
-                        for (const info of <IScriptInfo[]>scriptInfo) {
-                            const run = () => script_try_run(<IScriptInfo>info, value, detail)
-                            if (run() === false) document.addEventListener("readystatechange", run)
-                        }
-                    }
-                    break
+            if ((<IScriptInfo>scriptInfo)["runAt"] != null) {
+                const run = () => script_try_run(<IScriptInfo>scriptInfo, value, DB_THEME_MODIFICATIONS)
+                if (run() === false) document.addEventListener("readystatechange", run)
+            } else {
+                for (const info of <IScriptInfo[]>scriptInfo) {
+                    const run = () => script_try_run(<IScriptInfo>info, value, DB_THEME_MODIFICATIONS)
+                    if (run() === false) document.addEventListener("readystatechange", run)
+                }
             }
-        }
+            break
     }
-})
+}
+// }

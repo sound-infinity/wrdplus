@@ -24,10 +24,14 @@ declare interface IParsedTitle {
 function parse_title(title: string) {
     // example: [tag] title
     const parsed: IParsedTitle = { title: title, tag: null }
-    const matches = title.match(/(\[.*?\])+/)
+    const matches = title.match(/(\[.*?\])/)
     if (matches != null) {
-        parsed.tag = matches[0].substring(1, matches[0].length - 1)
-        parsed.title = title.replace(matches[0], "")
+        for (const match of matches) {
+            parsed.tag = match.substring(1, match.length - 1)
+            parsed.title = title.replace(match, "")
+        }
+        // parsed.tag = matches[1].substring(1, matches[1].length - 1)
+        // parsed.title = title.replace(matches[1], "")
     }
     return parsed
 }
@@ -70,20 +74,19 @@ function load_thread_highlights() {
     // }
 }
 
-easyLoad.getSavedValue(DB.DB_FEATURES, "thread_highlights").then((value) => {
-    if (value === true) {
-        switch (document.readyState) {
-            case "complete":
-            case "interactive":
-                load_thread_highlights()
-                break
-            default:
-                document.addEventListener("readystatechange", () => {
-                    if (document.readyState === "interactive") load_thread_highlights()
-                })
-                break
-        }
+const value = easyLoad.getSavedValue(DB.DB_FEATURES, "thread_highlights")
+if (value === true) {
+    switch (document.readyState) {
+        case "complete":
+        case "interactive":
+            load_thread_highlights()
+            break
+        default:
+            document.addEventListener("readystatechange", () => {
+                if (document.readyState === "interactive") load_thread_highlights()
+            })
+            break
     }
-})
+}
 
 export {}

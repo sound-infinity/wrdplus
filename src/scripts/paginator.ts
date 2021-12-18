@@ -5,8 +5,6 @@ import { DB_FEATURES } from "./settings/constants"
 function try_run() {
     switch (document.readyState) {
         case "complete":
-            Paginator()
-            break
         case "interactive":
             Paginator()
             break
@@ -15,8 +13,7 @@ function try_run() {
     }
 }
 
-easyLoad.getSavedValue(DB_FEATURES, "better_paginator").then((value) => {
-    if (value === true) {
-        if (!try_run()) document.addEventListener("readystatechange", () => try_run())
-    }
-})
+const value = easyLoad.getSavedValue(DB_FEATURES, "better_paginator")
+if (value === true) {
+    if (!try_run()) document.addEventListener("readystatechange", () => try_run())
+}
