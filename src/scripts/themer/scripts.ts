@@ -1,22 +1,30 @@
-import { IOnSectionLoad } from "../settings/@types/IOnSectionLoad"
 import { createImage } from "./utils"
-
+import * as easyLoad from "../settings/easy-load"
+import svgToMiniDataURI from "mini-svg-data-uri"
+import { DB_THEME_MODIFICATIONS } from "../settings/constants"
 export type ScriptHandlerArgs = boolean | string | null
 
 export interface IScriptInfo {
-    handler: (value?: ScriptHandlerArgs, detail?: IOnSectionLoad) => void
+    handler: (value?: ScriptHandlerArgs, sectionId?: string) => void
     runAt: DocumentReadyState
 }
 
 export const scripts: Record<string, IScriptInfo | IScriptInfo[]> = {
     custom_background: {
         runAt: "interactive",
-        handler: <T>(value?: T, detail?: IOnSectionLoad) => {
-            if (typeof value === "string" && detail != null) {
-                if (detail.values["custom_background_enabled"] === true) {
-                    const elements = createImage()
-                    elements.image.setAttribute("src", value)
-                    document.body.insertBefore(elements.container, document.body.firstChild)
+        handler: <T>(value?: T) => {
+            if (typeof value === "string") {
+                const select = easyLoad.select(DB_THEME_MODIFICATIONS)
+                if (select("custom_background_enabled") === true) {
+                    if (select("custom_background_asSVG") === true) {
+                        const elements = createImage()
+                        elements.image.setAttribute("src", svgToMiniDataURI(value))
+                        document.body.insertBefore(elements.container, document.body.firstChild)
+                    } else {
+                        const elements = createImage()
+                        elements.image.setAttribute("src", value)
+                        document.body.insertBefore(elements.container, document.body.firstChild)
+                    }
                 }
             }
         },

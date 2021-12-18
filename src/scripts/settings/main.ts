@@ -13,7 +13,6 @@ import {
     SitePopupWithPreset,
     SitePopupYesNoResponse,
 } from "../../modules/wearedevs-lib"
-import "../storage"
 import { DB_ADVANCED } from "./constants"
 import { initialize as navbar_initialize } from "./navbar"
 
@@ -26,10 +25,9 @@ function save(name: string, data: { [key: string]: string | boolean | null }) {
         popup.render()
     } else {
         isSaving = true
-        loadItem(name).then(() => {
-            setItem(name, data)
-            isSaving = false
-        })
+        loadItem(name)
+        setItem(name, data)
+        isSaving = false
     }
 }
 
@@ -177,15 +175,17 @@ document.addEventListener("sectionload", (e: CustomEvent | Event) => {
 
     if (detail.sectionId === DB_ADVANCED) {
         if (detail.values["disable_notification_settingsKeyBind"] === false) {
-            const notif = new SiteNotification()
-            notif.message = 'You can press "ALT+S" to config the script.\n(click here to never show again)'
-            if (notif.contents != null) {
-                notif.contents.style.cursor = "pointer"
-                notif.contents.onclick = () => disable_notification(detail, notif)
-            }
+            document.addEventListener("readystatechange", () => {
+                const notif = new SiteNotification()
+                notif.message = 'You can press "ALT+S" to config the script.\n(click here to never show again)'
+                if (notif.contents != null) {
+                    notif.contents.style.cursor = "pointer"
+                    notif.contents.onclick = () => disable_notification(detail, notif)
+                }
 
-            setTimeout(() => notif.dismiss(), 10 * 1000)
-            notif.render()
+                setTimeout(() => notif.dismiss(), 10 * 1000)
+                notif.render()
+            })
         }
     }
 })

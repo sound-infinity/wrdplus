@@ -61,7 +61,7 @@ export function size(name: string) {
     }
 }
 
-export async function loadItem(name: string) {
+export function loadItem(name: string) {
     const storage = exists(name) ? read(name) : create(name)
     if (storage == null) return
     write(name, storage)

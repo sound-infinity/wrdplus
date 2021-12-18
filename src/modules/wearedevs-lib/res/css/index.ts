@@ -34,7 +34,11 @@ function RemoveSheets() {
         sheet.remove()
     }
 }
-export function InsertSheet(sourceCode: string, destination: SheetDestination = SheetDestination.Head, anonymous = false) {
+export function InsertSheet(
+    sourceCode: string,
+    destination: SheetDestination = SheetDestination.Head,
+    anonymous = false
+) {
     const sheet = document.createElement("style")
     sheet.textContent = sourceCode
     if (!anonymous) sheets.push(sheet)

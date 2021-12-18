@@ -19,6 +19,7 @@
 }
 
 .wrdplus-background-screen {
-    background: linear-gradient(90deg, #00000080, #000000b0, #000000d6, #000000b0, #00000080);
+    background-color: #212121b0;
+    /* background: linear-gradient(90deg, #00000080, #000000b0, #000000d6, #000000b0, #00000080); */
     opacity: 1;
 }

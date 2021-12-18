@@ -11,10 +11,10 @@ export async function loadInstancesFromSaved(storage: string, instances: { [id: 
         const instance = instances[id]
         switch (instance.optionData.inputType) {
             case SectionInputType.Checkbox:
-                instance.element.checked = res[id]
+                instance.element.checked = res[id] || instance.optionData.defaultValue
                 break
             case SectionInputType.TextField:
-                instance.element.value = res[id]
+                instance.element.value = res[id] || instance.optionData.defaultValue
                 break
         }
     }
@@ -29,6 +29,7 @@ export function loadSectionInstances(section: SettingsSection, options: OptionLi
             case SectionInputType.Checkbox:
                 {
                     const element = section.addCheckbox(option.title, option.id)
+                    if (typeof option.defaultValue === "boolean") element.checked = option.defaultValue
                     instances[option.id] = {
                         element: element,
                         optionData: option,
@@ -38,6 +39,7 @@ export function loadSectionInstances(section: SettingsSection, options: OptionLi
             case SectionInputType.TextField:
                 {
                     const element = section.addTextbox(option.title, option.id)
+                    if (typeof option.defaultValue === "string") element.value = option.defaultValue
                     instances[option.id] = {
                         element: element,
                         optionData: option,
