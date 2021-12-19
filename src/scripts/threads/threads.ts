@@ -75,6 +75,7 @@ function load_thread_highlights() {
 }
 
 const value = easyLoad.getSavedValue(DB.DB_FEATURES, "thread_highlights")
+
 if (value === true) {
     switch (document.readyState) {
         case "complete":

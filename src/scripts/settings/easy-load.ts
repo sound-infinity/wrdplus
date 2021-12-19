@@ -8,8 +8,13 @@ export function getDefaultValue(storage: string, key: string) {
 }
 export function getSavedValue(storage: string, key: string) {
     const item = loadItem(storage)
-    if (item != null && item[key]) return item[key]
-    else return getDefaultValue(storage, key)
+    if (item != null && item[key] != null) {
+        return item[key]
+    } else {
+        console.log(`default: ${key}`)
+        console.trace("Show me")
+        return getDefaultValue(storage, key)
+    }
 }
 
 export function select(storage: string) {

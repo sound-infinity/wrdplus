@@ -1,35 +1,21 @@
 import { SectionInputType, SettingsSection } from "../../modules/wearedevs-lib"
-import { loadItem } from "../storage"
+import { loadItem, setItem } from "../storage"
 import { IInstanceData } from "./@types/IInstanceData"
 import { InstanceList } from "./@types/InstanceList"
 import { InstanceListOfValues } from "./@types/InstanceListOfValues"
 import { OptionList } from "./OptionList"
 
-export async function loadInstancesFromSaved(storage: string, instances: { [id: string]: IInstanceData }) {
-    const res = await loadItem(storage)
-    for (const id in res) {
-        const instance = instances[id]
-        switch (instance.optionData.inputType) {
-            case SectionInputType.Checkbox:
-                instance.element.checked = res[id] || instance.optionData.defaultValue
-                break
-            case SectionInputType.TextField:
-                instance.element.value = res[id] || instance.optionData.defaultValue
-                break
-        }
-    }
-    return res
-}
-
 export function loadSectionInstances(section: SettingsSection, options: OptionList) {
-    const instances: { [id: string]: IInstanceData } = {}
+    const instances: InstanceList = {}
 
     for (const option of Object.values(options)) {
         switch (option.inputType) {
             case SectionInputType.Checkbox:
                 {
                     const element = section.addCheckbox(option.title, option.id)
-                    if (typeof option.defaultValue === "boolean") element.checked = option.defaultValue
+                    if (typeof option.defaultValue === "boolean") {
+                        element.checked = option.defaultValue
+                    }
                     instances[option.id] = {
                         element: element,
                         optionData: option,
@@ -72,4 +58,24 @@ export function indexInstancesValues(instances: InstanceList) {
         }
     }
     return data
+}
+
+export function loadInstancesFromSaved(storage: string, instances: { [id: string]: IInstanceData }) {
+    const res = loadItem(storage)
+    for (const id in res) {
+        const instance = instances[id]
+        if (instance == null) continue
+
+        switch (instance.optionData.inputType) {
+            case SectionInputType.Checkbox:
+                instance.element.checked = res[id] // || instance.optionData.defaultValue
+                break
+            case SectionInputType.TextField:
+                instance.element.value = res[id] // || instance.optionData.defaultValue
+                break
+        }
+    }
+    setItem(storage, indexInstancesValues(instances))
+
+    return res
 }

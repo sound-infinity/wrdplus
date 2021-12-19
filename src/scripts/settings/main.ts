@@ -44,13 +44,19 @@ function new_details(instances: InstanceList, section: SettingsSection, sectionI
     }
 }
 
+function addSection(sectionName: string) {
+    const section = form.addSection()
+    section.addHeading(sectionName)
+    return section
+}
+
 function loadSection(
     sectionName: string,
     sectionId: string,
     onload?: (valuesOfInstances: InstanceListOfValues, section: SettingsSection) => void
 ): void {
-    const section = form.addSection()
-    section.addHeading(sectionName)
+    const section = addSection(sectionName)
+
     const instances = loadSectionInstances(section, Sections[sectionId])
 
     const OnSavedEvent = new CustomEvent<IOnSectionLoad>("sectionsaved", new_details(instances, section, sectionId))
@@ -58,17 +64,18 @@ function loadSection(
         save(sectionId, indexInstancesValues(instances))
         document.dispatchEvent(OnSavedEvent)
     })
-    loadInstancesFromSaved(sectionId, instances).then(() => {
-        const values = indexInstancesValues(instances)
+    loadInstancesFromSaved(sectionId, instances) //.then(() => {
+    const values = indexInstancesValues(instances)
 
-        if (onload != null) onload(values, section)
+    if (onload != null) onload(values, section)
 
-        const OnSectionLoadEvent = new CustomEvent<IOnSectionLoad>(
-            "sectionload",
-            new_details(instances, section, sectionId)
-        )
-        document.dispatchEvent(OnSectionLoadEvent)
-    })
+    const OnSectionLoadEvent = new CustomEvent<IOnSectionLoad>(
+        "sectionload",
+        new_details(instances, section, sectionId)
+    )
+    document.dispatchEvent(OnSectionLoadEvent)
+    save(sectionId, indexInstancesValues(instances))
+    // })
 }
 
 function display_working_popup() {
