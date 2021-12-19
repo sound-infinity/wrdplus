@@ -3,12 +3,12 @@ import { IOptionData } from "./@types/IOptionData"
 
 export const Sections: Record<string, Record<string, IOptionData>> = {
     wrdplus_features: {
-        better_notifications: {
-            id: "better_notifications",
-            title: "Better Notifications",
-            inputType: SectionInputType.Checkbox,
-            defaultValue: true,
-        },
+        // better_notifications: {
+        //     id: "better_notifications",
+        //     title: "Better Notifications",
+        //     inputType: SectionInputType.Checkbox,
+        //     defaultValue: true,
+        // },
         better_paginator: {
             id: "better_paginator",
             title: "Better Paginator",

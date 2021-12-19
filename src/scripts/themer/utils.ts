@@ -1,20 +1,11 @@
-import HtmlBackgroundImage from "./background-image.html"
-import HtmlBackgroundSVG from "./background-svg.html"
-
-export function createSVG() {
+export function parseHTML(html: string) {
     const container = document.createElement("div")
-    container.innerHTML = HtmlBackgroundSVG
-    const maincontainer = <HTMLDivElement>container.firstElementChild
-    const subcontainer = <HTMLDivElement>maincontainer.firstElementChild
-    subcontainer.className = "wrdplus-background"
-    return { container: maincontainer, subcontainer: subcontainer }
+    container.innerHTML = html
+    return container.firstElementChild
 }
 
-export function createImage() {
-    const container = document.createElement("div")
-    container.innerHTML = HtmlBackgroundImage
-    const image_container = <HTMLDivElement>container.firstElementChild
-    const image = <HTMLImageElement>image_container.querySelector("img")
-    image.className = "wrdplus-background"
-    return { container: image_container, image: image }
+export function loadStyle(source: string) {
+    const style = document.createElement("style")
+    style.innerHTML = source
+    document.head.appendChild(style)
 }

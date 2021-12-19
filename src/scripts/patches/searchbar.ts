@@ -4,7 +4,11 @@ export function getSearchBar() {
 
 export function formatSearch(query: string) {
     const queries = new URLSearchParams(location.search)
-    queries.set("search", query)
+    if (query.length > 0) {
+        queries.set("search", query)
+    } else {
+        queries.delete("search")
+    }
     return `?${queries.toString()}`
 }
 
@@ -14,9 +18,7 @@ export function initialize() {
     searchbar.addEventListener("keydown", (ev) => {
         if ((<KeyboardEvent>ev).key === "enter" || (<KeyboardEvent>ev).keyCode === 13) {
             const query = (<HTMLInputElement>ev.target).value
-            if (query.length > 0) {
-                location.search = formatSearch(query)
-            }
+            location.search = formatSearch(query)
             ev.preventDefault()
         }
     })

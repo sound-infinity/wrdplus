@@ -13,7 +13,6 @@ function try_run() {
     }
 }
 
-const value = easyLoad.getSavedValue(DB_FEATURES, "better_paginator")
-if (value === true) {
+if (easyLoad.getSavedValue(DB_FEATURES, "better_paginator") === true) {
     if (!try_run()) document.addEventListener("readystatechange", () => try_run())
 }

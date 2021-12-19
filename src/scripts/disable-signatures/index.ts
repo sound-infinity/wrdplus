@@ -1,10 +1,8 @@
 import CssDisableSignatures from "./res/general.style.css"
 import { easyLoad } from "../settings"
 import { DB_FEATURES } from "../settings/constants"
-import { InsertSheet } from "../../modules/wearedevs-lib"
+import { loadStyle } from "../themer/utils"
 
-const value = easyLoad.getSavedValue(DB_FEATURES, "disable_signatures")
-console.log({ value: value })
-if (value === true) {
-    InsertSheet(CssDisableSignatures, undefined, true)
+if (easyLoad.getSavedValue(DB_FEATURES, "disable_signatures") === true) {
+    loadStyle(CssDisableSignatures)
 }
