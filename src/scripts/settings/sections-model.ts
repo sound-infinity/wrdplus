@@ -21,6 +21,11 @@ export const Sections: Record<string, Record<string, IOptionData>> = {
             inputType: SectionInputType.Checkbox,
             defaultValue: true,
         },
+        animations_fadeIn: {
+            id: "animations_fadeIn",
+            title: "WebPage Fading",
+            inputType: SectionInputType.Checkbox,
+        },
         disable_signatures: {
             id: "disable_signatures",
             title: "Disable Signatures",
