@@ -34,6 +34,15 @@ export function loadSectionInstances(section: SettingsSection, options: OptionLi
                     if (typeof option.defaultValue === "string") {
                         element.value = option.defaultValue
                     }
+
+                    if (typeof option.description === "string") {
+                        // if (element.parentNode != null) {
+                        element.placeholder = option.description
+                        // const parent = <HTMLAnchorElement>element.parentNode
+                        // parent.setAttribute("title", option.description)
+
+                        // }
+                    }
                     instances[option.id] = {
                         element: element,
                         optionData: option

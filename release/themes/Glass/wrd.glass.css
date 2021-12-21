@@ -1,29 +1,119 @@
-.container {
-    background-color: #002332;
+:root {
+    --border-color: #81818100;
+    --thread-tags-background: #2f2e2e;
 }
 
 
-.container, .notif.message {
-    color: #f8f8f8;
+body { background: #000 }
+
+body * {
+    animation: fade-in 0.3s;
 }
 
+.modal-popup .modal-contents, .thread-title-tag, .notif, #settings  {
+    transition: all 1s;
+    animation: fade-in 1s 1 ease-out;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+div#settings div.settings-center .settings-header .settings-close-btn { background: linear-gradient(45deg, red, #ff000069)}
+
+div#settings {
+    background: #3d3d3d7a;
+}
+
+div#settings div.settings-center {
+    background: linear-gradient(
+90deg
+, #2b3340, #2b334073, #2b334091);
+    border: 0;
+    border-radius: 15px;
+}
+
+div#settings div.settings-center input[type="text"] {
+        color: #212121;
+    background-color: #d9d9d99e;
+    box-shadow: 0 0 5px 2px #1a1a1a6e;
+    font-weight: bold;
+}
+
+div#settings .flat, div#settings input[type="submit"] {
+    background-color: #8699ad7d
+}
+
+.thread-title-tag {
+    background-color: var(--thread-tags-background);
+}
+
+a.btnmention {
+    background: #55555538;
+    border: 0px;
+    border-radius: 4px;
+}
+
+.notif.message,
+body:not(.mce-content-body) {
+    color: #FFFFFF;
+}
+ 
 #navigationbar {
     background: none;
-    background-color: #2b759a45;
 }
-
+ 
 .forumcontainer h2 {
-    border-bottom: 1px solid #9cd7ff7d;
+    border-bottom: 1px solid #9999997a;
 }
-
+ 
 .theme1 {
+    color: inherit;
+    background-color: #2525255c;
+    border: 1px solid var(--border-color);
+}
+ 
+.theme2 {
+    border-color: var(--border-color);
+    color: inherit;
+    background-color: #2a2a2a4f;
+}
+ 
+#medias {
     color: inherit;
     background-color: #2525255c;
     border: 1px solid #81818140;
 }
+ 
+.navItems li a,
+.navItems li {
+    opacity: 1;
+}
 
-.theme2 {
-    border-color: #81818140;
-    color: inherit;
-    background-color: #2a2a2a4f;
+footer {
+    display: none;
+}
+
+pre[class*=language-] {
+    background: rgb(24, 25, 25);
+}
+
+code[class*=language-] {
+    text-shadow: none;
+    color: rgb(200, 200, 200);
+}
+
+code[class*=language-] .token.operator {
+    text-shadow: none;
+    background: none;
+}
+
+code[class*=language-] .token.keyword {
+    text-shadow: none;
+    background: none;
 }

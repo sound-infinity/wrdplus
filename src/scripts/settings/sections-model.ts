@@ -51,6 +51,13 @@ export const Sections: Record<string, Record<string, IOptionData>> = {
             title: "Custom Background",
             inputType: SectionInputType.TextField
         },
+        custom_background_size: {
+            id: "custom_background_size",
+            title: "Custom Background Size",
+            description: "WidthXHeight, will be rendered in pixels",
+            inputType: SectionInputType.TextField,
+            defaultValue: "auto"
+        },
         custom_background_asSVG: {
             id: "custom_background_asSVG",
             title: "Image Is A SVG",
