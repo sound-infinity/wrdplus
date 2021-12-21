@@ -16,19 +16,27 @@ export function loadSectionInstances(section: SettingsSection, options: OptionLi
                     if (typeof option.defaultValue === "boolean") {
                         element.checked = option.defaultValue
                     }
+                    if (typeof option.description === "string") {
+                        if (element.parentNode != null) {
+                            const parent = <HTMLAnchorElement>element.parentNode
+                            parent.setAttribute("title", option.description)
+                        }
+                    }
                     instances[option.id] = {
                         element: element,
-                        optionData: option,
+                        optionData: option
                     }
                 }
                 break
             case SectionInputType.TextField:
                 {
                     const element = section.addTextbox(option.title, option.id)
-                    if (typeof option.defaultValue === "string") element.value = option.defaultValue
+                    if (typeof option.defaultValue === "string") {
+                        element.value = option.defaultValue
+                    }
                     instances[option.id] = {
                         element: element,
-                        optionData: option,
+                        optionData: option
                     }
                 }
                 break

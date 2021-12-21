@@ -23,9 +23,7 @@ export class SettingsSection {
 
     public render() {
         if (this.contents != null) {
-            this.parentForm?.contents
-                ?.querySelector(".settings-body")
-                ?.appendChild(this.contents)
+            this.parentForm?.contents?.querySelector(".settings-body")?.appendChild(this.contents)
 
             this.contents?.addEventListener("submit", (e) => {
                 e.preventDefault()
@@ -43,13 +41,10 @@ export class SettingsSection {
     }
 
     public addHeading(text: string) {
-        const headingContainer =
-            getTemplatesContainer().querySelector("#heading")?.firstElementChild
+        const headingContainer = getTemplatesContainer().querySelector("#heading")?.firstElementChild
 
         if (headingContainer != null) {
-            const heading = headingContainer.querySelector(
-                ".settings-section-heading"
-            )
+            const heading = headingContainer.querySelector(".settings-section-heading")
             if (heading != null) {
                 heading.textContent = text
             }
@@ -91,13 +86,16 @@ export class SettingsSection {
     }
 
     addCheckbox(title: string, name: string) {
+        const container = document.createElement("span")
         const checkbox = document.createElement("input")
 
         checkbox.name = name
         checkbox.type = "checkbox"
         //checkbox.checked = data.checked || false
-        this.contents?.appendChild(checkbox)
-        this.addLabel(title)
+        // this.contents?.appendChild(checkbox)
+        this.contents?.appendChild(container)
+        container.appendChild(checkbox)
+        container.appendChild(this.addLabel(title))
         this.addLineBreak()
         return checkbox
     }
@@ -113,8 +111,7 @@ export class SettingsSection {
 
         this.contents?.appendChild(submitBtn)
 
-        if (typeof clickHandler === "function")
-            submitBtn.addEventListener("click", clickHandler.bind(this, this))
+        if (typeof clickHandler === "function") submitBtn.addEventListener("click", clickHandler.bind(this, this))
 
         return submitBtn
     }

@@ -20,3 +20,6 @@ export function getSavedValue(storage: string, key: string) {
 export function select(storage: string) {
     return (key: string) => getSavedValue(storage, key)
 }
+
+const selectStorage = select
+export default selectStorage

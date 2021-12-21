@@ -1,4 +1,4 @@
-import { extractThreadIdFromUrl, extractUserInfoFromTag, getLinkType, LinkType } from "../../../modules/wearedevs-lib"
+import { extractThreadIdFromUrl, extractUserInfoFromTag } from "../../../modules/wearedevs-lib"
 import { create } from "./mention"
 
 export function initialize() {

@@ -4,3 +4,4 @@ dist/*
 dist/**
 disabled
 dist/bundle.js
+.vscode

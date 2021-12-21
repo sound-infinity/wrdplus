@@ -5,4 +5,5 @@ export interface IOptionData {
     title: string
     inputType: SectionInputType
     defaultValue?: string | boolean | number
+    description?: string
 }

@@ -7,5 +7,8 @@ export function parseHTML(html: string) {
 export function loadStyle(source: string) {
     const style = document.createElement("style")
     style.innerHTML = source
-    document.head.appendChild(style)
+    if (document.head != null) {
+        document.head.appendChild(style)
+    }
+    return style.parentNode == document.head
 }
