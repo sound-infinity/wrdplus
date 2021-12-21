@@ -2,7 +2,7 @@
 // ==UserScript==
 // @name          WRD+
 // @author        SoundInfinity
-// @version       4.6.0
+// @version       4.6.1
 // @run-at        document-start
 // @updateUrl     https://sound-infinity.github.io/wrdplus/release/wrdplus.user.js
 // @downloadURL   https://sound-infinity.github.io/wrdplus/release/wrdplus.user.js
