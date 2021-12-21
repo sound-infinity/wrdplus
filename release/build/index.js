@@ -28,7 +28,7 @@ async function format_userscript(files) {
 
 function resolve_files() {
     return {
-        output: path.resolve(__dirname, "wrdplus.user.js"),
+        output: path.resolve(__dirname, "../wrdplus.user.js"),
         metadata: path.resolve(__dirname, "meta.js"),
         userscript: path.resolve(__dirname, "bundle.js"),
         redirect: path.resolve(__dirname, "redirect.html"),

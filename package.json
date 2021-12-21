@@ -36,7 +36,7 @@
     "license": "MIT",
     "scripts": {
         "tampermonkey": "webpack --mode development --watch",
-        "webpack": "webpack --mode production -o release",
-        "build": "node release/build.js --cwd release"
+        "webpack": "webpack --mode production -o release/build",
+        "build": "node release/build --cwd release/build"
     }
 }
