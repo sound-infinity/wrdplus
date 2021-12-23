@@ -2,6 +2,7 @@
 
 import "./scripts/themer"
 import "./scripts/patches"
+import "./scripts/profile-banners"
 import "./scripts/disable-signatures"
 import "./scripts/paginator"
 import "./scripts/settings"

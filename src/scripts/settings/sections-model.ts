@@ -29,6 +29,13 @@ export const Sections: Record<string, Record<string, IOptionData>> = {
             inputType: SectionInputType.Checkbox,
             defaultValue: true
         },
+        profile_banners: {
+            id: "enable_profile_banners",
+            title: "Enable Profile Banners",
+            description: 'the image used will be retrieved from "Account > Website"',
+            inputType: SectionInputType.Checkbox,
+            defaultValue: true
+        },
         animations_fadeIn: {
             id: "animations_fadeIn",
             title: "WebPage Fading",
